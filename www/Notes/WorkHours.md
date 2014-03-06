@@ -12,3 +12,10 @@
 #### Completed
 
 - Remove lines off board
+
+
+### Hour 3
+
+#### Completed
+
+- Animate Score and numbers

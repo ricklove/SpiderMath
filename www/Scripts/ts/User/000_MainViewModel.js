@@ -13,6 +13,7 @@ var Told;
                     this.score = ko.observable(0);
                     this.scoreChange = ko.observable("");
                     this.scoreChangeClassName = ko.observable("scoreGood");
+                    this.scoreChangeAtId = ko.observable("");
                     this.isAddition = false;
                     this._lines = null;
                     if (providers == null) {
@@ -40,19 +41,24 @@ var Told;
 
                             if (i === 0) {
                                 if (j === 0) {
-                                    t.rows[i].values[j] = { text: ko.observable(sign), value: null, isHeading: true, onClick: null, isAnswered: false };
+                                    t.rows[i].values[j] = { id: "", text: ko.observable(sign), value: null, isHeading: true, onClick: null, isAnswered: false };
                                 } else {
-                                    t.rows[i].values[j] = { text: ko.observable("" + valJ), value: null, isHeading: true, onClick: null, isAnswered: false };
+                                    t.rows[i].values[j] = { id: "", text: ko.observable("" + valJ), value: null, isHeading: true, onClick: null, isAnswered: false };
                                 }
                             } else if (j === 0) {
-                                t.rows[i].values[j] = { text: ko.observable("" + valI), value: null, isHeading: true, onClick: null, isAnswered: false };
+                                t.rows[i].values[j] = { id: "", text: ko.observable("" + valI), value: null, isHeading: true, onClick: null, isAnswered: false };
                             } else {
                                 (function () {
                                     var i2 = i;
                                     var j2 = j;
                                     var self2 = self;
                                     t.rows[i].values[j] = {
-                                        text: ko.observable("-"), value: val, isHeading: false, isAnswered: false, onClick: function () {
+                                        id: "NumSq_" + i + "_" + j,
+                                        text: ko.observable("-"),
+                                        value: val,
+                                        isHeading: false,
+                                        isAnswered: false,
+                                        onClick: function () {
                                             self2.clickSquare(i2, j2);
                                         }
                                     };
@@ -66,9 +72,11 @@ var Told;
                     this.changeNumber();
                     this.runTimer();
                 }
-                MainViewModel.prototype.changeScore = function (change, showChange) {
-                    if (typeof showChange === "undefined") { showChange = true; }
-                    if (showChange) {
+                MainViewModel.prototype.changeScore = function (change, showChangeAtId) {
+                    if (typeof showChangeAtId === "undefined") { showChangeAtId = ""; }
+                    if (showChangeAtId != "") {
+                        this.scoreChangeAtId(showChangeAtId);
+
                         if (change > 0) {
                             this.scoreChange("+" + change);
                             this.scoreChangeClassName("scoreGood");
@@ -97,7 +105,7 @@ var Told;
                     var self = this;
 
                     var reduceScore = function () {
-                        self.changeScore(-1, false);
+                        self.changeScore(-1);
 
                         setTimeout(reduceScore, 10000);
                     };
@@ -117,12 +125,15 @@ var Told;
 
                             this.changeNumber();
 
-                            this.changeScore(10);
+                            this.changeScore(10, v.id);
 
-                            this.checkForLines();
+                            var self = this;
+                            setTimeout(function () {
+                                self.checkForLines();
+                            }, 1000);
                         }
                     } else {
-                        this.changeScore(-5);
+                        this.changeScore(-5, v.id);
                     }
                 };
 
@@ -170,7 +181,7 @@ var Told;
                     // Clear and give points
                     if (lineParts.length > 0) {
                         var points = lineParts.length * lineParts.length;
-                        self.changeScore(points);
+                        self.changeScore(points, self.scoreChangeAtId());
 
                         for (var iPart = 0; iPart < lineParts.length; iPart++) {
                             lineParts[iPart].isAnswered = false;
@@ -264,6 +275,54 @@ var Told;
                 return MainViewModel;
             })();
             UI.MainViewModel = MainViewModel;
+
+            ko.bindingHandlers["fadeText"] = {
+                init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+                    $(element).text(ko.unwrap(valueAccessor()));
+                },
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+                    if ($(element).text() != ko.unwrap(valueAccessor())) {
+                        $(element).fadeOut(500, function () {
+                            $(element).text(ko.unwrap(valueAccessor()));
+                        });
+                        $(element).fadeIn({ queue: true });
+                    }
+                }
+            };
+
+            ko.bindingHandlers["animScoreChange"] = {
+                init: function (element) {
+                    $(element).hide();
+                },
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+                    console.log("slideUpAndFadeOut Update:" + element.id);
+
+                    ko.utils.unwrapObservable(valueAccessor()); // to subscribe
+
+                    if (viewModel.scoreChange() == "") {
+                        return;
+                    }
+
+                    // Use jQuery animation
+                    var atElement = $("#" + viewModel.scoreChangeAtId());
+                    var startPosition = atElement.offset();
+                    var endPosition = $("#score").offset();
+
+                    var scElement = $(element);
+
+                    scElement.stop(true, true);
+                    scElement.css({ fontSize: "2em", opacity: "100", top: startPosition.top, left: startPosition.left });
+
+                    //scElement.offset(startPosition);
+                    scElement.show();
+                    scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left }, 500, "swing", function () {
+                        //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
+                        scElement.hide();
+                    });
+                    // At end make it nothing
+                    //viewModel.scoreChange("");
+                }
+            };
         })(SpellWell.UI || (SpellWell.UI = {}));
         var UI = SpellWell.UI;
     })(Told.SpellWell || (Told.SpellWell = {}));

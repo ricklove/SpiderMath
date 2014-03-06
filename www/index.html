@@ -24,10 +24,11 @@
 
             <!--MainContent-->
             <div class="score">
-                <span data-bind="text: score"></span>
-                <div class="scoreChange">
-                    <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
-                </div>
+                <span id="score" data-bind="text: score"></span>
+            </div>
+
+            <div class="scoreChange" data-bind="animScoreChange: scoreChange">
+                <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
             </div>
 
             <div class="numTable">
@@ -38,7 +39,9 @@
                             <div class="numSquareHeading" data-bind="text: text"></div>
                             <!-- /ko -->
                             <!-- ko if (!isHeading) -->
-                            <div class="numSquare" data-bind="text: text, click: onClick"></div>
+                            <div class="numSquare" data-bind="attr: {id: id}, click: onClick">
+                                <span data-bind="fadeText:text"></span>
+                            </div>
                             <!-- /ko -->
                         </td>
                     </tr>

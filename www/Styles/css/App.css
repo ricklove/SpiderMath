@@ -40,20 +40,17 @@
     margin: 3px;
     width: 200px;
     display: inline-block;
-    text-align: left;
-    padding-left: 10px;
 }
 
 .scoreChange {
-    float: right;
-    font-size: 0.5em;
-    padding-left: 5px;
+    font-size: 3em;
+    position: absolute;
 }
 
 .scoreGood {
-    color: rgb(0, 255, 10);
+    color: blue;
 }
 
 .scoreBad {
-    color: rgb(255, 0, 10);
+    color: #f00;
 }
