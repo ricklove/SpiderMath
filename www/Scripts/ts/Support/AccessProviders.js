@@ -1,16 +1,16 @@
 ﻿/// <reference path="AccessUserSettings.ts" />
 var Told;
 (function (Told) {
-    (function (SpellWell) {
+    (function (TableMath) {
         (function (Data) {
             function createDefaultProviders() {
                 return {
-                    userSettings: new Told.SpellWell.Data.UserSettings_LocalStorage()
+                    userSettings: new Data.UserSettings_LocalStorage()
                 };
             }
             Data.createDefaultProviders = createDefaultProviders;
-        })(SpellWell.Data || (SpellWell.Data = {}));
-        var Data = SpellWell.Data;
-    })(Told.SpellWell || (Told.SpellWell = {}));
-    var SpellWell = Told.SpellWell;
+        })(TableMath.Data || (TableMath.Data = {}));
+        var Data = TableMath.Data;
+    })(Told.TableMath || (Told.TableMath = {}));
+    var TableMath = Told.TableMath;
 })(Told || (Told = {}));

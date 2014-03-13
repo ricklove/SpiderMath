@@ -11,15 +11,25 @@
         margin: 0px auto;
     }
 
-.numSquare, .numSquareHeading {
+.numSquareCell, .numSquareCellHeading {
     height: 25px;
     width: 25px;
+}
+
+.numSquareCell {
+    border: solid 1px lightgray;
+}
+
+.numSquareCellHeading {
+    /*border: solid 2px black;*/
+    font-weight: bold;
+}
+
+.numSquare, .numSquareHeading {
     line-height: 25px;
-    border: solid 1px black;
 }
 
 .numSquareHeading {
-    font-weight: bold;
 }
 
 .nextNumber {

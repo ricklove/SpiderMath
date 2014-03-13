@@ -19,3 +19,9 @@
 #### Completed
 
 - Animate Score and numbers
+
+
+### Hour 4
+
+Create tetris style
+

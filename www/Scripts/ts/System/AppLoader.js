@@ -103,6 +103,7 @@
                 'Scripts/js/External/dust-full-0.3.0.min.js',
                 'Scripts/ts/Support/AccessUserSettings.js',
                 'Scripts/ts/Support/AccessProviders.js',
+                'Scripts/ts/User/TetrisGame.js',
                 'Scripts/ts/User/000_MainViewModel.js'
             ];
 

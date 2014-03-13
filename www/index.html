@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="Styles/css/Loading.css">
 </head>
-<body class="loadingScreen">
+<body class="loadingScreen" data-bind="globalKeyboard: $root">
 
     <div id="loadingScreen" class="loadingScreen">
         <div style="height: 50px"></div>
@@ -32,25 +32,28 @@
             </div>
 
             <div class="numTable">
-                <table data-bind="foreach: table.rows">
+                <table data-bind="foreach: board().rows">
                     <tr data-bind="foreach: values">
-                        <td>
-                            <!-- ko if (isHeading) -->
+                        <!-- ko if (isHeading) -->
+                        <td class="numSquareCellHeading">
                             <div class="numSquareHeading" data-bind="text: text"></div>
-                            <!-- /ko -->
-                            <!-- ko if (!isHeading) -->
-                            <div class="numSquare" data-bind="attr: {id: id}, click: onClick">
-                                <span data-bind="fadeText:text"></span>
-                            </div>
-                            <!-- /ko -->
                         </td>
+                        <!-- /ko -->
+                        <!-- ko if (!isHeading) -->
+                        <td class="numSquareCell">
+                            <div class="numSquare" data-bind="attr: {id: id}">
+                                <!--<span data-bind="fadeText:text"></span>-->
+                                <span data-bind="text:text"></span>
+                            </div>
+                        </td>
+                        <!-- /ko -->
                     </tr>
                 </table>
             </div>
 
-            <div class="nextNumber">
+            <!--<div class="nextNumber">
                 <div data-bind="text: nextNumber"></div>
-            </div>
+            </div>-->
         </div>
         <div data-role="footer" class="footer">
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>
@@ -79,7 +82,7 @@
 
         Told.AppLoader.loadRequirements_Main(function () {
 
-            var viewModel = new Told.SpellWell.UI.MainViewModel();
+            var viewModel = new Told.TableMath.UI.MainViewModel();
             ko.applyBindings(viewModel);
 
             var hash = location.hash;

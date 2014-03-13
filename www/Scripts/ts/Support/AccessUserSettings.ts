@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../typings/jQuery/jQuery.d.ts" />
 
-module Told.SpellWell.Data {
+module Told.TableMath.Data {
 
     export interface IUserSettings {
         //bookChoice: string;

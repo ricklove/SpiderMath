@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../typings/jQuery/jQuery.d.ts" />
 var Told;
 (function (Told) {
-    (function (SpellWell) {
+    (function (TableMath) {
         (function (Data) {
             var UserSettings_LocalStorage = (function () {
                 function UserSettings_LocalStorage() {
@@ -25,8 +25,8 @@ var Told;
                 return UserSettings_LocalStorage;
             })();
             Data.UserSettings_LocalStorage = UserSettings_LocalStorage;
-        })(SpellWell.Data || (SpellWell.Data = {}));
-        var Data = SpellWell.Data;
-    })(Told.SpellWell || (Told.SpellWell = {}));
-    var SpellWell = Told.SpellWell;
+        })(TableMath.Data || (TableMath.Data = {}));
+        var Data = TableMath.Data;
+    })(Told.TableMath || (Told.TableMath = {}));
+    var TableMath = Told.TableMath;
 })(Told || (Told = {}));

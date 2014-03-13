@@ -1,7 +1,7 @@
 ﻿/// <reference path="AccessUserSettings.ts" />
 
 
-module Told.SpellWell.Data {
+module Told.TableMath.Data {
 
     export interface IProviders {
         userSettings: IUserSettings;
