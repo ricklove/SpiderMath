@@ -59,6 +59,9 @@ module Told.TableMath.UI {
                     headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null });
                 }
 
+                // Right Side
+                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+
                 rows.unshift(headerRow);
 
                 self.board(board);
@@ -77,13 +80,16 @@ module Told.TableMath.UI {
                 var nRow = { cells: <IBoardCellUI[]>[] };
                 self.board().rows.unshift(nRow);
 
-                // Create side header
+                // Left side header
                 nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
 
                 for (var iCol = 0; iCol < gCellCount; iCol++) {
-                    // Put values in rows
+                    // Value cells
                     nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable("") });
                 }
+
+                // Right side header
+                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
             }
 
             for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
@@ -94,8 +100,11 @@ module Told.TableMath.UI {
 
                     var cRow = self.board().rows[iRow_UI];
 
-                    // Set side header
+                    // Left side header
                     cRow.cells[0].text("" + gRow.value);
+
+                    // Right side header
+                    cRow.cells[cRow.cells.length - 1].text("" + gRow.value);
 
                     // Set values
                     for (var iCol = 0; iCol < gRow.cells.length; iCol++) {
