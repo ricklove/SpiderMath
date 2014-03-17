@@ -21,10 +21,102 @@ var Told;
 
                     var self = this;
 
-                    self.game = new Told.TableMath.UI.TetrisGame(this);
+                    self.game = new Told.TableMath.Game.TetrisGame(this);
                     self.game.setup(1, 5, 1, 9, false);
-                    self.board(self.game.board);
+                    self.updateBoard();
                 }
+                MainViewModel.prototype.toBoardPosition = function (gamePositon) {
+                    // This supports only cleared lines at the bottom of the game board
+                    return { iRow: this.game.board.rows.length - 1 - gamePositon.iRow, iCol: gamePositon.iCol + 1 };
+                };
+
+                MainViewModel.prototype.updateBoard = function () {
+                    var self = this;
+                    var gBoard = self.game.board;
+
+                    // Create the board initially
+                    if (self.board() == null) {
+                        var board = { rows: [] };
+                        var rows = board.rows;
+
+                        // Create the header row
+                        var headerRow = { cells: [], isVisible: true };
+
+                        var symbol = "x";
+
+                        if (gBoard.isAddition) {
+                            symbol = "+";
+                        }
+
+                        headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+
+                        for (var iCol = gBoard.minColumnValue; iCol <= gBoard.maxColumnValue; iCol++) {
+                            headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null });
+                        }
+
+                        rows.unshift(headerRow);
+
+                        self.board(board);
+                    }
+
+                    // Fix the row count
+                    var gRowCount = gBoard.rows.filter(function (r) {
+                        return !r.isCleared;
+                    }).length;
+                    var gCellCount = gBoard.rows[0].cells.length;
+
+                    if (gRowCount < self.board().rows.length - 1) {
+                        self.board().rows.splice(0, self.board().rows.length - 1 - gRowCount);
+                    }
+
+                    while (gRowCount > self.board().rows.length - 1) {
+                        var nRow = { cells: [] };
+                        self.board().rows.unshift(nRow);
+
+                        // Create side header
+                        nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+
+                        for (var iCol = 0; iCol < gCellCount; iCol++) {
+                            // Put values in rows
+                            nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable("") });
+                        }
+                    }
+
+                    for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
+                        var gRow = gBoard.rows[iGameRow];
+
+                        if (!gRow.isCleared) {
+                            var iRow_UI = self.toBoardPosition({ iRow: iGameRow, iCol: 0 }).iRow;
+
+                            var cRow = self.board().rows[iRow_UI];
+
+                            // Set side header
+                            cRow.cells[0].text("" + gRow.value);
+
+                            for (var iCol = 0; iCol < gRow.cells.length; iCol++) {
+                                // Put values in rows
+                                var iCol_UI = self.toBoardPosition({ iRow: iGameRow, iCol: iCol }).iCol;
+
+                                cRow.cells[iCol_UI].id(gRow.cells[iCol].id);
+
+                                if (gRow.cells[iCol].isAnswered) {
+                                    cRow.cells[iCol_UI].text("" + gRow.cells[iCol].value);
+                                } else {
+                                    cRow.cells[iCol_UI].text("");
+                                }
+                            }
+                        }
+                    }
+
+                    // Show falling value
+                    if (self.game.fallingNumber != null) {
+                        var fPos = self.toBoardPosition(self.game.fallingNumberPosition);
+                        self.board().rows[fPos.iRow].cells[fPos.iCol].text("" + self.game.fallingNumber);
+                    }
+
+                    self.board.valueHasMutated();
+                };
+
                 MainViewModel.prototype.changeScore = function (change, showChangeAtId) {
                     if (typeof showChangeAtId === "undefined") { showChangeAtId = ""; }
                     if (showChangeAtId != "") {

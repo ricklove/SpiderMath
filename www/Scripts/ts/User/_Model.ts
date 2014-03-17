@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../typings/knockout/knockout.d.ts" />
+/// <reference path="../Core/Game.ts" />
 
 module Told.TableMath.UI {
     export interface IBoardUI {
@@ -6,35 +7,12 @@ module Told.TableMath.UI {
     }
 
     export interface IBoardRowUI {
-        values: IBoardValueUI[]
+        cells: IBoardCellUI[];
     }
 
-    export interface IBoardValueUI {
-        id: string;
+    export interface IBoardCellUI {
+        id: KnockoutObservable<string>;
         text: KnockoutObservable<string>;
         isHeading: boolean;
-
-        value: number;
-        isAnswered: boolean;
-    }
-
-    export interface IPosition {
-        iRow: number;
-        iCol: number;
-    }
-
-    export enum Direction {
-        Left,
-        Right,
-        Down,
-        Up
-    }
-
-    export interface IGameUI {
-        board: IBoardUI;
-        setup(minColumnValue: number, maxColumnValue: number, minRowValue: number, maxRowValue: number, isAddition?: boolean);
-        start();
-
-        inputDirection(direction: Direction);
     }
 }

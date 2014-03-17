@@ -19,13 +19,108 @@ module Told.TableMath.UI {
 
             var self = this;
 
-            self.game = new TetrisGame(this);
+            self.game = new Game.TetrisGame(this);
             self.game.setup(1, 5, 1, 9, false);
-            self.board(self.game.board);
+            self.updateBoard();
         }
 
-        game: IGameUI;
+        game: Game.IGame;
         board = ko.observable<IBoardUI>(null);
+
+        private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {
+
+            // This supports only cleared lines at the bottom of the game board
+            return { iRow: this.game.board.rows.length - 1 - gamePositon.iRow, iCol: gamePositon.iCol + 1 };
+        }
+
+        public updateBoard() {
+
+            var self = this;
+            var gBoard = self.game.board;
+
+            // Create the board initially
+            if (self.board() == null) {
+
+                var board: IBoardUI = { rows: [] };
+                var rows = board.rows;
+
+                // Create the header row
+                var headerRow: IBoardRowUI = { cells: [], isVisible: true };
+
+                var symbol = "x";
+
+                if (gBoard.isAddition) {
+                    symbol = "+";
+                }
+
+                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+
+                for (var iCol = gBoard.minColumnValue; iCol <= gBoard.maxColumnValue; iCol++) {
+                    headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null });
+                }
+
+                rows.unshift(headerRow);
+
+                self.board(board);
+            }
+
+            // Fix the row count
+            var gRowCount = gBoard.rows.filter(r=> !r.isCleared).length;
+            var gCellCount = gBoard.rows[0].cells.length;
+
+            if (gRowCount < self.board().rows.length - 1) {
+                self.board().rows.splice(0, self.board().rows.length - 1 - gRowCount);
+            }
+
+            // Create extra blank rows if needed
+            while (gRowCount > self.board().rows.length - 1) {
+                var nRow = { cells: <IBoardCellUI[]>[] };
+                self.board().rows.unshift(nRow);
+
+                // Create side header
+                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+
+                for (var iCol = 0; iCol < gCellCount; iCol++) {
+                    // Put values in rows
+                    nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable("") });
+                }
+            }
+
+            for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
+                var gRow = gBoard.rows[iGameRow];
+
+                if (!gRow.isCleared) {
+                    var iRow_UI = self.toBoardPosition({ iRow: iGameRow, iCol: 0 }).iRow;
+
+                    var cRow = self.board().rows[iRow_UI];
+
+                    // Set side header
+                    cRow.cells[0].text("" + gRow.value);
+
+                    // Set values
+                    for (var iCol = 0; iCol < gRow.cells.length; iCol++) {
+                        // Put values in rows
+                        var iCol_UI = self.toBoardPosition({ iRow: iGameRow, iCol: iCol }).iCol;
+
+                        cRow.cells[iCol_UI].id(gRow.cells[iCol].id);
+
+                        if (gRow.cells[iCol].isAnswered) {
+                            cRow.cells[iCol_UI].text("" + gRow.cells[iCol].value);
+                        } else {
+                            cRow.cells[iCol_UI].text("");
+                        }
+                    }
+                }
+            }
+
+            // Show falling value
+            if (self.game.fallingNumber != null) {
+                var fPos = self.toBoardPosition(self.game.fallingNumberPosition);
+                self.board().rows[fPos.iRow].cells[fPos.iCol].text("" + self.game.fallingNumber);
+            }
+
+            self.board.valueHasMutated();
+        }
 
         score = ko.observable<number>(0);
         scoreChange = ko.observable<string>("");
@@ -54,13 +149,13 @@ module Told.TableMath.UI {
             var self = this;
 
             if (event.keyCode === 37) {
-                self.game.inputDirection(Direction.Left);
+                self.game.inputDirection(Game.Direction.Left);
             } else if (event.keyCode === 38) {
-                self.game.inputDirection(Direction.Up);
+                self.game.inputDirection(Game.Direction.Up);
             } else if (event.keyCode === 39) {
-                self.game.inputDirection(Direction.Right);
+                self.game.inputDirection(Game.Direction.Right);
             } else if (event.keyCode === 40) {
-                self.game.inputDirection(Direction.Down);
+                self.game.inputDirection(Game.Direction.Down);
             }
         }
     }

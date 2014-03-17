@@ -21,7 +21,20 @@
 - Animate Score and numbers
 
 
-### Hour 4
+### Hour 4-7
 
-Create tetris style
+#### Completed
+
+- Create tetris style
+
+
+### Hour 8
+
+#### What is the most important task to complete in this next hour?
+
+Publish a working version to phonegap and install on the kindles
+
+#### Completed
+
+- Fix bugs with UI
 
