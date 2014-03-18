@@ -247,18 +247,18 @@ module Told.TableMath.UI {
                 }
             };
 
-            $(element).keydown(function (e) {
+            $(document).keydown(function (e) {
                 if (!doNewGame()) {
                     viewModel.keydown(e.keyCode);
                 }
             });
 
-            Hammer(element)
+            Hammer(document)
                 .on("tap", function () {
                     doNewGame();
                 });
 
-            Hammer(element)
+            Hammer(document)
                 .on("dragleft dragright dragdown swipeleft swiperight swipedown", function (ev) {
                     ev.gesture.preventDefault();
                     if (ev.type == 'dragleft' || ev.type == 'dragright' || ev.type == 'dragdown') { return; }
