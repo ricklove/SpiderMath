@@ -18,8 +18,8 @@
     }
 
 .numSquareCell, .numSquareCellHeading {
-    height: 25px;
-    width: 25px;
+    height: 42px;
+    width: 42px;
 }
 
 .numSquareCell {
@@ -32,13 +32,14 @@
 }
 
 .numSquare, .numSquareHeading {
-    line-height: 25px;
+    line-height: 42px;
+    font-size: 36px;
 }
 
 .numSquareHeading {
 }
 
-.nextNumber {
+/*.nextNumber {
     height: 25px;
     width: 25px;
     line-height: 25px;
@@ -46,7 +47,7 @@
     color: blue;
     font-weight: bold;
     border: solid 1px blue;
-}
+}*/
 
 .gameOverPopup {
     /*position: absolute;
