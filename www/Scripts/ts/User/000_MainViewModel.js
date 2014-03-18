@@ -242,17 +242,23 @@ var Told;
 
                     Hammer(element).on("tap", function () {
                         doNewGame();
-                    }).on("swipedown", function () {
-                        if (!doNewGame()) {
-                            viewModel.game.inputDirection(2 /* Down */);
+                    });
+
+                    Hammer(element).on("dragleft dragright dragdown swipeleft swiperight swipedown", function (ev) {
+                        ev.gesture.preventDefault();
+                        if (ev.type == 'dragleft' || ev.type == 'dragright' || ev.type == 'dragdown') {
+                            return;
                         }
-                    }).on("swipeleft", function () {
+
+                        // handle the swipes
                         if (!doNewGame()) {
-                            viewModel.game.inputDirection(0 /* Left */);
-                        }
-                    }).on("swiperight", function () {
-                        if (!doNewGame()) {
-                            viewModel.game.inputDirection(1 /* Right */);
+                            if (ev.type == "swipedown") {
+                                viewModel.game.inputDirection(2 /* Down */);
+                            } else if (ev.type == "swipeleft") {
+                                viewModel.game.inputDirection(0 /* Left */);
+                            } else if (ev.type == "swiperight") {
+                                viewModel.game.inputDirection(1 /* Right */);
+                            }
                         }
                     });
                 }

@@ -137,7 +137,7 @@ module Told.TableMath.UI {
                 }
 
                 // Right side header
-                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("")});
+                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("") });
             }
 
             for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
@@ -256,37 +256,28 @@ module Told.TableMath.UI {
             Hammer(element)
                 .on("tap", function () {
                     doNewGame();
-                })
+                });
 
-                .on("swipedown", function () {
-                    if (!doNewGame()) {
-                        viewModel.game.inputDirection(Game.Direction.Down);
-                    }
-                })
-            //.on("dragdown", function () {
-            //    viewModel.game.inputDirection(Game.Direction.Down);
-            //})
+            Hammer(element)
+                .on("dragleft dragright dragdown swipeleft swiperight swipedown", function (ev) {
+                    ev.gesture.preventDefault();
+                    if (ev.type == 'dragleft' || ev.type == 'dragright' || ev.type == 'dragdown') { return; }
 
-                .on("swipeleft", function () {
+                    // handle the swipes
                     if (!doNewGame()) {
-                        viewModel.game.inputDirection(Game.Direction.Left);
-                    }
-                })
-            //.on("dragleft", function () {
-            //    viewModel.game.inputDirection(Game.Direction.Left);
-            //})
+                        if (ev.type == "swipedown") {
+                            viewModel.game.inputDirection(Game.Direction.Down);
+                        } else if (ev.type == "swipeleft") {
+                            viewModel.game.inputDirection(Game.Direction.Left);
+                        } else if (ev.type == "swiperight") {
+                            viewModel.game.inputDirection(Game.Direction.Right);
+                        }
 
-                .on("swiperight", function () {
-                    if (!doNewGame()) {
-                        viewModel.game.inputDirection(Game.Direction.Right);
                     }
-                })
-            //.on("dragright", function () {
-            //    viewModel.game.inputDirection(Game.Direction.Left);
-            //})
-            ;
+                });
+
         }
-    }
+    };
 
     ko.bindingHandlers["fadeText"] = <KnockoutBindingHandler>{
         init: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
@@ -299,7 +290,7 @@ module Told.TableMath.UI {
                 $(element).fadeIn({ queue: true });
             }
         }
-    }
+    };
 
     ko.bindingHandlers["animScoreChange"] = <KnockoutBindingHandler>{
         init: function (element) {
