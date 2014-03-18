@@ -24,6 +24,10 @@
         value: number;
 
         isCleared: boolean;
+
+        isSpecial: boolean;
+        isBlank: boolean;
+        isSolid: boolean;
     }
 
     export interface IBoardCell {

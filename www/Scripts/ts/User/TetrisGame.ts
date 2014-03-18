@@ -24,13 +24,29 @@ module Told.TableMath.Game {
                 rows.push(TetrisGame.createRow(minColumnValue, maxColumnValue, iRow, isAddition));
             }
 
+            // Create blank rows
+            for (var i = 0; i < 4; i++) {
+                rows.push(TetrisGame.createSpecialRow(minColumnValue, maxColumnValue, "B" + i, true, false));
+            }
+
             self.board = board;
 
             self.start();
         }
 
+        private static createSpecialRow(minColumnValue: number, maxColumnValue: number, rowId: string, isBlank: boolean, isSolid: boolean): IBoardRow {
+            var vRow: IBoardRow = { cells: [], value: 0, isCleared: false, isSpecial: true, isBlank: isBlank, isSolid: isSolid };
+
+            // Create spaces
+            for (var iCol = minColumnValue; iCol <= maxColumnValue; iCol++) {
+                vRow.cells.push({ id: "C_" + rowId + "_" + iCol, value: 0, isAnswered: false });
+            }
+
+            return vRow;
+        }
+
         private static createRow(minColumnValue: number, maxColumnValue: number, rowVal: number, isAddition: boolean): IBoardRow {
-            var vRow: IBoardRow = { cells: [], value: rowVal, isCleared: false };
+            var vRow: IBoardRow = { cells: [], value: rowVal, isCleared: false, isSpecial: false, isBlank: false, isSolid: false };
 
             // Create spaces
             for (var iCol = minColumnValue; iCol <= maxColumnValue; iCol++) {
@@ -59,6 +75,11 @@ module Told.TableMath.Game {
         public inputDirection(direction: Direction) {
 
             var self = this;
+
+            if (self.isGameOver) {
+                return;
+            }
+
             var p = self.fallingNumberPosition;
 
             if (self.fallingNumber != null) {
@@ -76,25 +97,17 @@ module Told.TableMath.Game {
                         var nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
                         if (!nextCell.isAnswered) {
                             self.fallingNumberPosition = pNext;
-                            self._viewModel.updateBoard();
+                            self.updateBoard();
                         }
                     }
 
                 } else if (direction === Direction.Down) {
                     // Move down and answer
                     var pNext = self.fallingNumberPosition;
-                    var nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
 
-                    while (!nextCell.isAnswered && pNext.iRow > 0) {
-                        pNext = { iRow: pNext.iRow - 1, iCol: pNext.iCol };
-                        nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
-                    }
+                    var iRowBottom = self.getRowIndex_Bottom(pNext.iCol);
 
-                    if (nextCell.isAnswered) {
-                        pNext = { iRow: pNext.iRow + 1, iCol: pNext.iCol };
-                    }
-
-                    self.fallingNumberPosition = { iRow: pNext.iRow, iCol: pNext.iCol };
+                    self.fallingNumberPosition = { iRow: iRowBottom, iCol: pNext.iCol };
                     self.tickLoop();
 
                 }
@@ -105,7 +118,32 @@ module Told.TableMath.Game {
             this.tickLoop();
         }
 
+        isGameOver: boolean = false;
         tickTimeoutId: number = null;
+
+        private gameOver(hasWon: boolean) {
+            var self = this;
+            self._viewModel.gameOver(hasWon);
+            clearTimeout(self.tickTimeoutId);
+            self._viewModel = null;
+            self.isGameOver = true;
+        }
+
+        private updateBoard() {
+            var self = this;
+
+            if (!self.isGameOver) {
+                self._viewModel.updateBoard();
+            }
+        }
+
+        private changeScore(change: number, atId: string) {
+            var self = this;
+
+            if (!self.isGameOver) {
+                self._viewModel.changeScore(change, atId);
+            }
+        }
 
         private tickLoop() {
             var self = this;
@@ -114,7 +152,13 @@ module Told.TableMath.Game {
                 clearTimeout(self.tickTimeoutId);
             }
 
+
+            if (self.isGameOver) {
+                return;
+            }
+
             self.tick();
+
             self.tickTimeoutId = setTimeout(function () { self.tickLoop(); }, self._tickTime);
 
             self._tickTime = self._tickTime * 0.99;
@@ -129,9 +173,12 @@ module Told.TableMath.Game {
             // If right
             if (thisCell.value == self.fallingNumber) {
                 thisCell.isAnswered = true;
-                self._viewModel.changeScore(10, thisCell.id);
+                self.changeScore(10, thisCell.id);
             } else {
-                self._viewModel.changeScore(-5, thisCell.id);
+                self.changeScore(-5, thisCell.id);
+
+                //self.addSolidRow();
+                self.removeBlankRowAndEndGameIfOver();
             }
 
             self.fallingNumber = null;
@@ -142,6 +189,34 @@ module Told.TableMath.Game {
 
             // Immediately start a new number
             self.tick();
+        }
+
+        private _solidCount: number = 0;
+
+        private removeBlankRowAndEndGameIfOver() {
+
+            var self = this;
+
+            var lastRow = self.board.rows[self.board.rows.length - 1];
+            var lastRowNext = self.board.rows[self.board.rows.length - 2];
+
+            if (lastRow.isBlank && lastRowNext.isBlank) {
+                self.board.rows.pop();
+            }
+            else {
+                // Game Over
+                self.gameOver(false);
+            }
+        }
+
+        private addSolidRow() {
+
+            throw new Error("This does not work with other logic");
+
+            var self = this;
+
+            self.board.rows.unshift(TetrisGame.createSpecialRow(self.board.minColumnValue, self.board.maxColumnValue, "S" + self._solidCount, false, true));
+            self._solidCount++;
         }
 
         private clearLines() {
@@ -164,19 +239,48 @@ module Told.TableMath.Game {
             self.board.rows[iRow].isCleared = true;
 
             // Add a new row on top
-            self.board.rows.push(TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, self.board.rows[self.board.rows.length - 1].value + 1, self.board.isAddition));
+            var rowsNonBlank = self.board.rows.filter(r=> !r.isBlank);
+            var iRow_Blank = rowsNonBlank.length;
+            var lastValue = rowsNonBlank[rowsNonBlank.length - 1].value;
 
-            self._viewModel.board.valueHasMutated();
+            self.board.rows.splice(iRow_Blank, 0, TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, lastValue + 1, self.board.isAddition));
 
+            self.updateBoard();
+        }
+
+        private getRowIndex_Bottom(iCol: number): number {
+            var self = this;
+
+            for (var iRow = 0; iRow < self.board.rows.length; iRow++) {
+
+                var thisRow = self.board.rows[iRow];
+
+                if (!thisRow.isSolid && !thisRow.isCleared && !thisRow.cells[iCol].isAnswered) {
+                    return iRow;
+                }
+            }
+
+            // There should always be a blank on top to return by default
+            throw new Error("There should be a blank on top");
         }
 
         public tick() {
             var self = this;
 
+            if (self.isGameOver) {
+                return;
+            }
+
             // If no number is falling, show next number
             if (self.fallingNumber == null) {
 
                 var nValue = self.getNextValue();
+
+                if (nValue === null) {
+                    self.gameOver(true);
+                    return;
+                }
+
                 self.fallingNumber = nValue;
 
                 self.fallingNumberPosition = { iRow: self.board.rows.length - 1, iCol: Math.floor(self.board.columnCount / 2) };
@@ -187,33 +291,40 @@ module Told.TableMath.Game {
                 var p = self.fallingNumberPosition;
 
                 // If at bottom, then answer
-                if (p.iRow === 0 || self.board.rows[p.iRow - 1].isCleared || self.board.rows[p.iRow - 1].cells[p.iCol].isAnswered) {
-                    self.answerAtSpot();
-                }
+                var iRowBottom = self.getRowIndex_Bottom(p.iCol);
+
                 // If not at bottom then make fall
-                else {
+                if (p.iRow > iRowBottom) {
                     self.fallingNumberPosition = { iRow: p.iRow - 1, iCol: p.iCol };
+                }
+                else {
+                    self.answerAtSpot();
                 }
             }
 
-            self._viewModel.updateBoard();
+            self.updateBoard();
         }
 
         getNextValue(): number {
             var self = this;
 
             // Keep trying until return
-            while (true) {
-                var iCol = Math.floor(Math.random() * self.board.columnCount);
+            var nextValues: number[] = [];
 
-                for (var iRow = 0; iRow < self.board.rows.length; iRow++) {
+            for (var iCol = 0; iCol < self.board.columnCount; iCol++) {
+                var iRowBottom = self.getRowIndex_Bottom(iCol);
 
-                    var v = self.board.rows[iRow].cells[iCol];
-
-                    if (!v.isAnswered) {
-                        return v.value;
-                    }
+                if (!self.board.rows[iRowBottom].isBlank) {
+                    nextValues.push(self.board.rows[iRowBottom].cells[iCol].value);
                 }
+            }
+
+            if (nextValues.length === 0) {
+                return null;
+            }
+            else {
+                var iValue = Math.floor(Math.random() * nextValues.length);
+                return nextValues[iValue];
             }
         }
 

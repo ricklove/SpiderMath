@@ -20,12 +20,20 @@ module Told.TableMath.UI {
             var self = this;
 
             self.game = new Game.TetrisGame(this);
-            self.game.setup(1, 5, 1, 9, false);
+            self.game.setup(1, 5, 1, 5, false);
             self.updateBoard();
         }
 
         game: Game.IGame;
         board = ko.observable<IBoardUI>(null);
+
+        public gameOver(hasWon:boolean) {
+            var self = this;
+            self.score(0);
+            self.game = new Game.TetrisGame(this);
+            self.game.setup(1, 5, 1, 5, false);
+            self.updateBoard();
+        }
 
         private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {
 
@@ -100,11 +108,19 @@ module Told.TableMath.UI {
 
                     var cRow = self.board().rows[iRow_UI];
 
-                    // Left side header
-                    cRow.cells[0].text("" + gRow.value);
+                    if (!gRow.isSpecial) {
+                        // Left side header
+                        cRow.cells[0].text("" + gRow.value);
 
-                    // Right side header
-                    cRow.cells[cRow.cells.length - 1].text("" + gRow.value);
+                        // Right side header
+                        cRow.cells[cRow.cells.length - 1].text("" + gRow.value);
+                    } else {
+                        // Left side header
+                        cRow.cells[0].text("");
+
+                        // Right side header
+                        cRow.cells[cRow.cells.length - 1].text("");
+                    }
 
                     // Set values
                     for (var iCol = 0; iCol < gRow.cells.length; iCol++) {
@@ -149,6 +165,8 @@ module Told.TableMath.UI {
                     this.scoreChangeClassName("scoreBad");
                 }
             }
+
+            this.scoreChange.valueHasMutated();
 
             this.score(this.score() + change);
         }

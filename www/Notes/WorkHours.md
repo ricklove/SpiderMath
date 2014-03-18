@@ -38,3 +38,15 @@ Publish a working version to phonegap and install on the kindles
 
 - Fix bugs with UI
 
+
+### Hour 9
+
+#### What is the most important task to complete in this next hour?
+
+Publish a working version to phonegap and install on the kindles
+
+#### Completed
+
+- Add Blank lines on top
+- Handle Game Over
+

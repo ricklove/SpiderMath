@@ -22,9 +22,17 @@ var Told;
                     var self = this;
 
                     self.game = new Told.TableMath.Game.TetrisGame(this);
-                    self.game.setup(1, 5, 1, 9, false);
+                    self.game.setup(1, 5, 1, 5, false);
                     self.updateBoard();
                 }
+                MainViewModel.prototype.gameOver = function (hasWon) {
+                    var self = this;
+                    self.score(0);
+                    self.game = new Told.TableMath.Game.TetrisGame(this);
+                    self.game.setup(1, 5, 1, 5, false);
+                    self.updateBoard();
+                };
+
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {
                     // This supports only cleared lines at the bottom of the game board
                     return { iRow: this.game.board.rows.length - 1 - gamePositon.iRow, iCol: gamePositon.iCol + 1 };
@@ -96,11 +104,19 @@ var Told;
 
                             var cRow = self.board().rows[iRow_UI];
 
-                            // Left side header
-                            cRow.cells[0].text("" + gRow.value);
+                            if (!gRow.isSpecial) {
+                                // Left side header
+                                cRow.cells[0].text("" + gRow.value);
 
-                            // Right side header
-                            cRow.cells[cRow.cells.length - 1].text("" + gRow.value);
+                                // Right side header
+                                cRow.cells[cRow.cells.length - 1].text("" + gRow.value);
+                            } else {
+                                // Left side header
+                                cRow.cells[0].text("");
+
+                                // Right side header
+                                cRow.cells[cRow.cells.length - 1].text("");
+                            }
 
                             for (var iCol = 0; iCol < gRow.cells.length; iCol++) {
                                 // Put values in rows
@@ -139,6 +155,8 @@ var Told;
                             this.scoreChangeClassName("scoreBad");
                         }
                     }
+
+                    this.scoreChange.valueHasMutated();
 
                     this.score(this.score() + change);
                 };

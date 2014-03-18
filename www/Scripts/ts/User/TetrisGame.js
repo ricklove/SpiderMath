@@ -7,7 +7,9 @@ var Told;
             var TetrisGame = (function () {
                 function TetrisGame(viewModel) {
                     this._tickTime = 2000;
+                    this.isGameOver = false;
                     this.tickTimeoutId = null;
+                    this._solidCount = 0;
                     this._viewModel = viewModel;
                 }
                 TetrisGame.prototype.setup = function (minColumnValue, maxColumnValue, minRowValue, maxRowValue, isAddition) {
@@ -20,13 +22,27 @@ var Told;
                         rows.push(TetrisGame.createRow(minColumnValue, maxColumnValue, iRow, isAddition));
                     }
 
+                    for (var i = 0; i < 4; i++) {
+                        rows.push(TetrisGame.createSpecialRow(minColumnValue, maxColumnValue, "B" + i, true, false));
+                    }
+
                     self.board = board;
 
                     self.start();
                 };
 
+                TetrisGame.createSpecialRow = function (minColumnValue, maxColumnValue, rowId, isBlank, isSolid) {
+                    var vRow = { cells: [], value: 0, isCleared: false, isSpecial: true, isBlank: isBlank, isSolid: isSolid };
+
+                    for (var iCol = minColumnValue; iCol <= maxColumnValue; iCol++) {
+                        vRow.cells.push({ id: "C_" + rowId + "_" + iCol, value: 0, isAnswered: false });
+                    }
+
+                    return vRow;
+                };
+
                 TetrisGame.createRow = function (minColumnValue, maxColumnValue, rowVal, isAddition) {
-                    var vRow = { cells: [], value: rowVal, isCleared: false };
+                    var vRow = { cells: [], value: rowVal, isCleared: false, isSpecial: false, isBlank: false, isSolid: false };
 
                     for (var iCol = minColumnValue; iCol <= maxColumnValue; iCol++) {
                         var val = rowVal * iCol;
@@ -43,6 +59,11 @@ var Told;
 
                 TetrisGame.prototype.inputDirection = function (direction) {
                     var self = this;
+
+                    if (self.isGameOver) {
+                        return;
+                    }
+
                     var p = self.fallingNumberPosition;
 
                     if (self.fallingNumber != null) {
@@ -59,24 +80,16 @@ var Told;
                                 var nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
                                 if (!nextCell.isAnswered) {
                                     self.fallingNumberPosition = pNext;
-                                    self._viewModel.updateBoard();
+                                    self.updateBoard();
                                 }
                             }
                         } else if (direction === 2 /* Down */) {
                             // Move down and answer
                             var pNext = self.fallingNumberPosition;
-                            var nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
 
-                            while (!nextCell.isAnswered && pNext.iRow > 0) {
-                                pNext = { iRow: pNext.iRow - 1, iCol: pNext.iCol };
-                                nextCell = self.board.rows[pNext.iRow].cells[pNext.iCol];
-                            }
+                            var iRowBottom = self.getRowIndex_Bottom(pNext.iCol);
 
-                            if (nextCell.isAnswered) {
-                                pNext = { iRow: pNext.iRow + 1, iCol: pNext.iCol };
-                            }
-
-                            self.fallingNumberPosition = { iRow: pNext.iRow, iCol: pNext.iCol };
+                            self.fallingNumberPosition = { iRow: iRowBottom, iCol: pNext.iCol };
                             self.tickLoop();
                         }
                     }
@@ -86,6 +99,30 @@ var Told;
                     this.tickLoop();
                 };
 
+                TetrisGame.prototype.gameOver = function (hasWon) {
+                    var self = this;
+                    self._viewModel.gameOver(hasWon);
+                    clearTimeout(self.tickTimeoutId);
+                    self._viewModel = null;
+                    self.isGameOver = true;
+                };
+
+                TetrisGame.prototype.updateBoard = function () {
+                    var self = this;
+
+                    if (!self.isGameOver) {
+                        self._viewModel.updateBoard();
+                    }
+                };
+
+                TetrisGame.prototype.changeScore = function (change, atId) {
+                    var self = this;
+
+                    if (!self.isGameOver) {
+                        self._viewModel.changeScore(change, atId);
+                    }
+                };
+
                 TetrisGame.prototype.tickLoop = function () {
                     var self = this;
 
@@ -93,7 +130,12 @@ var Told;
                         clearTimeout(self.tickTimeoutId);
                     }
 
+                    if (self.isGameOver) {
+                        return;
+                    }
+
                     self.tick();
+
                     self.tickTimeoutId = setTimeout(function () {
                         self.tickLoop();
                     }, self._tickTime);
@@ -110,9 +152,12 @@ var Told;
                     // If right
                     if (thisCell.value == self.fallingNumber) {
                         thisCell.isAnswered = true;
-                        self._viewModel.changeScore(10, thisCell.id);
+                        self.changeScore(10, thisCell.id);
                     } else {
-                        self._viewModel.changeScore(-5, thisCell.id);
+                        self.changeScore(-5, thisCell.id);
+
+                        //self.addSolidRow();
+                        self.removeBlankRowAndEndGameIfOver();
                     }
 
                     self.fallingNumber = null;
@@ -123,6 +168,29 @@ var Told;
 
                     // Immediately start a new number
                     self.tick();
+                };
+
+                TetrisGame.prototype.removeBlankRowAndEndGameIfOver = function () {
+                    var self = this;
+
+                    var lastRow = self.board.rows[self.board.rows.length - 1];
+                    var lastRowNext = self.board.rows[self.board.rows.length - 2];
+
+                    if (lastRow.isBlank && lastRowNext.isBlank) {
+                        self.board.rows.pop();
+                    } else {
+                        // Game Over
+                        self.gameOver(false);
+                    }
+                };
+
+                TetrisGame.prototype.addSolidRow = function () {
+                    throw new Error("This does not work with other logic");
+
+                    var self = this;
+
+                    self.board.rows.unshift(TetrisGame.createSpecialRow(self.board.minColumnValue, self.board.maxColumnValue, "S" + self._solidCount, false, true));
+                    self._solidCount++;
                 };
 
                 TetrisGame.prototype.clearLines = function () {
@@ -145,17 +213,47 @@ var Told;
                     self.board.rows[iRow].isCleared = true;
 
                     // Add a new row on top
-                    self.board.rows.push(TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, self.board.rows[self.board.rows.length - 1].value + 1, self.board.isAddition));
+                    var rowsNonBlank = self.board.rows.filter(function (r) {
+                        return !r.isBlank;
+                    });
+                    var iRow_Blank = rowsNonBlank.length;
+                    var lastValue = rowsNonBlank[rowsNonBlank.length - 1].value;
 
-                    self._viewModel.board.valueHasMutated();
+                    self.board.rows.splice(iRow_Blank, 0, TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, lastValue + 1, self.board.isAddition));
+
+                    self.updateBoard();
+                };
+
+                TetrisGame.prototype.getRowIndex_Bottom = function (iCol) {
+                    var self = this;
+
+                    for (var iRow = 0; iRow < self.board.rows.length; iRow++) {
+                        var thisRow = self.board.rows[iRow];
+
+                        if (!thisRow.isSolid && !thisRow.isCleared && !thisRow.cells[iCol].isAnswered) {
+                            return iRow;
+                        }
+                    }
+
+                    throw new Error("There should be a blank on top");
                 };
 
                 TetrisGame.prototype.tick = function () {
                     var self = this;
 
+                    if (self.isGameOver) {
+                        return;
+                    }
+
                     // If no number is falling, show next number
                     if (self.fallingNumber == null) {
                         var nValue = self.getNextValue();
+
+                        if (nValue === null) {
+                            self.gameOver(true);
+                            return;
+                        }
+
                         self.fallingNumber = nValue;
 
                         self.fallingNumberPosition = { iRow: self.board.rows.length - 1, iCol: Math.floor(self.board.columnCount / 2) };
@@ -163,29 +261,38 @@ var Told;
                         var p = self.fallingNumberPosition;
 
                         // If at bottom, then answer
-                        if (p.iRow === 0 || self.board.rows[p.iRow - 1].isCleared || self.board.rows[p.iRow - 1].cells[p.iCol].isAnswered) {
-                            self.answerAtSpot();
-                        } else {
+                        var iRowBottom = self.getRowIndex_Bottom(p.iCol);
+
+                        // If not at bottom then make fall
+                        if (p.iRow > iRowBottom) {
                             self.fallingNumberPosition = { iRow: p.iRow - 1, iCol: p.iCol };
+                        } else {
+                            self.answerAtSpot();
                         }
                     }
 
-                    self._viewModel.updateBoard();
+                    self.updateBoard();
                 };
 
                 TetrisGame.prototype.getNextValue = function () {
                     var self = this;
 
-                    while (true) {
-                        var iCol = Math.floor(Math.random() * self.board.columnCount);
+                    // Keep trying until return
+                    var nextValues = [];
 
-                        for (var iRow = 0; iRow < self.board.rows.length; iRow++) {
-                            var v = self.board.rows[iRow].cells[iCol];
+                    for (var iCol = 0; iCol < self.board.columnCount; iCol++) {
+                        var iRowBottom = self.getRowIndex_Bottom(iCol);
 
-                            if (!v.isAnswered) {
-                                return v.value;
-                            }
+                        if (!self.board.rows[iRowBottom].isBlank) {
+                            nextValues.push(self.board.rows[iRowBottom].cells[iCol].value);
                         }
+                    }
+
+                    if (nextValues.length === 0) {
+                        return null;
+                    } else {
+                        var iValue = Math.floor(Math.random() * nextValues.length);
+                        return nextValues[iValue];
                     }
                 };
                 return TetrisGame;
