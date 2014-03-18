@@ -57,3 +57,10 @@ Publish a working version to phonegap and install on the kindles
 
 - UI Tweaks
 
+
+### Hour 11
+
+#### Completed
+
+- Published to PhoneGap
+
