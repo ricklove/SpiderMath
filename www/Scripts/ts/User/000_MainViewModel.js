@@ -240,8 +240,21 @@ var Told;
                         }
                     });
 
-                    Hammer(document).on("tap", function () {
-                        doNewGame();
+                    Hammer(document).on("tap", function (ev) {
+                        ev.gesture.preventDefault();
+
+                        if (!doNewGame()) {
+                            // If right side, move right
+                            if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
+                                viewModel.game.inputDirection(1 /* Right */);
+                            } else if (ev.gesture.center.pageX < window.innerWidth * 0.2) {
+                                // If left side, move left
+                                viewModel.game.inputDirection(0 /* Left */);
+                            } else {
+                                // If center, down
+                                viewModel.game.inputDirection(2 /* Down */);
+                            }
+                        }
                     });
 
                     Hammer(document).on("dragleft dragright dragdown swipeleft swiperight swipedown", function (ev) {

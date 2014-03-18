@@ -254,8 +254,22 @@ module Told.TableMath.UI {
             });
 
             Hammer(document)
-                .on("tap", function () {
-                    doNewGame();
+                .on("tap", function (ev) {
+                    ev.gesture.preventDefault();
+
+                    if (!doNewGame()) {
+
+                        // If right side, move right
+                        if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
+                            viewModel.game.inputDirection(Game.Direction.Right);
+                        } else if (ev.gesture.center.pageX < window.innerWidth * 0.2) {
+                            // If left side, move left
+                            viewModel.game.inputDirection(Game.Direction.Left);
+                        } else {
+                            // If center, down
+                            viewModel.game.inputDirection(Game.Direction.Down);
+                        }
+                    }
                 });
 
             Hammer(document)
