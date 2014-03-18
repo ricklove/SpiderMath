@@ -14,5 +14,6 @@ module Told.TableMath.UI {
         id: KnockoutObservable<string>;
         text: KnockoutObservable<string>;
         isHeading: boolean;
+        cellClassName: KnockoutObservable<string>;
     }
 }

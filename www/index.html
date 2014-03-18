@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Table Math</title>
+    <title>Spider Math</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="Styles/css/Loading.css">
 </head>
@@ -18,18 +18,11 @@
 
     <div data-role="page" id="home" style="display: none">
         <div data-role="header" class="header">
-            <h1>Table Math</h1>
+            <h1>Spider Math</h1>
         </div>
         <div id="content" data-role="content">
 
             <!--MainContent-->
-            <div class="score">
-                <span id="score" data-bind="text: score"></span>
-            </div>
-
-            <div class="scoreChange" data-bind="animScoreChange: scoreChange">
-                <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
-            </div>
 
             <!-- ko if (isGameOver) -->
             <div class="gameOverPopup">
@@ -37,35 +30,58 @@
                     Game Over
                 </div>
 
-                <div class="score">
-                    <span data-bind="text: score"></span>
+                <div class="info">
+                    <div class="level">
+                        Level <span data-bind="text: level"></span>
+                    </div>
+                    <div class="score">
+                        <span data-bind="text: score"></span>
+                    </div>
                 </div>
             </div>
             <!-- /ko -->
+            <div data-bind="visible: !isGameOver()">
+                <div class="info">
+                    <div class="level">
+                        Level <span data-bind="text: level"></span>
+                    </div>
+                </div>
 
-            <div class="numTable">
-                <table data-bind="foreach: board().rows">
-                    <tr data-bind="foreach: cells">
-                        <!-- ko if (isHeading) -->
-                        <td class="numSquareCellHeading">
-                            <div class="numSquareHeading" data-bind="text: text"></div>
-                        </td>
-                        <!-- /ko -->
-                        <!-- ko if (!isHeading) -->
-                        <td class="numSquareCell">
-                            <div class="numSquare" data-bind="attr: {id: id}">
-                                <!--<span data-bind="fadeText:text"></span>-->
-                                <span data-bind="text:text"></span>
-                            </div>
-                        </td>
-                        <!-- /ko -->
-                    </tr>
-                </table>
+                <div class="scoreChange" data-bind="animScoreChange: scoreChange">
+                    <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
+                </div>
+
+                <div class="numTable">
+                    <table data-bind="foreach: board().rows">
+                        <tr data-bind="foreach: cells">
+                            <!-- ko if (isHeading) -->
+                            <td class="numSquareCellHeading" data-bind="css: cellClassName">
+                                <div class="numSquareHeading" data-bind="text: text, css: cellClassName"></div>
+                            </td>
+                            <!-- /ko -->
+                            <!-- ko if (!isHeading) -->
+                            <td class="numSquareCell" data-bind="css: cellClassName">
+                                <div class="numSquare" data-bind="attr: {id: id}">
+                                    <!--<span data-bind="fadeText:text"></span>-->
+                                    <span data-bind="text:text, css: cellClassName"></span>
+                                </div>
+                            </td>
+                            <!-- /ko -->
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="info">
+                    <!--<div class="level">
+                    Level <span data-bind="text: level"></span>
+                </div>-->
+                    <div class="score">
+                        <span id="score" data-bind="text: score"></span>
+                    </div>
+                </div>
+
             </div>
 
-            <!--<div class="nextNumber">
-                <div data-bind="text: nextNumber"></div>
-            </div>-->
         </div>
         <div data-role="footer" class="footer">
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>

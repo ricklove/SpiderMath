@@ -50,3 +50,10 @@ Publish a working version to phonegap and install on the kindles
 - Add Blank lines on top
 - Handle Game Over
 
+
+### Hour 10
+
+#### Completed
+
+- UI Tweaks
+

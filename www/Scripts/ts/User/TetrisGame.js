@@ -208,19 +208,25 @@ var Told;
                         }
                     }
 
-                    // Remove the row
-                    //self.board.rows.splice(iRow, 1);
+                    // Clear the row
                     self.board.rows[iRow].isCleared = true;
 
+                    // Add points
+                    self.changeScore(100, self.board.rows[iRow].cells[Math.floor(self.board.columnCount / 2)].id);
+
                     // Add a new row on top
-                    var rowsNonBlank = self.board.rows.filter(function (r) {
-                        return !r.isBlank;
-                    });
-                    var iRow_Blank = rowsNonBlank.length;
-                    var lastValue = rowsNonBlank[rowsNonBlank.length - 1].value;
+                    var addRow = false;
+                    if (addRow) {
+                        var rowsNonBlank = self.board.rows.filter(function (r) {
+                            return !r.isBlank;
+                        });
+                        var iRow_Blank = rowsNonBlank.length;
+                        var lastValue = rowsNonBlank[rowsNonBlank.length - 1].value;
 
-                    self.board.rows.splice(iRow_Blank, 0, TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, lastValue + 1, self.board.isAddition));
+                        self.board.rows.splice(iRow_Blank, 0, TetrisGame.createRow(self.board.minColumnValue, self.board.maxColumnValue, lastValue + 1, self.board.isAddition));
+                    }
 
+                    // Trigger update
                     self.updateBoard();
                 };
 

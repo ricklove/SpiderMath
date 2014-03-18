@@ -19,31 +19,48 @@ module Told.TableMath.UI {
 
             var self = this;
 
-            self.game = new Game.TetrisGame(this);
-            self.game.setup(1, 5, 1, 5, false);
-            self.updateBoard();
+            self.level(1);
+            self.setupGame();
         }
 
         game: Game.IGame;
         board = ko.observable<IBoardUI>(null);
 
         isGameOver = ko.observable<boolean>(false);
+        level = ko.observable<number>(1);
+
+        private setupGame() {
+            var self = this;
+
+            self._isNewGame = true;
+            self.game = new Game.TetrisGame(self);
+            var size = 5;
+            var level = self.level();
+            var isAddition = false;
+
+            self.game.setup(Math.ceil(level / 2), Math.ceil(level / 2) + size - 1, level, level + size - 1, isAddition);
+            self.updateBoard();
+        }
 
         public gameOver(hasWon: boolean) {
             var self = this;
 
-            self.isGameOver(true);
-
-            setTimeout(function () { self.gameOverInner(hasWon); }, 3000);
+            if (hasWon) {
+                // Level up
+                self.level(self.level() + 1);
+                self.setupGame();
+            } else {
+                self.isGameOver(true);
+                //setTimeout(function () { self.newGame(); }, 3000);
+            }
         }
 
-        public gameOverInner(hasWon: boolean) {
+        public newGame() {
             var self = this;
 
             self.score(0);
-            self.game = new Game.TetrisGame(this);
-            self.game.setup(1, 5, 1, 5, false);
-            self.updateBoard();
+            self.level(1);
+            self.setupGame();
 
             self.isGameOver(false);
         }
@@ -54,13 +71,16 @@ module Told.TableMath.UI {
             return { iRow: this.game.board.rows.length - 1 - gamePositon.iRow, iCol: gamePositon.iCol + 1 };
         }
 
+        private _isNewGame = true;
+
         public updateBoard() {
 
             var self = this;
             var gBoard = self.game.board;
 
             // Create the board initially
-            if (self.board() == null) {
+            if (self._isNewGame) {
+                self._isNewGame = false;
 
                 var board: IBoardUI = { rows: [] };
                 var rows = board.rows;
@@ -74,14 +94,14 @@ module Told.TableMath.UI {
                     symbol = "+";
                 }
 
-                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null, cellClassName: ko.observable("") });
 
                 for (var iCol = gBoard.minColumnValue; iCol <= gBoard.maxColumnValue; iCol++) {
-                    headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null });
+                    headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null, cellClassName: ko.observable("") });
                 }
 
                 // Right Side
-                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+                headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null, cellClassName: ko.observable("") });
 
                 rows.unshift(headerRow);
 
@@ -89,7 +109,14 @@ module Told.TableMath.UI {
             }
 
             // Fix the row count
-            var gRowCount = gBoard.rows.filter(r=> !r.isCleared).length;
+            var showClearedRows = true;
+
+            var gRowCount = gBoard.rows.length;
+
+            if (!showClearedRows) {
+                gRowCount = gBoard.rows.filter(r=> !r.isCleared).length;
+            }
+
             var gCellCount = gBoard.rows[0].cells.length;
 
             if (gRowCount < self.board().rows.length - 1) {
@@ -102,21 +129,21 @@ module Told.TableMath.UI {
                 self.board().rows.unshift(nRow);
 
                 // Left side header
-                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("") });
 
                 for (var iCol = 0; iCol < gCellCount; iCol++) {
                     // Value cells
-                    nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable("") });
+                    nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable(""), cellClassName: ko.observable("") });
                 }
 
                 // Right side header
-                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+                nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("")});
             }
 
             for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
                 var gRow = gBoard.rows[iGameRow];
 
-                if (!gRow.isCleared) {
+                if (!gRow.isCleared || showClearedRows) {
                     var iRow_UI = self.toBoardPosition({ iRow: iGameRow, iCol: 0 }).iRow;
 
                     var cRow = self.board().rows[iRow_UI];
@@ -141,6 +168,10 @@ module Told.TableMath.UI {
                         var iCol_UI = self.toBoardPosition({ iRow: iGameRow, iCol: iCol }).iCol;
 
                         cRow.cells[iCol_UI].id(gRow.cells[iCol].id);
+
+                        var cssName = gRow.isCleared ? "cleared" : "";
+
+                        cRow.cells[iCol_UI].cellClassName(cssName);
 
                         if (gRow.cells[iCol].isAnswered) {
                             cRow.cells[iCol_UI].text("" + gRow.cells[iCol].value);
@@ -207,27 +238,48 @@ module Told.TableMath.UI {
 
             var value = ko.utils.unwrapObservable(valueAccessor());
 
+            var doNewGame = function () {
+                if (viewModel.isGameOver()) {
+                    viewModel.newGame();
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
             $(element).keydown(function (e) {
-                viewModel.keydown(e.keyCode);
+                if (!doNewGame()) {
+                    viewModel.keydown(e.keyCode);
+                }
             });
 
             Hammer(element)
+                .on("tap", function () {
+                    doNewGame();
+                })
+
                 .on("swipedown", function () {
-                    viewModel.game.inputDirection(Game.Direction.Down);
+                    if (!doNewGame()) {
+                        viewModel.game.inputDirection(Game.Direction.Down);
+                    }
                 })
             //.on("dragdown", function () {
             //    viewModel.game.inputDirection(Game.Direction.Down);
             //})
 
                 .on("swipeleft", function () {
-                    viewModel.game.inputDirection(Game.Direction.Left);
+                    if (!doNewGame()) {
+                        viewModel.game.inputDirection(Game.Direction.Left);
+                    }
                 })
             //.on("dragleft", function () {
             //    viewModel.game.inputDirection(Game.Direction.Left);
             //})
 
                 .on("swiperight", function () {
-                    viewModel.game.inputDirection(Game.Direction.Right);
+                    if (!doNewGame()) {
+                        viewModel.game.inputDirection(Game.Direction.Right);
+                    }
                 })
             //.on("dragright", function () {
             //    viewModel.game.inputDirection(Game.Direction.Left);
@@ -275,10 +327,12 @@ module Told.TableMath.UI {
             //scElement.offset(startPosition);
 
             scElement.show();
-            scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left }, 500, "swing", () => {
-                //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
-                scElement.hide();
-            });
+            scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left },
+                500,
+                "swing", () => {
+                    //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
+                    scElement.hide();
+                });
 
             // At end make it nothing
             //viewModel.scoreChange("");

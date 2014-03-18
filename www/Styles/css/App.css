@@ -3,6 +3,12 @@
     white-space: pre;
 }
 
+#content {
+    /*position: relative;*/
+    background: black;
+    color: white;
+}
+
 .numTable {
     margin: 0px auto;
 }
@@ -42,17 +48,13 @@
     border: solid 1px blue;
 }
 
-#content {
-    position: relative;
-}
-
 .gameOverPopup {
-    position: absolute;
+    /*position: absolute;
     margin: 0px;
     left: 0px;
     right: 0px;
     top: 0px;
-    bottom: 0px;
+    bottom: 0px;*/
     background: black;
 }
 
@@ -61,14 +63,26 @@
     color: rgb(0, 255, 10);
 }
 
-.score {
-    font-size: 3em;
-    color: rgb(0, 255, 10);
+.info {
     border: 1px solid rgb(150, 150, 150);
     background: rgb(0, 0, 0);
+    display: inline-block;
     margin: 3px;
     width: 200px;
-    display: inline-block;
+}
+
+.level {
+    font-size: 2em;
+    color: yellow;
+    border: solid 2px yellow;
+    background: black;
+}
+
+.score {
+    font-size: 3em;
+    color: lime;
+    border: solid 2px lime;
+    background: black;
 }
 
 .scoreChange {
@@ -77,9 +91,15 @@
 }
 
 .scoreGood {
-    color: blue;
+    color: #0000ff;
+    text-shadow: 0px 0px 10px white;
 }
 
 .scoreBad {
-    color: #f00;
+    color: #ff0000;
+    text-shadow: 0px 0px 10px white;
+}
+
+.cleared {
+    background: gray;
 }

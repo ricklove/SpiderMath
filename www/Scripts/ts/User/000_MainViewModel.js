@@ -10,6 +10,8 @@ var Told;
                 function MainViewModel(providers) {
                     this.board = ko.observable(null);
                     this.isGameOver = ko.observable(false);
+                    this.level = ko.observable(1);
+                    this._isNewGame = true;
                     this.score = ko.observable(0);
                     this.scoreChange = ko.observable("");
                     this.scoreChangeClassName = ko.observable("scoreGood");
@@ -22,27 +24,41 @@ var Told;
 
                     var self = this;
 
-                    self.game = new Told.TableMath.Game.TetrisGame(this);
-                    self.game.setup(1, 5, 1, 5, false);
-                    self.updateBoard();
+                    self.level(1);
+                    self.setupGame();
                 }
+                MainViewModel.prototype.setupGame = function () {
+                    var self = this;
+
+                    self._isNewGame = true;
+                    self.game = new Told.TableMath.Game.TetrisGame(self);
+                    var size = 5;
+                    var level = self.level();
+                    var isAddition = false;
+
+                    self.game.setup(Math.ceil(level / 2), Math.ceil(level / 2) + size - 1, level, level + size - 1, isAddition);
+                    self.updateBoard();
+                };
+
                 MainViewModel.prototype.gameOver = function (hasWon) {
                     var self = this;
 
-                    self.isGameOver(true);
-
-                    setTimeout(function () {
-                        self.gameOverInner(hasWon);
-                    }, 3000);
+                    if (hasWon) {
+                        // Level up
+                        self.level(self.level() + 1);
+                        self.setupGame();
+                    } else {
+                        self.isGameOver(true);
+                        //setTimeout(function () { self.newGame(); }, 3000);
+                    }
                 };
 
-                MainViewModel.prototype.gameOverInner = function (hasWon) {
+                MainViewModel.prototype.newGame = function () {
                     var self = this;
 
                     self.score(0);
-                    self.game = new Told.TableMath.Game.TetrisGame(this);
-                    self.game.setup(1, 5, 1, 5, false);
-                    self.updateBoard();
+                    self.level(1);
+                    self.setupGame();
 
                     self.isGameOver(false);
                 };
@@ -57,7 +73,9 @@ var Told;
                     var gBoard = self.game.board;
 
                     // Create the board initially
-                    if (self.board() == null) {
+                    if (self._isNewGame) {
+                        self._isNewGame = false;
+
                         var board = { rows: [] };
                         var rows = board.rows;
 
@@ -70,14 +88,14 @@ var Told;
                             symbol = "+";
                         }
 
-                        headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+                        headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null, cellClassName: ko.observable("") });
 
                         for (var iCol = gBoard.minColumnValue; iCol <= gBoard.maxColumnValue; iCol++) {
-                            headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null });
+                            headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("" + iCol), gameBoardPosition: null, cellClassName: ko.observable("") });
                         }
 
                         // Right Side
-                        headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null });
+                        headerRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(symbol), gameBoardPosition: null, cellClassName: ko.observable("") });
 
                         rows.unshift(headerRow);
 
@@ -85,9 +103,16 @@ var Told;
                     }
 
                     // Fix the row count
-                    var gRowCount = gBoard.rows.filter(function (r) {
-                        return !r.isCleared;
-                    }).length;
+                    var showClearedRows = true;
+
+                    var gRowCount = gBoard.rows.length;
+
+                    if (!showClearedRows) {
+                        gRowCount = gBoard.rows.filter(function (r) {
+                            return !r.isCleared;
+                        }).length;
+                    }
+
                     var gCellCount = gBoard.rows[0].cells.length;
 
                     if (gRowCount < self.board().rows.length - 1) {
@@ -99,21 +124,21 @@ var Told;
                         self.board().rows.unshift(nRow);
 
                         // Left side header
-                        nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+                        nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("") });
 
                         for (var iCol = 0; iCol < gCellCount; iCol++) {
                             // Value cells
-                            nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable("") });
+                            nRow.cells.push({ id: ko.observable(""), isHeading: false, text: ko.observable(""), cellClassName: ko.observable("") });
                         }
 
                         // Right side header
-                        nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable("") });
+                        nRow.cells.push({ id: ko.observable(""), isHeading: true, text: ko.observable(""), cellClassName: ko.observable("") });
                     }
 
                     for (var iGameRow = 0; iGameRow < gBoard.rows.length; iGameRow++) {
                         var gRow = gBoard.rows[iGameRow];
 
-                        if (!gRow.isCleared) {
+                        if (!gRow.isCleared || showClearedRows) {
                             var iRow_UI = self.toBoardPosition({ iRow: iGameRow, iCol: 0 }).iRow;
 
                             var cRow = self.board().rows[iRow_UI];
@@ -137,6 +162,10 @@ var Told;
                                 var iCol_UI = self.toBoardPosition({ iRow: iGameRow, iCol: iCol }).iCol;
 
                                 cRow.cells[iCol_UI].id(gRow.cells[iCol].id);
+
+                                var cssName = gRow.isCleared ? "cleared" : "";
+
+                                cRow.cells[iCol_UI].cellClassName(cssName);
 
                                 if (gRow.cells[iCol].isAnswered) {
                                     cRow.cells[iCol_UI].text("" + gRow.cells[iCol].value);
@@ -196,16 +225,35 @@ var Told;
                 init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
                     var value = ko.utils.unwrapObservable(valueAccessor());
 
+                    var doNewGame = function () {
+                        if (viewModel.isGameOver()) {
+                            viewModel.newGame();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    };
+
                     $(element).keydown(function (e) {
-                        viewModel.keydown(e.keyCode);
+                        if (!doNewGame()) {
+                            viewModel.keydown(e.keyCode);
+                        }
                     });
 
-                    Hammer(element).on("swipedown", function () {
-                        viewModel.game.inputDirection(2 /* Down */);
+                    Hammer(element).on("tap", function () {
+                        doNewGame();
+                    }).on("swipedown", function () {
+                        if (!doNewGame()) {
+                            viewModel.game.inputDirection(2 /* Down */);
+                        }
                     }).on("swipeleft", function () {
-                        viewModel.game.inputDirection(0 /* Left */);
+                        if (!doNewGame()) {
+                            viewModel.game.inputDirection(0 /* Left */);
+                        }
                     }).on("swiperight", function () {
-                        viewModel.game.inputDirection(1 /* Right */);
+                        if (!doNewGame()) {
+                            viewModel.game.inputDirection(1 /* Right */);
+                        }
                     });
                 }
             };
