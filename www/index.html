@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="Styles/css/Loading.css">
 </head>
-<body class="loadingScreen" data-bind="globalKeyboard: $root">
+<body class="loadingScreen" data-bind="globalInput: $root">
 
     <div id="loadingScreen" class="loadingScreen">
         <div style="height: 50px"></div>
@@ -20,7 +20,7 @@
         <div data-role="header" class="header">
             <h1>Table Math</h1>
         </div>
-        <div data-role="content">
+        <div id="content" data-role="content">
 
             <!--MainContent-->
             <div class="score">
@@ -30,6 +30,18 @@
             <div class="scoreChange" data-bind="animScoreChange: scoreChange">
                 <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
             </div>
+
+            <!-- ko if (isGameOver) -->
+            <div class="gameOverPopup">
+                <div class="gameOver">
+                    Game Over
+                </div>
+
+                <div class="score">
+                    <span data-bind="text: score"></span>
+                </div>
+            </div>
+            <!-- /ko -->
 
             <div class="numTable">
                 <table data-bind="foreach: board().rows">

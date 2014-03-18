@@ -27,12 +27,25 @@ module Told.TableMath.UI {
         game: Game.IGame;
         board = ko.observable<IBoardUI>(null);
 
-        public gameOver(hasWon:boolean) {
+        isGameOver = ko.observable<boolean>(false);
+
+        public gameOver(hasWon: boolean) {
             var self = this;
+
+            self.isGameOver(true);
+
+            setTimeout(function () { self.gameOverInner(hasWon); }, 3000);
+        }
+
+        public gameOverInner(hasWon: boolean) {
+            var self = this;
+
             self.score(0);
             self.game = new Game.TetrisGame(this);
             self.game.setup(1, 5, 1, 5, false);
             self.updateBoard();
+
+            self.isGameOver(false);
         }
 
         private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {
@@ -187,7 +200,9 @@ module Told.TableMath.UI {
         }
     }
 
-    ko.bindingHandlers["globalKeyboard"] = <KnockoutBindingHandler>{
+    declare var Hammer;
+
+    ko.bindingHandlers["globalInput"] = <KnockoutBindingHandler>{
         init: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
 
             var value = ko.utils.unwrapObservable(valueAccessor());
@@ -195,6 +210,29 @@ module Told.TableMath.UI {
             $(element).keydown(function (e) {
                 viewModel.keydown(e.keyCode);
             });
+
+            Hammer(element)
+                .on("swipedown", function () {
+                    viewModel.game.inputDirection(Game.Direction.Down);
+                })
+            //.on("dragdown", function () {
+            //    viewModel.game.inputDirection(Game.Direction.Down);
+            //})
+
+                .on("swipeleft", function () {
+                    viewModel.game.inputDirection(Game.Direction.Left);
+                })
+            //.on("dragleft", function () {
+            //    viewModel.game.inputDirection(Game.Direction.Left);
+            //})
+
+                .on("swiperight", function () {
+                    viewModel.game.inputDirection(Game.Direction.Right);
+                })
+            //.on("dragright", function () {
+            //    viewModel.game.inputDirection(Game.Direction.Left);
+            //})
+            ;
         }
     }
 

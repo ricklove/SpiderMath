@@ -9,6 +9,7 @@ var Told;
             var MainViewModel = (function () {
                 function MainViewModel(providers) {
                     this.board = ko.observable(null);
+                    this.isGameOver = ko.observable(false);
                     this.score = ko.observable(0);
                     this.scoreChange = ko.observable("");
                     this.scoreChangeClassName = ko.observable("scoreGood");
@@ -27,10 +28,23 @@ var Told;
                 }
                 MainViewModel.prototype.gameOver = function (hasWon) {
                     var self = this;
+
+                    self.isGameOver(true);
+
+                    setTimeout(function () {
+                        self.gameOverInner(hasWon);
+                    }, 3000);
+                };
+
+                MainViewModel.prototype.gameOverInner = function (hasWon) {
+                    var self = this;
+
                     self.score(0);
                     self.game = new Told.TableMath.Game.TetrisGame(this);
                     self.game.setup(1, 5, 1, 5, false);
                     self.updateBoard();
+
+                    self.isGameOver(false);
                 };
 
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {
@@ -178,12 +192,20 @@ var Told;
             })();
             UI.MainViewModel = MainViewModel;
 
-            ko.bindingHandlers["globalKeyboard"] = {
+            ko.bindingHandlers["globalInput"] = {
                 init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
                     var value = ko.utils.unwrapObservable(valueAccessor());
 
                     $(element).keydown(function (e) {
                         viewModel.keydown(e.keyCode);
+                    });
+
+                    Hammer(element).on("swipedown", function () {
+                        viewModel.game.inputDirection(2 /* Down */);
+                    }).on("swipeleft", function () {
+                        viewModel.game.inputDirection(0 /* Left */);
+                    }).on("swiperight", function () {
+                        viewModel.game.inputDirection(1 /* Right */);
                     });
                 }
             };

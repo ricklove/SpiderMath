@@ -42,6 +42,25 @@
     border: solid 1px blue;
 }
 
+#content {
+    position: relative;
+}
+
+.gameOverPopup {
+    position: absolute;
+    margin: 0px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background: black;
+}
+
+.gameOver {
+    font-size: 3em;
+    color: rgb(0, 255, 10);
+}
+
 .score {
     font-size: 3em;
     color: rgb(0, 255, 10);
