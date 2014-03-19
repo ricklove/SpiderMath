@@ -64,3 +64,25 @@ Publish a working version to phonegap and install on the kindles
 
 - Published to PhoneGap
 
+
+### Hour 12
+
+#### What will most benefit the user?
+
+Levels will allow the user to have a sense of progress and focus on a problem areas
+
+#### What is required to accomplish this?
+
+- Define Levels
+- Store User data
+- Choose User
+- Choose Level
+
+#### What can be done this hour?
+
+Define Levels
+
+#### Completed
+
+- Define levels
+- Load levels

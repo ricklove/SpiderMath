@@ -110,6 +110,7 @@ module Told.AppLoader {
             'Scripts/ts/Support/AccessUserSettings.js',
             'Scripts/ts/Support/AccessProviders.js',
 
+            'Scripts/ts/User/Levels.js',
             'Scripts/ts/User/TetrisGame.js',
             'Scripts/ts/User/000_MainViewModel.js',
 

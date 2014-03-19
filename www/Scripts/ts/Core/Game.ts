@@ -1,8 +1,20 @@
 ﻿module Told.TableMath.Game {
 
+    export interface ILevel {
+        id: string;
+
+        minColumnValue: number;
+        maxColumnValue: number;
+        minRowValue: number;
+        maxRowValue: number;
+
+        // Future
+        //blockCount: number;
+    }
+
     export interface IGame {
         board: IBoard;
-        setup(minColumnValue: number, maxColumnValue: number, minRowValue: number, maxRowValue: number, isAddition?: boolean);
+        setup(level: ILevel);
         start();
 
         fallingNumber: number;

@@ -13,7 +13,13 @@ module Told.TableMath.Game {
             this._viewModel = viewModel;
         }
 
-        setup(minColumnValue: number, maxColumnValue: number, minRowValue: number, maxRowValue: number, isAddition: boolean= false) {
+        setup( level: ILevel) {
+
+            var minColumnValue = level.minColumnValue;
+            var maxColumnValue = level.maxColumnValue;
+            var minRowValue = level.minRowValue;
+            var maxRowValue = level.maxRowValue;
+            var isAddition = false;
 
             var self = this;
             var rows: IBoardRow[] = [];

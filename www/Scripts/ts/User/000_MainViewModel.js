@@ -2,6 +2,7 @@
 /// <reference path="../Support/AccessProviders.ts" />
 /// <reference path="_Model.ts" />
 /// <reference path="TetrisGame.ts" />
+/// <reference path="Levels.ts" />
 var Told;
 (function (Told) {
     (function (TableMath) {
@@ -11,6 +12,7 @@ var Told;
                     this.board = ko.observable(null);
                     this.isGameOver = ko.observable(false);
                     this.level = ko.observable(1);
+                    this._levels = Told.TableMath.Game.Levels.GetLevels();
                     this._isNewGame = true;
                     this.score = ko.observable(0);
                     this.scoreChange = ko.observable("");
@@ -36,7 +38,9 @@ var Told;
                     var level = self.level();
                     var isAddition = false;
 
-                    self.game.setup(Math.ceil(level / 2), Math.ceil(level / 2) + size - 1, level, level + size - 1, isAddition);
+                    var levelData = self._levels[level - 1];
+
+                    self.game.setup(levelData);
                     self.updateBoard();
                 };
 

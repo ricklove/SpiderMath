@@ -12,8 +12,13 @@ var Told;
                     this._solidCount = 0;
                     this._viewModel = viewModel;
                 }
-                TetrisGame.prototype.setup = function (minColumnValue, maxColumnValue, minRowValue, maxRowValue, isAddition) {
-                    if (typeof isAddition === "undefined") { isAddition = false; }
+                TetrisGame.prototype.setup = function (level) {
+                    var minColumnValue = level.minColumnValue;
+                    var maxColumnValue = level.maxColumnValue;
+                    var minRowValue = level.minRowValue;
+                    var maxRowValue = level.maxRowValue;
+                    var isAddition = false;
+
                     var self = this;
                     var rows = [];
                     var board = { rows: rows, minColumnValue: minColumnValue, maxColumnValue: maxColumnValue, columnCount: maxColumnValue - minColumnValue + 1, isAddition: isAddition };
