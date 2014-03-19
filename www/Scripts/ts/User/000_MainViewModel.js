@@ -11,7 +11,9 @@ var Told;
                 function MainViewModel(providers) {
                     this.board = ko.observable(null);
                     this.isGameOver = ko.observable(false);
+                    this._levelIndex = 0;
                     this.level = ko.observable(1);
+                    this.world = ko.observable(1);
                     this._levels = Told.TableMath.Game.Levels.GetLevels();
                     this._isNewGame = true;
                     this.score = ko.observable(0);
@@ -26,7 +28,7 @@ var Told;
 
                     var self = this;
 
-                    self.level(1);
+                    self._levelIndex = 0;
                     self.setupGame();
                 }
                 MainViewModel.prototype.setupGame = function () {
@@ -35,10 +37,11 @@ var Told;
                     self._isNewGame = true;
                     self.game = new Told.TableMath.Game.TetrisGame(self);
                     var size = 5;
-                    var level = self.level();
-                    var isAddition = false;
+                    var iLevel = self._levelIndex;
+                    var levelData = self._levels[iLevel];
 
-                    var levelData = self._levels[level - 1];
+                    self.level(levelData.level);
+                    self.world(levelData.world);
 
                     self.game.setup(levelData);
                     self.updateBoard();
@@ -49,7 +52,7 @@ var Told;
 
                     if (hasWon) {
                         // Level up
-                        self.level(self.level() + 1);
+                        self._levelIndex++;
                         self.setupGame();
                     } else {
                         self.isGameOver(true);
@@ -61,7 +64,7 @@ var Told;
                     var self = this;
 
                     self.score(0);
-                    self.level(1);
+                    self._levelIndex = 0;
                     self.setupGame();
 
                     self.isGameOver(false);

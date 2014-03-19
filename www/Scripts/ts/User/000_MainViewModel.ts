@@ -20,7 +20,7 @@ module Told.TableMath.UI {
 
             var self = this;
 
-            self.level(1);
+            self._levelIndex = 0;
             self.setupGame();
         }
 
@@ -28,7 +28,11 @@ module Told.TableMath.UI {
         board = ko.observable<IBoardUI>(null);
 
         isGameOver = ko.observable<boolean>(false);
+
+        private _levelIndex = 0;
+
         level = ko.observable<number>(1);
+        world = ko.observable<number>(1);
 
         private _levels = Game.Levels.GetLevels();
 
@@ -38,10 +42,11 @@ module Told.TableMath.UI {
             self._isNewGame = true;
             self.game = new Game.TetrisGame(self);
             var size = 5;
-            var level = self.level();
-            var isAddition = false;
+            var iLevel = self._levelIndex;
+            var levelData = self._levels[iLevel];
 
-            var levelData = self._levels[level - 1];
+            self.level(levelData.level);
+            self.world(levelData.world);
 
             self.game.setup(levelData);
             self.updateBoard();
@@ -52,7 +57,7 @@ module Told.TableMath.UI {
 
             if (hasWon) {
                 // Level up
-                self.level(self.level() + 1);
+                self._levelIndex++;
                 self.setupGame();
             } else {
                 self.isGameOver(true);
@@ -64,7 +69,7 @@ module Told.TableMath.UI {
             var self = this;
 
             self.score(0);
-            self.level(1);
+            self._levelIndex = 0;
             self.setupGame();
 
             self.isGameOver(false);

@@ -3,6 +3,9 @@
     export interface ILevel {
         id: string;
 
+        world: number;
+        level: number;
+
         minColumnValue: number;
         maxColumnValue: number;
         minRowValue: number;
