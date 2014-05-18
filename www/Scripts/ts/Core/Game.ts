@@ -4,6 +4,7 @@
         id: string;
 
         world: number;
+        //stage: number;
         level: number;
 
         minColumnValue: number;

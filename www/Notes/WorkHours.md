@@ -86,3 +86,33 @@ Define Levels
 
 - Define levels
 - Load levels
+
+
+### 2014-05-18
+#### 6:05-
+
+##### Planning
+
+What will be most beneficial in the next 5 hour release?
+
+- Finish all functionality
+	- Save local state (1 Hour)
+	- Display levels (1 Hour)
+	- Select levels (1 Hour)
+- Publish in all app stores (2 Hours)
+
+What will be most beneficial in the next hour?
+
+- Save Local User State for levels
+
+##### Completed
+
+- Updated Levels
+- Save User State
+
+
+##### FUTURE
+
+- Complete Level View and Selection
+- 
+

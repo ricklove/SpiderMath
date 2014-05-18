@@ -7,6 +7,15 @@ module Told.TableMath.Data {
         //chapterChoice: string;
     }
 
+    export interface ILevelState {
+        levelID: string;
+        stars: number;
+    }
+
+    export interface IUserState {
+        levels: ILevelState[];
+    }
+
     export class UserSettings_LocalStorage implements IUserSettings {
 
         /*
@@ -26,11 +35,34 @@ module Told.TableMath.Data {
             console.log("Set User Setting:" + key + "=" + value);
         }
 
-        //get bookChoice() { return UserSettings_LocalStorage.getUserSetting("bookChoice"); }
-        //set bookChoice(value: string) { UserSettings_LocalStorage.setUserSetting("bookChoice", value); }
+        get userList() {
+            var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
+            return valueStr.split(";");
+        }
+        set userList(value: string[]) {
+            var valueStr = value.join(";");
+            UserSettings_LocalStorage.setUserSetting("userList", valueStr);
+        }
 
-        //get chapterChoice() { return UserSettings_LocalStorage.getUserSetting("chapterChoice"); }
-        //set chapterChoice(value: string) { UserSettings_LocalStorage.setUserSetting("chapterChoice", value); }
+        get currentUserId() {
+            var valueStr = UserSettings_LocalStorage.getUserSetting("currentUserId");
+            return parseInt(valueStr || "0");
+        }
+        set currentUserId(value: number) {
+            var valueStr = "" + value;
+            UserSettings_LocalStorage.setUserSetting("currentUserId", valueStr);
+        }
+
+        get currentUserState() {
+            var userId = this.currentUserId;
+            var valueStr = UserSettings_LocalStorage.getUserSetting("User" + userId + "_State") || "{levels:[]}";
+            return JSON.parse(valueStr);
+        }
+        set currentUserState(value: IUserState) {
+            var userId = this.currentUserId;
+            var valueStr = JSON.stringify(value);
+            UserSettings_LocalStorage.setUserSetting("User" + userId + "_State", valueStr);
+        }
 
     }
 }

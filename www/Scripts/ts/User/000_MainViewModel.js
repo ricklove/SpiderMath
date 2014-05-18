@@ -12,8 +12,9 @@ var Told;
                     this.board = ko.observable(null);
                     this.isGameOver = ko.observable(false);
                     this._levelIndex = 0;
-                    this.level = ko.observable(1);
                     this.world = ko.observable(1);
+                    //stage = ko.observable<number>(1);
+                    this.level = ko.observable(1);
                     this._levels = Told.TableMath.Game.Levels.GetLevels();
                     this._isNewGame = true;
                     this.score = ko.observable(0);
@@ -40,8 +41,10 @@ var Told;
                     var iLevel = self._levelIndex;
                     var levelData = self._levels[iLevel];
 
-                    self.level(levelData.level);
                     self.world(levelData.world);
+
+                    //self.stage(levelData.stage);
+                    self.level(levelData.level);
 
                     self.game.setup(levelData);
                     self.updateBoard();

@@ -31,8 +31,9 @@ module Told.TableMath.UI {
 
         private _levelIndex = 0;
 
-        level = ko.observable<number>(1);
         world = ko.observable<number>(1);
+        //stage = ko.observable<number>(1);
+        level = ko.observable<number>(1);
 
         private _levels = Game.Levels.GetLevels();
 
@@ -45,8 +46,9 @@ module Told.TableMath.UI {
             var iLevel = self._levelIndex;
             var levelData = self._levels[iLevel];
 
-            self.level(levelData.level);
             self.world(levelData.world);
+            //self.stage(levelData.stage);
+            self.level(levelData.level);
 
             self.game.setup(levelData);
             self.updateBoard();
