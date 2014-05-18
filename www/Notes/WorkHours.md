@@ -89,7 +89,7 @@ Define Levels
 
 
 ### 2014-05-18
-#### 6:05-
+#### 6:05-6:35
 
 ##### Planning
 
@@ -109,6 +109,10 @@ What will be most beneficial in the next hour?
 
 - Updated Levels
 - Save User State
+
+#### 6:35-7:05
+
+- Save level state on game over
 
 
 ##### FUTURE

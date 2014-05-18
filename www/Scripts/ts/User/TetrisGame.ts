@@ -13,7 +13,10 @@ module Told.TableMath.Game {
             this._viewModel = viewModel;
         }
 
-        setup( level: ILevel) {
+        setup(level: ILevel) {
+
+            var self = this;
+            self.mistakes = 0;
 
             var minColumnValue = level.minColumnValue;
             var maxColumnValue = level.maxColumnValue;
@@ -21,7 +24,6 @@ module Told.TableMath.Game {
             var maxRowValue = level.maxRowValue;
             var isAddition = false;
 
-            var self = this;
             var rows: IBoardRow[] = [];
             var board: IBoard = { rows: rows, minColumnValue: minColumnValue, maxColumnValue: maxColumnValue, columnCount: maxColumnValue - minColumnValue + 1, isAddition: isAddition };
 
@@ -77,6 +79,8 @@ module Told.TableMath.Game {
         public fallingNumber: number;
         public fallingNumberPosition: IPosition;
 
+        public mistakes = 0;
+
 
         public inputDirection(direction: Direction) {
 
@@ -129,7 +133,7 @@ module Told.TableMath.Game {
 
         private gameOver(hasWon: boolean) {
             var self = this;
-            self._viewModel.gameOver(hasWon);
+            self._viewModel.gameOver(hasWon, self.mistakes);
             clearTimeout(self.tickTimeoutId);
             self._viewModel = null;
             self.isGameOver = true;
@@ -182,6 +186,7 @@ module Told.TableMath.Game {
                 self.changeScore(10, thisCell.id);
             } else {
                 self.changeScore(-5, thisCell.id);
+                self.mistakes++;
 
                 //self.addSolidRow();
                 self.removeBlankRowAndEndGameIfOver();

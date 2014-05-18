@@ -50,9 +50,35 @@ var Told;
                     self.updateBoard();
                 };
 
-                MainViewModel.prototype.gameOver = function (hasWon) {
+                MainViewModel.prototype.gameOver = function (hasWon, mistakes) {
                     var self = this;
 
+                    // Record user state
+                    // Calculate Stars
+                    var stars = !hasWon ? 0 : mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
+
+                    // Update level score
+                    var iLevel = self._levelIndex;
+                    var levelData = self._levels[iLevel];
+                    var levelId = levelData.id;
+
+                    var uState = self.providers.userSettings.currentUserState;
+                    var mLevelState = uState.levels.filter(function (l) {
+                        return l.levelID === levelId;
+                    });
+                    if (mLevelState.length > 0) {
+                        var lState = mLevelState[0];
+                        if (lState.stars < stars) {
+                            lState.stars = stars;
+                        }
+                    } else {
+                        uState.levels.push({ levelID: levelId, stars: stars });
+                    }
+
+                    // Save state
+                    self.providers.userSettings.currentUserState = uState;
+
+                    // Reset Game
                     if (hasWon) {
                         // Level up
                         self._levelIndex++;

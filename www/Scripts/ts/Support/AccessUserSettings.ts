@@ -3,8 +3,10 @@
 module Told.TableMath.Data {
 
     export interface IUserSettings {
-        //bookChoice: string;
-        //chapterChoice: string;
+        userList: string[];
+        currentUserId: number;
+        currentUserName: string;
+        currentUserState: IUserState;
     }
 
     export interface ILevelState {
@@ -53,9 +55,18 @@ module Told.TableMath.Data {
             UserSettings_LocalStorage.setUserSetting("currentUserId", valueStr);
         }
 
+        get currentUserName() {
+            return this.userList[this.currentUserId];
+        }
+        set currentUserName(value: string) {
+            var users = this.userList;
+            var userId = users.indexOf(value);
+            this.currentUserId = userId;
+        }
+
         get currentUserState() {
             var userId = this.currentUserId;
-            var valueStr = UserSettings_LocalStorage.getUserSetting("User" + userId + "_State") || "{levels:[]}";
+            var valueStr = UserSettings_LocalStorage.getUserSetting("User" + userId + "_State") || JSON.stringify({ levels: [] });
             return JSON.parse(valueStr);
         }
         set currentUserState(value: IUserState) {

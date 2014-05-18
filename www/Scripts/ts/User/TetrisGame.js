@@ -7,19 +7,22 @@ var Told;
             var TetrisGame = (function () {
                 function TetrisGame(viewModel) {
                     this._tickTime = 2000;
+                    this.mistakes = 0;
                     this.isGameOver = false;
                     this.tickTimeoutId = null;
                     this._solidCount = 0;
                     this._viewModel = viewModel;
                 }
                 TetrisGame.prototype.setup = function (level) {
+                    var self = this;
+                    self.mistakes = 0;
+
                     var minColumnValue = level.minColumnValue;
                     var maxColumnValue = level.maxColumnValue;
                     var minRowValue = level.minRowValue;
                     var maxRowValue = level.maxRowValue;
                     var isAddition = false;
 
-                    var self = this;
                     var rows = [];
                     var board = { rows: rows, minColumnValue: minColumnValue, maxColumnValue: maxColumnValue, columnCount: maxColumnValue - minColumnValue + 1, isAddition: isAddition };
 
@@ -106,7 +109,7 @@ var Told;
 
                 TetrisGame.prototype.gameOver = function (hasWon) {
                     var self = this;
-                    self._viewModel.gameOver(hasWon);
+                    self._viewModel.gameOver(hasWon, self.mistakes);
                     clearTimeout(self.tickTimeoutId);
                     self._viewModel = null;
                     self.isGameOver = true;
@@ -160,6 +163,7 @@ var Told;
                         self.changeScore(10, thisCell.id);
                     } else {
                         self.changeScore(-5, thisCell.id);
+                        self.mistakes++;
 
                         //self.addSolidRow();
                         self.removeBlankRowAndEndGameIfOver();

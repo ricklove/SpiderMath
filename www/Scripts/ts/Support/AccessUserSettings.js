@@ -49,10 +49,23 @@ var Told;
                     configurable: true
                 });
 
+                Object.defineProperty(UserSettings_LocalStorage.prototype, "currentUserName", {
+                    get: function () {
+                        return this.userList[this.currentUserId];
+                    },
+                    set: function (value) {
+                        var users = this.userList;
+                        var userId = users.indexOf(value);
+                        this.currentUserId = userId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 Object.defineProperty(UserSettings_LocalStorage.prototype, "currentUserState", {
                     get: function () {
                         var userId = this.currentUserId;
-                        var valueStr = UserSettings_LocalStorage.getUserSetting("User" + userId + "_State") || "{levels:[]}";
+                        var valueStr = UserSettings_LocalStorage.getUserSetting("User" + userId + "_State") || JSON.stringify({ levels: [] });
                         return JSON.parse(valueStr);
                     },
                     set: function (value) {
