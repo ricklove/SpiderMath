@@ -39,6 +39,7 @@ module Told.TableMath.Data {
 
         get userList() {
             var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
+            valueStr = valueStr || "Player 1";
             return valueStr.split(";");
         }
         set userList(value: string[]) {

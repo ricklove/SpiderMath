@@ -117,7 +117,7 @@
 }
 
 /*http://www.timvasil.com/blog14/post/2013/03/16/Seeing-stars-star-rating-CSS.aspx*/
-i.star {
+i.star, i.starSingle {
     background-image: url(../../Assets/images/stars.png);
     display: inline-block;
     height: 16px;
@@ -170,6 +170,19 @@ i.star {
 /*Bigger Stars*/
 i.bigstar {
     zoom: 3;
+}
+
+/*World Stars*/
+i.starSingle {
+    width: 16px;
+    background-position-x: 0;
+}
+.worldStars {
+    font-size: 16px;
+}
+
+.worldStars> i.star{
+    zoom: 2;
 }
 
 .pause {

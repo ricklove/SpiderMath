@@ -26,6 +26,7 @@ var Told;
                 Object.defineProperty(UserSettings_LocalStorage.prototype, "userList", {
                     get: function () {
                         var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
+                        valueStr = valueStr || "Player 1";
                         return valueStr.split(";");
                     },
                     set: function (value) {

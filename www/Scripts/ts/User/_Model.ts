@@ -22,6 +22,7 @@ module Told.TableMath.UI {
         levelsById: { [id: string]: IMenuLevel };
         shouldDisplayWorlds: KnockoutObservable<boolean>;
         shouldDisplayLevels: KnockoutObservable<boolean>;
+        currentUser: KnockoutObservable<string>;
         currentWorld: KnockoutObservable<IMenuWorld>;
     }
 
@@ -29,6 +30,9 @@ module Told.TableMath.UI {
         isLocked: KnockoutObservable<boolean>;
         worldNumber: KnockoutObservable<number>;
         levels: KnockoutObservable<IMenuLevel[]>;
+        stars: KnockoutObservable<number>;
+        maxStars: KnockoutObservable<number>;
+
     }
 
     export interface IMenuLevel {

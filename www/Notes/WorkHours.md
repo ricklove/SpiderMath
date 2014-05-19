@@ -144,9 +144,15 @@ Display the starts at level over and level selection
 #### 12:30-12:45
 - Lock Levels
 
+#### 16:55-17:05
+- Menu back button
+
+#### 17:05-17:15
+- Show world stars
+
+
 ##### FUTURE
 
-- Menu back button
 - Show level (instead of world first)
 - Display user selection
 - Pause - navigation

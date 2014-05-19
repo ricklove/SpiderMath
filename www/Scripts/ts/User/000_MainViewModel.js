@@ -28,7 +28,8 @@ var Told;
                         levelsById: {},
                         shouldDisplayWorlds: ko.observable(true),
                         shouldDisplayLevels: ko.observable(false),
-                        currentWorld: ko.observable(null)
+                        currentWorld: ko.observable(null),
+                        currentUser: ko.observable("")
                     });
                     this._levelIndex = 0;
                     this.world = ko.observable(1);
@@ -103,16 +104,31 @@ var Told;
                     self.menu.valueHasMutated();
                 };
 
+                MainViewModel.prototype.changeUser = function () {
+                    throw "Not Implemented";
+                };
+
+                MainViewModel.prototype.changeWorld = function () {
+                    var self = this;
+                    self.menu().shouldDisplayWorlds(true);
+                    self.menu().shouldDisplayLevels(false);
+                };
+
                 MainViewModel.prototype.populateMenu = function () {
                     var self = this;
                     var menu = self.menu();
                     var worlds = menu.worlds();
 
+                    menu.currentUser(self.providers.userSettings.currentUserName);
+
                     self._levels.forEach(function (l) {
                         while (worlds.length < l.world) {
                             worlds.push({
                                 isLocked: ko.observable(true),
-                                worldNumber: ko.observable(worlds.length + 1), levels: ko.observable([])
+                                worldNumber: ko.observable(worlds.length + 1),
+                                levels: ko.observable([]),
+                                stars: ko.observable(0),
+                                maxStars: ko.observable(0)
                             });
                         }
 
@@ -140,25 +156,34 @@ var Told;
                         menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
                     });
 
-                    // Unlock levels
+                    // Unlock levels & count world stars
                     var lastLevelWasFinished = true;
+                    var wStars = 0;
+                    var wMaxStars = 0;
 
                     worlds.forEach(function (w) {
+                        wStars = 0;
+                        wMaxStars = 0;
+
                         if (lastLevelWasFinished) {
                             w.isLocked(false);
-
-                            w.levels().forEach(function (l) {
-                                if (lastLevelWasFinished) {
-                                    l.isLocked(false);
-
-                                    if (l.stars() > 0) {
-                                        lastLevelWasFinished = true;
-                                    } else {
-                                        lastLevelWasFinished = false;
-                                    }
-                                }
-                            });
                         }
+
+                        w.levels().forEach(function (l) {
+                            if (lastLevelWasFinished) {
+                                l.isLocked(false);
+
+                                if (l.stars() === 0) {
+                                    lastLevelWasFinished = false;
+                                }
+                            }
+
+                            wStars += l.stars();
+                            wMaxStars += 3;
+                        });
+
+                        w.stars(wStars);
+                        w.maxStars(wMaxStars);
                     });
                 };
 

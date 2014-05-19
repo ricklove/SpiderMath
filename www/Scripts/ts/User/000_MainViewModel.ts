@@ -51,6 +51,7 @@ module Told.TableMath.UI {
             shouldDisplayWorlds: ko.observable<boolean>(true),
             shouldDisplayLevels: ko.observable<boolean>(false),
             currentWorld: ko.observable<IMenuWorld>(null),
+            currentUser: ko.observable<string>(""),
         });
 
         menuChooseWorld(world: IMenuWorld) {
@@ -96,17 +97,32 @@ module Told.TableMath.UI {
             self.menu.valueHasMutated();
         }
 
+        changeUser() {
+            throw "Not Implemented";
+        }
+
+        changeWorld() {
+            var self = this;
+            self.menu().shouldDisplayWorlds(true);
+            self.menu().shouldDisplayLevels(false);
+        }
+
         populateMenu() {
             var self = this;
             var menu = self.menu();
             var worlds = menu.worlds();
+
+            menu.currentUser(self.providers.userSettings.currentUserName);
 
             self._levels.forEach((l) => {
 
                 while (worlds.length < l.world) {
                     worlds.push({
                         isLocked: ko.observable<boolean>(true),
-                        worldNumber: ko.observable<number>(worlds.length + 1), levels: ko.observable<IMenuLevel[]>([])
+                        worldNumber: ko.observable<number>(worlds.length + 1),
+                        levels: ko.observable<IMenuLevel[]>([]),
+                        stars: ko.observable<number>(0),
+                        maxStars: ko.observable<number>(0)
                     });
                 }
 
@@ -135,26 +151,35 @@ module Told.TableMath.UI {
                 menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
             });
 
-            // Unlock levels
+            // Unlock levels & count world stars
             var lastLevelWasFinished = true;
+            var wStars = 0;
+            var wMaxStars = 0;
 
             worlds.forEach(w=> {
+                wStars = 0;
+                wMaxStars = 0;
+
                 if (lastLevelWasFinished) {
                     w.isLocked(false);
-
-                    w.levels().forEach(l=> {
-                        if (lastLevelWasFinished) {
-                            l.isLocked(false);
-
-                            if (l.stars() > 0) {
-                                lastLevelWasFinished = true;
-                            } else {
-                                lastLevelWasFinished = false;
-                            }
-                        }
-                        
-                    });
                 }
+
+                w.levels().forEach(l=> {
+                    if (lastLevelWasFinished) {
+                        l.isLocked(false);
+
+                        if (l.stars() === 0) {
+                            lastLevelWasFinished = false;
+                        }
+                    }
+
+                    wStars += l.stars();
+                    wMaxStars += 3;
+
+                });
+
+                w.stars(wStars);
+                w.maxStars(wMaxStars);
             });
         }
 
