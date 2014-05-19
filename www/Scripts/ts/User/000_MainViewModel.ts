@@ -41,6 +41,87 @@ module Told.TableMath.UI {
             console.log("Pause=" + self.isPaused());
         }
 
+        shouldDisplayGameMenu = ko.observable<boolean>(false);
+        shouldDisplayGameOver = ko.computed<boolean>(() => { return this.isGameOver() && !this.shouldDisplayGameMenu(); }, this);
+        shouldDisplayGame = ko.computed<boolean>(() => { return !this.isGameOver() && !this.shouldDisplayGameMenu(); }, this);
+
+        menu = ko.observable<IMenu>({
+            worlds: ko.observable<IMenuWorld[]>([]),
+            levelsById: {},
+            shouldDisplayWorlds: ko.observable<boolean>(true),
+            shouldDisplayLevels: ko.observable<boolean>(false),
+            currentWorld: ko.observable<IMenuWorld>(null),
+        });
+
+        menuChooseWorld(world: IMenuWorld) {
+            var self = <MainViewModel>window['mainViewModel'];
+
+            self.menu().currentWorld(world);
+
+            self.menu().shouldDisplayWorlds(false);
+            self.menu().shouldDisplayLevels(true);
+        }
+
+        menuChooseLevel(level: IMenuLevel) {
+            var self = <MainViewModel>window['mainViewModel'];
+
+
+            var lIndex = -1;
+
+            self._levels.forEach((l, index) => { if (l.id === level.levelId) { lIndex = index; } });
+
+            self._levelIndex = lIndex;
+
+            self.shouldDisplayGameMenu(false);
+            self.setupGame();
+        }
+
+        showMenu() {
+            var self = this;
+            self.populateMenu();
+            self.shouldDisplayGameMenu(true);
+            self.menu().shouldDisplayWorlds(true);
+            self.menu().shouldDisplayLevels(false);
+
+            self.menu.valueHasMutated();
+        }
+
+        populateMenu() {
+            var self = this;
+            var menu = self.menu();
+            var worlds = menu.worlds();
+
+            self._levels.forEach((l) => {
+
+                while (worlds.length < l.world) {
+                    worlds.push({ worldNumber: ko.observable<number>(worlds.length + 1), levels: ko.observable<IMenuLevel[]>([]) });
+                }
+
+                var w = worlds[l.world - 1];
+
+                while (w.levels().length < l.level) {
+                    w.levels().push({
+                        levelId: l.id,
+                        levelNumber: ko.observable<number>(w.levels().length + 1),
+                        stars: ko.observable<number>(0),
+                        starsClass: ko.observable<string>("star-" + 0),
+                    });
+                }
+
+                var level = w.levels()[l.level - 1];
+
+
+                menu.levelsById[l.id] = level;
+            });
+
+            var levelStates = self.providers.userSettings.currentUserState.levels;
+
+            levelStates.forEach((ls) => {
+                menu.levelsById[ls.levelID].stars(ls.stars);
+                menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
+            });
+        }
+
         private _levelIndex = 0;
 
         world = ko.observable<number>(1);
@@ -53,6 +134,8 @@ module Told.TableMath.UI {
             var self = this;
 
             self._isNewGame = true;
+
+            self.score(0);
             self.isGameOver(false);
 
             self.game = new Game.TetrisGame(self);
@@ -119,7 +202,6 @@ module Told.TableMath.UI {
         public newGame() {
             var self = this;
 
-            self.score(0);
             self._levelIndex = 0;
             self.setupGame();
         }
@@ -288,8 +370,8 @@ module Told.TableMath.UI {
         handleLevelMenu() {
             console.log("handleLevelMenu");
 
-            // TODO: Goto menu
-            throw "Not Implemented";
+            var self = this;
+            self.showMenu();
         }
 
         handleLevelReplay() {
@@ -331,20 +413,22 @@ module Told.TableMath.UI {
 
             var value = ko.utils.unwrapObservable(valueAccessor());
 
-            var doNewGame = function () {
-                if (viewModel.isGameOver()) {
-                    //viewModel.newGame();
-                    //return true;
+            var doIsGameActive = function () {
+                return viewModel.shouldDisplayGame();
 
-                    // Allow standard input to click on menu buttons
-                    return true;
-                } else {
-                    return false;
-                }
+                //if (viewModel.isGameOver()) {
+                //    // Allow standard input to click on menu buttons
+                //    return false;
+                //} else if (viewModel.shouldDisplayGame()) {
+                //    // Allow standard input to click on menu buttons
+                //    return false;
+                //} else {
+                //    return true;
+                //}
             };
 
             $(document).keydown(function (e) {
-                if (!doNewGame()) {
+                if (doIsGameActive()) {
                     viewModel.keydown(e.keyCode);
                 }
             });
@@ -358,7 +442,7 @@ module Told.TableMath.UI {
                         return;
                     }
 
-                    if (!doNewGame()) {
+                    if (doIsGameActive()) {
 
                         // If right side, move right
                         if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
@@ -382,7 +466,7 @@ module Told.TableMath.UI {
                     if (ev.type == 'dragleft' || ev.type == 'dragright' || ev.type == 'dragdown') { return; }
 
                     // handle the swipes
-                    if (!doNewGame()) {
+                    if (doIsGameActive()) {
                         if (ev.type == "swipedown") {
                             viewModel.game.inputDirection(Game.Direction.Down);
                         } else if (ev.type == "swipeleft") {

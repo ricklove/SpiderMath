@@ -9,12 +9,27 @@ var Told;
         (function (UI) {
             var MainViewModel = (function () {
                 function MainViewModel(providers) {
+                    var _this = this;
                     this.board = ko.observable(null);
                     //gameOverStars = ko.observable<boolean[]>([false, false, false]);
                     this.gameOverStarsClass = ko.observable("");
                     this.gameOverHasWon = ko.observable(false);
                     this.isGameOver = ko.observable(false);
                     this.isPaused = ko.observable(false);
+                    this.shouldDisplayGameMenu = ko.observable(false);
+                    this.shouldDisplayGameOver = ko.computed(function () {
+                        return _this.isGameOver() && !_this.shouldDisplayGameMenu();
+                    }, this);
+                    this.shouldDisplayGame = ko.computed(function () {
+                        return !_this.isGameOver() && !_this.shouldDisplayGameMenu();
+                    }, this);
+                    this.menu = ko.observable({
+                        worlds: ko.observable([]),
+                        levelsById: {},
+                        shouldDisplayWorlds: ko.observable(true),
+                        shouldDisplayLevels: ko.observable(false),
+                        currentWorld: ko.observable(null)
+                    });
                     this._levelIndex = 0;
                     this.world = ko.observable(1);
                     //stage = ko.observable<number>(1);
@@ -44,10 +59,82 @@ var Told;
                     console.log("Pause=" + self.isPaused());
                 };
 
+                MainViewModel.prototype.menuChooseWorld = function (world) {
+                    var self = window['mainViewModel'];
+
+                    self.menu().currentWorld(world);
+
+                    self.menu().shouldDisplayWorlds(false);
+                    self.menu().shouldDisplayLevels(true);
+                };
+
+                MainViewModel.prototype.menuChooseLevel = function (level) {
+                    var self = window['mainViewModel'];
+
+                    var lIndex = -1;
+
+                    self._levels.forEach(function (l, index) {
+                        if (l.id === level.levelId) {
+                            lIndex = index;
+                        }
+                    });
+
+                    self._levelIndex = lIndex;
+
+                    self.shouldDisplayGameMenu(false);
+                    self.setupGame();
+                };
+
+                MainViewModel.prototype.showMenu = function () {
+                    var self = this;
+                    self.populateMenu();
+                    self.shouldDisplayGameMenu(true);
+                    self.menu().shouldDisplayWorlds(true);
+                    self.menu().shouldDisplayLevels(false);
+
+                    self.menu.valueHasMutated();
+                };
+
+                MainViewModel.prototype.populateMenu = function () {
+                    var self = this;
+                    var menu = self.menu();
+                    var worlds = menu.worlds();
+
+                    self._levels.forEach(function (l) {
+                        while (worlds.length < l.world) {
+                            worlds.push({ worldNumber: ko.observable(worlds.length + 1), levels: ko.observable([]) });
+                        }
+
+                        var w = worlds[l.world - 1];
+
+                        while (w.levels().length < l.level) {
+                            w.levels().push({
+                                levelId: l.id,
+                                levelNumber: ko.observable(w.levels().length + 1),
+                                stars: ko.observable(0),
+                                starsClass: ko.observable("star-" + 0)
+                            });
+                        }
+
+                        var level = w.levels()[l.level - 1];
+
+                        menu.levelsById[l.id] = level;
+                    });
+
+                    var levelStates = self.providers.userSettings.currentUserState.levels;
+
+                    levelStates.forEach(function (ls) {
+                        menu.levelsById[ls.levelID].stars(ls.stars);
+                        menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
+                    });
+                };
+
                 MainViewModel.prototype.setupGame = function () {
                     var self = this;
 
                     self._isNewGame = true;
+
+                    self.score(0);
                     self.isGameOver(false);
 
                     self.game = new Told.TableMath.Game.TetrisGame(self);
@@ -110,7 +197,6 @@ var Told;
                 MainViewModel.prototype.newGame = function () {
                     var self = this;
 
-                    self.score(0);
                     self._levelIndex = 0;
                     self.setupGame();
                 };
@@ -270,7 +356,8 @@ var Told;
                 MainViewModel.prototype.handleLevelMenu = function () {
                     console.log("handleLevelMenu");
 
-                    throw "Not Implemented";
+                    var self = this;
+                    self.showMenu();
                 };
 
                 MainViewModel.prototype.handleLevelReplay = function () {
@@ -310,19 +397,21 @@ var Told;
                 init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
                     var value = ko.utils.unwrapObservable(valueAccessor());
 
-                    var doNewGame = function () {
-                        if (viewModel.isGameOver()) {
-                            //viewModel.newGame();
-                            //return true;
-                            // Allow standard input to click on menu buttons
-                            return true;
-                        } else {
-                            return false;
-                        }
+                    var doIsGameActive = function () {
+                        return viewModel.shouldDisplayGame();
+                        //if (viewModel.isGameOver()) {
+                        //    // Allow standard input to click on menu buttons
+                        //    return false;
+                        //} else if (viewModel.shouldDisplayGame()) {
+                        //    // Allow standard input to click on menu buttons
+                        //    return false;
+                        //} else {
+                        //    return true;
+                        //}
                     };
 
                     $(document).keydown(function (e) {
-                        if (!doNewGame()) {
+                        if (doIsGameActive()) {
                             viewModel.keydown(e.keyCode);
                         }
                     });
@@ -335,7 +424,7 @@ var Told;
                             return;
                         }
 
-                        if (!doNewGame()) {
+                        if (doIsGameActive()) {
                             // If right side, move right
                             if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
                                 viewModel.game.inputDirection(1 /* Right */);
@@ -359,7 +448,7 @@ var Told;
                         }
 
                         // handle the swipes
-                        if (!doNewGame()) {
+                        if (doIsGameActive()) {
                             if (ev.type == "swipedown") {
                                 viewModel.game.inputDirection(2 /* Down */);
                             } else if (ev.type == "swipeleft") {

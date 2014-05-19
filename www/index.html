@@ -27,8 +27,24 @@
 
             <!--MainContent-->
 
-            <!-- ko if (isGameOver) -->
-            <div class="gameOverPopup">
+            <!-- Game Menu -->
+
+            <div class="gameMenu" data-bind="visible: shouldDisplayGameMenu">
+                <ul data-bind="visible:menu().shouldDisplayWorlds, foreach: menu().worlds">
+                    <li class="menuWorld" data-bind="click: $root.menuChooseWorld">World <span data-bind="text: worldNumber"></span></li>
+                </ul>
+                <!-- ko if (menu().shouldDisplayLevels) -->
+                <ul data-bind="foreach: menu().currentWorld().levels">
+                    <li class="menuLevel" data-bind="click: $root.menuChooseLevel">Level <span data-bind="text: levelNumber"></span>
+                        <i class="star" data-bind="css: starsClass"></i>
+
+                    </li>
+                </ul>
+                <!-- /ko -->
+            </div>
+
+            <!-- Game Over -->
+            <div class="gameOverPopup" data-bind="visible: shouldDisplayGameOver()">
                 <div class="gameOver">
                     <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
                     <span data-bind="visible: gameOverHasWon()">Success!</span>
@@ -55,8 +71,10 @@
 
                 </div>
             </div>
-            <!-- /ko -->
-            <div data-bind="visible: !isGameOver()">
+
+            <!-- Game -->
+
+            <div data-bind="visible: shouldDisplayGame()">
                 <div class="info">
                     <div class="level">
                         World <span data-bind="text: world"></span>

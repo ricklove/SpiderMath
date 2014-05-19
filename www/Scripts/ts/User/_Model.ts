@@ -16,4 +16,24 @@ module Told.TableMath.UI {
         isHeading: boolean;
         cellClassName: KnockoutObservable<string>;
     }
+
+    export interface IMenu {
+        worlds: KnockoutObservable<IMenuWorld[]>;
+        levelsById: { [id: string]: IMenuLevel };
+        shouldDisplayWorlds: KnockoutObservable<boolean>;
+        shouldDisplayLevels: KnockoutObservable<boolean>;
+        currentWorld: KnockoutObservable<IMenuWorld>;
+    }
+
+    export interface IMenuWorld {
+        worldNumber: KnockoutObservable<number>;
+        levels: KnockoutObservable<IMenuLevel[]>;
+    }
+
+    export interface IMenuLevel {
+        levelId: string;
+        levelNumber: KnockoutObservable<number>;
+        stars: KnockoutObservable<number>;
+        starsClass: KnockoutObservable<string>;
+    }
 }

@@ -134,12 +134,19 @@ Display the starts at level over and level selection
 
 - Display level nav buttons (replay, menu, nextlevel)
 
+#### 10:45-11:30
+#### 11:40-12:25
+
+- Reset score for each level
+- Display level selection
+- Navigate to Level
 
 ##### FUTURE
 
-- Display level selection
+- Lock levels
 - Display user selection
 
 - Complete Level View and Selection
 - Find better images for stars and level buttons and update css
+- Score should increase with fast answers
 
