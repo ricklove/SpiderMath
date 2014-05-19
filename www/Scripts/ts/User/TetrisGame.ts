@@ -8,15 +8,22 @@ module Told.TableMath.Game {
         private _viewModel: UI.MainViewModel;
 
         public board: IBoard;
+        public isPaused: boolean = false;
 
         constructor(viewModel: UI.MainViewModel) {
             this._viewModel = viewModel;
+        }
+
+        pause(shouldPause: boolean) {
+            var self = this;
+            self.isPaused = shouldPause;
         }
 
         setup(level: ILevel) {
 
             var self = this;
             self.mistakes = 0;
+            self.isPaused = false;
 
             var minColumnValue = level.minColumnValue;
             var maxColumnValue = level.maxColumnValue;
@@ -284,6 +291,10 @@ module Told.TableMath.Game {
 
         public tick() {
             var self = this;
+
+            if (self.isPaused) {
+                return;
+            }
 
             if (self.isGameOver) {
                 return;

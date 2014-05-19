@@ -30,15 +30,30 @@
             <!-- ko if (isGameOver) -->
             <div class="gameOverPopup">
                 <div class="gameOver">
-                    Game Over
+                    <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
+                    <span data-bind="visible: gameOverHasWon()">Success!</span>
                 </div>
 
                 <div class="info">
                     <div class="level">
-                        World <span data-bind="text: world"></span><br />
-                        <!--Stage <span data-bind="text: stage"></span><br />-->
+                        World <span data-bind="text: world"></span>
+                        <br />
                         Level <span data-bind="text: level"></span>
                     </div>
+
+                    <i class="star bigstar" data-bind="css: gameOverStarsClass"></i>
+                    <!--<i class="star star-0"></i>
+                    <i class="star star-1"></i>
+                    <i class="star star-2"></i>
+                    <i class="star star-3"></i>-->
+
+                    <!--<div class="stars" data-bind="foreach: gameOverStars">
+                        <div class="star" data-bind="visible: $data">
+                        </div>
+                        <div class="emptyStar" data-bind="visible: !$data">
+                        </div>
+                    </div>-->
+
                     <div class="score">
                         <span data-bind="text: score"></span>
                     </div>
@@ -48,7 +63,8 @@
             <div data-bind="visible: !isGameOver()">
                 <div class="info">
                     <div class="level">
-                        World <span data-bind="text: world"></span><br />
+                        World <span data-bind="text: world"></span>
+                        <br />
                         <!--Stage <span data-bind="text: stage"></span><br />-->
                         Level <span data-bind="text: level"></span>
                     </div>
@@ -70,12 +86,16 @@
                             <td class="numSquareCell" data-bind="css: cellClassName">
                                 <div class="numSquare" data-bind="attr: {id: id}">
                                     <!--<span data-bind="fadeText:text"></span>-->
-                                    <span data-bind="text:text, css: cellClassName"></span>
+                                    <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
                                 </div>
                             </td>
                             <!-- /ko -->
                         </tr>
                     </table>
+                </div>
+
+                <div class="pause" data-bind="visible:isPaused">
+                    Pause
                 </div>
 
                 <div class="info">
@@ -119,6 +139,8 @@
 
             var viewModel = new Told.TableMath.UI.MainViewModel();
             ko.applyBindings(viewModel);
+
+            window.mainViewModel = viewModel;
 
             var hash = location.hash;
             if ($(hash).length === 0) { hash = "#home"; }

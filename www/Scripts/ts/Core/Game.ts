@@ -25,6 +25,9 @@
         fallingNumberPosition: IPosition;
 
         inputDirection(direction: Direction);
+
+        pause(shouldPause: boolean);
+        isPaused: boolean;
     }
 
     export interface IBoard {

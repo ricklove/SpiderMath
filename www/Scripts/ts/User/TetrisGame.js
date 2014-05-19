@@ -6,6 +6,7 @@ var Told;
         (function (Game) {
             var TetrisGame = (function () {
                 function TetrisGame(viewModel) {
+                    this.isPaused = false;
                     this._tickTime = 2000;
                     this.mistakes = 0;
                     this.isGameOver = false;
@@ -13,9 +14,15 @@ var Told;
                     this._solidCount = 0;
                     this._viewModel = viewModel;
                 }
+                TetrisGame.prototype.pause = function (shouldPause) {
+                    var self = this;
+                    self.isPaused = shouldPause;
+                };
+
                 TetrisGame.prototype.setup = function (level) {
                     var self = this;
                     self.mistakes = 0;
+                    self.isPaused = false;
 
                     var minColumnValue = level.minColumnValue;
                     var maxColumnValue = level.maxColumnValue;
@@ -255,6 +262,10 @@ var Told;
 
                 TetrisGame.prototype.tick = function () {
                     var self = this;
+
+                    if (self.isPaused) {
+                        return;
+                    }
 
                     if (self.isGameOver) {
                         return;

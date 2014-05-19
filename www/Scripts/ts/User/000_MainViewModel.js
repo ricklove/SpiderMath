@@ -10,7 +10,11 @@ var Told;
             var MainViewModel = (function () {
                 function MainViewModel(providers) {
                     this.board = ko.observable(null);
+                    //gameOverStars = ko.observable<boolean[]>([false, false, false]);
+                    this.gameOverStarsClass = ko.observable("");
+                    this.gameOverHasWon = ko.observable(false);
                     this.isGameOver = ko.observable(false);
+                    this.isPaused = ko.observable(false);
                     this._levelIndex = 0;
                     this.world = ko.observable(1);
                     //stage = ko.observable<number>(1);
@@ -32,6 +36,14 @@ var Told;
                     self._levelIndex = 0;
                     self.setupGame();
                 }
+                MainViewModel.prototype.pause = function (shouldPause) {
+                    var self = this;
+                    self.game.pause(shouldPause);
+                    self.isPaused(self.game.isPaused);
+
+                    console.log("Pause=" + self.isPaused());
+                };
+
                 MainViewModel.prototype.setupGame = function () {
                     var self = this;
 
@@ -79,14 +91,18 @@ var Told;
                     self.providers.userSettings.currentUserState = uState;
 
                     // Reset Game
-                    if (hasWon) {
-                        // Level up
-                        self._levelIndex++;
-                        self.setupGame();
-                    } else {
-                        self.isGameOver(true);
-                        //setTimeout(function () { self.newGame(); }, 3000);
-                    }
+                    self.gameOverHasWon(hasWon);
+
+                    //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
+                    self.gameOverStarsClass("star-" + stars);
+                    self.isGameOver(true);
+                    //if (hasWon) {
+                    //    // Level up
+                    //    self._levelIndex++;
+                    //    self.setupGame();
+                    //} else {
+                    //    self.isGameOver(true);
+                    //}
                 };
 
                 MainViewModel.prototype.newGame = function () {
@@ -243,7 +259,14 @@ var Told;
                 MainViewModel.prototype.keydown = function (keyCode) {
                     var self = this;
 
-                    if (event.keyCode === 37) {
+                    if (self.isPaused()) {
+                        self.pause(false);
+                        return;
+                    }
+
+                    if (event.keyCode === 32) {
+                        self.pause(true);
+                    } else if (event.keyCode === 37) {
                         self.game.inputDirection(0 /* Left */);
                     } else if (event.keyCode === 38) {
                         self.game.inputDirection(3 /* Up */);
@@ -279,6 +302,11 @@ var Told;
                     Hammer(document).on("tap", function (ev) {
                         ev.gesture.preventDefault();
 
+                        if (viewModel.isPaused()) {
+                            viewModel.pause(false);
+                            return;
+                        }
+
                         if (!doNewGame()) {
                             // If right side, move right
                             if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
@@ -286,6 +314,9 @@ var Told;
                             } else if (ev.gesture.center.pageX < window.innerWidth * 0.2) {
                                 // If left side, move left
                                 viewModel.game.inputDirection(0 /* Left */);
+                            } else if (ev.gesture.center.pageY < window.innerHeight * 0.2) {
+                                // If top side, pause
+                                viewModel.pause(true);
                             } else {
                                 // If center, down
                                 viewModel.game.inputDirection(2 /* Down */);

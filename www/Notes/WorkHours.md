@@ -114,9 +114,27 @@ What will be most beneficial in the next hour?
 
 - Save level state on game over
 
+### 2014-05-19
+#### 6:25-7:05
+
+##### What is the most important task for this hour?
+
+Display the starts at level over and level selection
+
+##### Completed
+
+- Display stars at level over (instead of going to next level)
+
+#### 9:05-9:35
+
+- Added Pause (With Kids Helping)
 
 ##### FUTURE
 
+- Display stars at level over (instead of going to next level)
+- Display level nav buttons (replay, menu, nextlevel)
+- Display level selection
+- Display user selection
+
 - Complete Level View and Selection
-- 
 

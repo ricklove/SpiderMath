@@ -27,7 +27,19 @@ module Told.TableMath.UI {
         game: Game.IGame;
         board = ko.observable<IBoardUI>(null);
 
+        //gameOverStars = ko.observable<boolean[]>([false, false, false]);
+        gameOverStarsClass = ko.observable<string>("");
+        gameOverHasWon = ko.observable<boolean>(false);
         isGameOver = ko.observable<boolean>(false);
+        isPaused = ko.observable<boolean>(false);
+
+        pause(shouldPause: boolean) {
+            var self = this;
+            self.game.pause(shouldPause);
+            self.isPaused(self.game.isPaused);
+
+            console.log("Pause=" + self.isPaused());
+        }
 
         private _levelIndex = 0;
 
@@ -87,14 +99,19 @@ module Told.TableMath.UI {
 
 
             // Reset Game
-            if (hasWon) {
-                // Level up
-                self._levelIndex++;
-                self.setupGame();
-            } else {
-                self.isGameOver(true);
-                //setTimeout(function () { self.newGame(); }, 3000);
-            }
+            self.gameOverHasWon(hasWon);
+            //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
+            self.gameOverStarsClass("star-" + stars);
+            self.isGameOver(true);
+
+
+            //if (hasWon) {
+            //    // Level up
+            //    self._levelIndex++;
+            //    self.setupGame();
+            //} else {
+            //    self.isGameOver(true);
+            //}
         }
 
         public newGame() {
@@ -261,7 +278,14 @@ module Told.TableMath.UI {
         public keydown(keyCode: number) {
             var self = this;
 
-            if (event.keyCode === 37) {
+            if (self.isPaused()) {
+                self.pause(false);
+                return;
+            }
+
+            if (event.keyCode === 32) {
+                self.pause(true);
+            } else if (event.keyCode === 37) {
                 self.game.inputDirection(Game.Direction.Left);
             } else if (event.keyCode === 38) {
                 self.game.inputDirection(Game.Direction.Up);
@@ -299,6 +323,11 @@ module Told.TableMath.UI {
                 .on("tap", function (ev) {
                     ev.gesture.preventDefault();
 
+                    if (viewModel.isPaused()) {
+                        viewModel.pause(false);
+                        return;
+                    }
+
                     if (!doNewGame()) {
 
                         // If right side, move right
@@ -307,6 +336,9 @@ module Told.TableMath.UI {
                         } else if (ev.gesture.center.pageX < window.innerWidth * 0.2) {
                             // If left side, move left
                             viewModel.game.inputDirection(Game.Direction.Left);
+                        } else if (ev.gesture.center.pageY < window.innerHeight * 0.2) {
+                            // If top side, pause
+                            viewModel.pause(true);
                         } else {
                             // If center, down
                             viewModel.game.inputDirection(Game.Direction.Down);

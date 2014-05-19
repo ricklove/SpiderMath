@@ -104,3 +104,59 @@
 .cleared {
     background: gray;
 }
+
+
+.star {
+    background-image: url(../../Assets/images/star-black.png);
+	display: inline-block;
+}
+
+.emptyStar {
+    background-image: url(../../Assets/images/star-black.png);
+	display: inline-block;
+}
+
+/*http://www.timvasil.com/blog14/post/2013/03/16/Seeing-stars-star-rating-CSS.aspx*/
+i.star {
+	background-image: url(../../Assets/images/stars.png);
+	display: inline-block;
+	height: 16px;
+	width: 80px;
+	background-position-x: -80px;
+	background-position-y: -48px;
+}
+
+i.star-0    { background-position-x: -80px; }
+i.star-1    { background-position-x: -64px; }
+i.star-2    { background-position-x: -48px; }
+i.star-3    { background-position-x: -32px; }
+i.star-4    { background-position-x: -16px; }
+i.star-5    { background-position-x: 0; }
+i.star-qtr  { background-position-y: -32px; }
+i.star-half { background-position-y: -16px; }
+i.star-3qtr { background-position-y: 0; }
+
+/*3 Stars Override*/
+i.star {
+	width: 48px;
+}
+
+/*Bigger Stars*/
+i.bigstar {
+    zoom: 3;
+
+}
+
+.pause {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    color: lime;
+    text-align: center;
+    width: 100%;
+    font-size: 100px;
+    margin-top: -150px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background: #222;
+}
