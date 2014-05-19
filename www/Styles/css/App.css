@@ -216,3 +216,8 @@ li.menuWorld, li.menuLevel {
     line-height: initial;
     border: solid 3px lime;
 }
+
+li.lock {
+    color: gray;
+    border: solid 3px gray;
+}

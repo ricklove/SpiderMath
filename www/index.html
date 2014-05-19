@@ -31,13 +31,14 @@
 
             <div class="gameMenu" data-bind="visible: shouldDisplayGameMenu">
                 <ul data-bind="visible:menu().shouldDisplayWorlds, foreach: menu().worlds">
-                    <li class="menuWorld" data-bind="click: $root.menuChooseWorld">World <span data-bind="text: worldNumber"></span></li>
+                    <li class="menuWorld" data-bind="click: $root.menuChooseWorld, css: {lock: isLocked()}">World <span data-bind="text: worldNumber"></span>
+
+                    </li>
                 </ul>
                 <!-- ko if (menu().shouldDisplayLevels) -->
                 <ul data-bind="foreach: menu().currentWorld().levels">
-                    <li class="menuLevel" data-bind="click: $root.menuChooseLevel">Level <span data-bind="text: levelNumber"></span>
+                    <li class="menuLevel" data-bind="click: $root.menuChooseLevel, css: {lock: isLocked()}">Level <span data-bind="text: levelNumber"></span>
                         <i class="star" data-bind="css: starsClass"></i>
-
                     </li>
                 </ul>
                 <!-- /ko -->

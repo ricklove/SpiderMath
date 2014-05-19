@@ -141,12 +141,16 @@ Display the starts at level over and level selection
 - Display level selection
 - Navigate to Level
 
+#### 12:30-12:45
+- Lock Levels
+
 ##### FUTURE
 
-- Lock levels
+- Menu back button
+- Show level (instead of world first)
 - Display user selection
+- Pause - navigation
 
-- Complete Level View and Selection
 - Find better images for stars and level buttons and update css
 - Score should increase with fast answers
 

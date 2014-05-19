@@ -54,6 +54,11 @@ module Told.TableMath.UI {
         });
 
         menuChooseWorld(world: IMenuWorld) {
+
+            if (world.isLocked()) {
+                return;
+            }
+
             var self = <MainViewModel>window['mainViewModel'];
 
             self.menu().currentWorld(world);
@@ -63,6 +68,11 @@ module Told.TableMath.UI {
         }
 
         menuChooseLevel(level: IMenuLevel) {
+
+            if (level.isLocked()) {
+                return;
+            }
+
             var self = <MainViewModel>window['mainViewModel'];
 
 
@@ -94,13 +104,17 @@ module Told.TableMath.UI {
             self._levels.forEach((l) => {
 
                 while (worlds.length < l.world) {
-                    worlds.push({ worldNumber: ko.observable<number>(worlds.length + 1), levels: ko.observable<IMenuLevel[]>([]) });
+                    worlds.push({
+                        isLocked: ko.observable<boolean>(true),
+                        worldNumber: ko.observable<number>(worlds.length + 1), levels: ko.observable<IMenuLevel[]>([])
+                    });
                 }
 
                 var w = worlds[l.world - 1];
 
                 while (w.levels().length < l.level) {
                     w.levels().push({
+                        isLocked: ko.observable<boolean>(true),
                         levelId: l.id,
                         levelNumber: ko.observable<number>(w.levels().length + 1),
                         stars: ko.observable<number>(0),
@@ -119,6 +133,28 @@ module Told.TableMath.UI {
             levelStates.forEach((ls) => {
                 menu.levelsById[ls.levelID].stars(ls.stars);
                 menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
+            });
+
+            // Unlock levels
+            var lastLevelWasFinished = true;
+
+            worlds.forEach(w=> {
+                if (lastLevelWasFinished) {
+                    w.isLocked(false);
+
+                    w.levels().forEach(l=> {
+                        if (lastLevelWasFinished) {
+                            l.isLocked(false);
+
+                            if (l.stars() > 0) {
+                                lastLevelWasFinished = true;
+                            } else {
+                                lastLevelWasFinished = false;
+                            }
+                        }
+                        
+                    });
+                }
             });
         }
 

@@ -60,6 +60,10 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuChooseWorld = function (world) {
+                    if (world.isLocked()) {
+                        return;
+                    }
+
                     var self = window['mainViewModel'];
 
                     self.menu().currentWorld(world);
@@ -69,6 +73,10 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuChooseLevel = function (level) {
+                    if (level.isLocked()) {
+                        return;
+                    }
+
                     var self = window['mainViewModel'];
 
                     var lIndex = -1;
@@ -102,13 +110,17 @@ var Told;
 
                     self._levels.forEach(function (l) {
                         while (worlds.length < l.world) {
-                            worlds.push({ worldNumber: ko.observable(worlds.length + 1), levels: ko.observable([]) });
+                            worlds.push({
+                                isLocked: ko.observable(true),
+                                worldNumber: ko.observable(worlds.length + 1), levels: ko.observable([])
+                            });
                         }
 
                         var w = worlds[l.world - 1];
 
                         while (w.levels().length < l.level) {
                             w.levels().push({
+                                isLocked: ko.observable(true),
                                 levelId: l.id,
                                 levelNumber: ko.observable(w.levels().length + 1),
                                 stars: ko.observable(0),
@@ -126,6 +138,27 @@ var Told;
                     levelStates.forEach(function (ls) {
                         menu.levelsById[ls.levelID].stars(ls.stars);
                         menu.levelsById[ls.levelID].starsClass("star-" + ls.stars);
+                    });
+
+                    // Unlock levels
+                    var lastLevelWasFinished = true;
+
+                    worlds.forEach(function (w) {
+                        if (lastLevelWasFinished) {
+                            w.isLocked(false);
+
+                            w.levels().forEach(function (l) {
+                                if (lastLevelWasFinished) {
+                                    l.isLocked(false);
+
+                                    if (l.stars() > 0) {
+                                        lastLevelWasFinished = true;
+                                    } else {
+                                        lastLevelWasFinished = false;
+                                    }
+                                }
+                            });
+                        }
                     });
                 };
 

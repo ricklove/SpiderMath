@@ -26,11 +26,13 @@ module Told.TableMath.UI {
     }
 
     export interface IMenuWorld {
+        isLocked: KnockoutObservable<boolean>;
         worldNumber: KnockoutObservable<number>;
         levels: KnockoutObservable<IMenuLevel[]>;
     }
 
     export interface IMenuLevel {
+        isLocked: KnockoutObservable<boolean>;
         levelId: string;
         levelNumber: KnockoutObservable<number>;
         stars: KnockoutObservable<number>;
