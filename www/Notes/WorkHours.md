@@ -127,14 +127,19 @@ Display the starts at level over and level selection
 
 #### 9:05-9:35
 
-- Added Pause (With Kids Helping)
+- Add Pause (With Kids Helping)
+
+#### 10:10-10:20
+#### 10:30-10:40
+
+- Display level nav buttons (replay, menu, nextlevel)
+
 
 ##### FUTURE
 
-- Display stars at level over (instead of going to next level)
-- Display level nav buttons (replay, menu, nextlevel)
 - Display level selection
 - Display user selection
 
 - Complete Level View and Selection
+- Find better images for stars and level buttons and update css
 

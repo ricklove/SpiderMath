@@ -160,3 +160,25 @@ i.bigstar {
     padding-bottom: 100px;
     background: #222;
 }
+
+.levelNext, .levelMenu, .levelReplay {
+    width:14px;
+    height:14px;
+    display:inline-block;
+    zoom:3;
+    margin:3px;
+}
+
+.levelNext {
+	background-image: url(../../Assets/images/nextLevel.png);
+    width:12px;
+
+}
+
+.levelMenu {
+	background-image: url(../../Assets/images/menu.png);
+}
+
+.levelReplay {
+	background-image: url(../../Assets/images/replay.png);
+}

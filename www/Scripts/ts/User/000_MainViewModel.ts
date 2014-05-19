@@ -53,6 +53,8 @@ module Told.TableMath.UI {
             var self = this;
 
             self._isNewGame = true;
+            self.isGameOver(false);
+
             self.game = new Game.TetrisGame(self);
             var size = 5;
             var iLevel = self._levelIndex;
@@ -120,8 +122,6 @@ module Told.TableMath.UI {
             self.score(0);
             self._levelIndex = 0;
             self.setupGame();
-
-            self.isGameOver(false);
         }
 
         private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {
@@ -274,6 +274,33 @@ module Told.TableMath.UI {
             this.score(this.score() + change);
         }
 
+        handleLevelNext() {
+            console.log("handleLevelNext");
+
+            var self = this;
+            if (self.isGameOver()) {
+                // Level up
+                self._levelIndex++;
+                self.setupGame();
+            }
+        }
+
+        handleLevelMenu() {
+            console.log("handleLevelMenu");
+
+            // TODO: Goto menu
+            throw "Not Implemented";
+        }
+
+        handleLevelReplay() {
+            console.log("handleLevelReplay");
+
+            var self = this;
+            if (self.isGameOver()) {
+                self.setupGame();
+            }
+        }
+
 
         public keydown(keyCode: number) {
             var self = this;
@@ -306,7 +333,10 @@ module Told.TableMath.UI {
 
             var doNewGame = function () {
                 if (viewModel.isGameOver()) {
-                    viewModel.newGame();
+                    //viewModel.newGame();
+                    //return true;
+
+                    // Allow standard input to click on menu buttons
                     return true;
                 } else {
                     return false;

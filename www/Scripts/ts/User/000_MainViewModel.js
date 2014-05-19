@@ -48,6 +48,8 @@ var Told;
                     var self = this;
 
                     self._isNewGame = true;
+                    self.isGameOver(false);
+
                     self.game = new Told.TableMath.Game.TetrisGame(self);
                     var size = 5;
                     var iLevel = self._levelIndex;
@@ -111,8 +113,6 @@ var Told;
                     self.score(0);
                     self._levelIndex = 0;
                     self.setupGame();
-
-                    self.isGameOver(false);
                 };
 
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {
@@ -256,6 +256,32 @@ var Told;
                     this.score(this.score() + change);
                 };
 
+                MainViewModel.prototype.handleLevelNext = function () {
+                    console.log("handleLevelNext");
+
+                    var self = this;
+                    if (self.isGameOver()) {
+                        // Level up
+                        self._levelIndex++;
+                        self.setupGame();
+                    }
+                };
+
+                MainViewModel.prototype.handleLevelMenu = function () {
+                    console.log("handleLevelMenu");
+
+                    throw "Not Implemented";
+                };
+
+                MainViewModel.prototype.handleLevelReplay = function () {
+                    console.log("handleLevelReplay");
+
+                    var self = this;
+                    if (self.isGameOver()) {
+                        self.setupGame();
+                    }
+                };
+
                 MainViewModel.prototype.keydown = function (keyCode) {
                     var self = this;
 
@@ -286,7 +312,9 @@ var Told;
 
                     var doNewGame = function () {
                         if (viewModel.isGameOver()) {
-                            viewModel.newGame();
+                            //viewModel.newGame();
+                            //return true;
+                            // Allow standard input to click on menu buttons
                             return true;
                         } else {
                             return false;

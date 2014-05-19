@@ -42,21 +42,17 @@
                     </div>
 
                     <i class="star bigstar" data-bind="css: gameOverStarsClass"></i>
-                    <!--<i class="star star-0"></i>
-                    <i class="star star-1"></i>
-                    <i class="star star-2"></i>
-                    <i class="star star-3"></i>-->
-
-                    <!--<div class="stars" data-bind="foreach: gameOverStars">
-                        <div class="star" data-bind="visible: $data">
-                        </div>
-                        <div class="emptyStar" data-bind="visible: !$data">
-                        </div>
-                    </div>-->
 
                     <div class="score">
                         <span data-bind="text: score"></span>
                     </div>
+                    <div>
+                        <div class="levelReplay" data-bind="click: handleLevelReplay"></div>
+                        <div class="levelMenu" data-bind="click: handleLevelMenu"></div>
+                        <div class="levelNext" data-bind="click: handleLevelNext, visible:gameOverHasWon()"></div>
+                    </div>
+
+
                 </div>
             </div>
             <!-- /ko -->
