@@ -234,3 +234,30 @@ li.lock {
     color: gray;
     border: solid 3px gray;
 }
+
+li.menuUser, li.menuAddUser, li.menuEditUser {
+    font-size: 30px;
+    color: lime;
+    display: block;
+    line-height: initial;
+    border: solid 3px lime;
+}
+
+li.menuAddUser {
+    color: yellow;
+
+}
+
+.editUser {
+    background-image: url(../../Assets/images/edit.png);
+    background-repeat: no-repeat;
+
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    zoom: 1;
+    border: solid 1px yellow;
+
+    background-position: 3px;
+    padding: 3px;
+}

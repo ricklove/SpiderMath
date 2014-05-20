@@ -30,6 +30,21 @@
             <!-- Game Menu -->
 
             <div class="gameMenu" data-bind="visible: shouldDisplayGameMenu">
+                <!-- ko if (menu().shouldDisplayUsers) -->
+                <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
+                <ul data-bind="foreach: menu().users">
+                    <li class="menuUser" data-bind="click: $root.menuChooseUser, visible: !isEditing() && !isAddUser()">
+                        <span data-bind="text: user"></span>
+                        <div class="editUser" data-bind="click: $root.menuEditUser"></div>
+                    </li>
+                    <li class="menuEditUser" data-bind="visible: isEditing()">
+                        <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
+                    </li>
+                    <li class="menuAddUser" data-bind="click: $root.menuAddUser, visible: isAddUser() && !isEditing()">
+                        <span>Add User</span>
+                    </li>
+                </ul>
+                <!-- /ko -->
                 <!-- ko if (menu().shouldDisplayWorlds) -->
                 <h3 class="level" data-bind="click: changeUser"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().worlds">

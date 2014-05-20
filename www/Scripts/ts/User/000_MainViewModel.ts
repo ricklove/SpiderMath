@@ -46,12 +46,16 @@ module Told.TableMath.UI {
         shouldDisplayGame = ko.computed<boolean>(() => { return !this.isGameOver() && !this.shouldDisplayGameMenu(); }, this);
 
         menu = ko.observable<IMenu>({
-            worlds: ko.observable<IMenuWorld[]>([]),
-            levelsById: {},
             shouldDisplayWorlds: ko.observable<boolean>(true),
             shouldDisplayLevels: ko.observable<boolean>(false),
+            shouldDisplayUsers: ko.observable<boolean>(false),
+
+            worlds: ko.observable<IMenuWorld[]>([]),
+            levelsById: {},
+
             currentWorld: ko.observable<IMenuWorld>(null),
             currentUser: ko.observable<string>(""),
+            users: ko.observable<IMenuUser[]>([]),
         });
 
         menuChooseWorld(world: IMenuWorld) {
@@ -66,6 +70,8 @@ module Told.TableMath.UI {
 
             self.menu().shouldDisplayWorlds(false);
             self.menu().shouldDisplayLevels(true);
+            self.menu().shouldDisplayUsers(false);
+
         }
 
         menuChooseLevel(level: IMenuLevel) {
@@ -87,24 +93,96 @@ module Told.TableMath.UI {
             self.setupGame();
         }
 
+        menuChooseUser(user: IMenuUser) {
+
+            if (user.isEditing()) { return; }
+
+            console.log("menuChooseUser");
+
+            var self = <MainViewModel>window['mainViewModel'];
+            self.providers.userSettings.currentUserName = user.user();
+            //self.menu().currentUser(user.user());
+
+            //self.populateMenu();
+
+            // Reset menu for new user
+            self.showMenu();
+        }
+
+        menuEditUser_Change(user: IMenuUser, e: Event) {
+            var newValue: string = e.currentTarget['value'];
+
+            console.log("user.userEditText changed:" + newValue);
+
+            var self = <MainViewModel>window['mainViewModel'];
+
+            var uList = self.providers.userSettings.userList;
+
+            if (user.isAddUser()) {
+                user.isAddUser(false);
+                uList.push(newValue);
+            } else {
+                var iUser = user.index;
+                uList[iUser] = newValue;
+            }
+
+            self.providers.userSettings.userList = uList;
+
+            user.user(newValue);
+            user.isEditing(false);
+
+            self.menuChooseUser(user);
+        }
+
+        menuEditUser(user: IMenuUser) {
+            console.log("menuEditUser");
+
+            user.isEditing(true);
+
+           
+        }
+
+        menuAddUser(user: IMenuUser) {
+            console.log("menuAddUser");
+
+            var self = <MainViewModel>window['mainViewModel'];
+
+            self.menu().users().push({
+                index: self.menu().users().length,
+                user: ko.observable<string>("Player"),
+                userEditText: ko.observable<string>("Player"),
+                isEditing: ko.observable<boolean>(false),
+                isAddUser: ko.observable<boolean>(true)
+            });
+
+            self.menu().users.valueHasMutated();
+
+            self.menuEditUser(user);
+        }
+
         showMenu() {
             var self = this;
             self.populateMenu();
             self.shouldDisplayGameMenu(true);
             self.menu().shouldDisplayWorlds(true);
             self.menu().shouldDisplayLevels(false);
+            self.menu().shouldDisplayUsers(false);
 
             self.menu.valueHasMutated();
         }
 
         changeUser() {
-            throw "Not Implemented";
+            var self = this;
+            self.menu().shouldDisplayWorlds(false);
+            self.menu().shouldDisplayLevels(false);
+            self.menu().shouldDisplayUsers(true);
         }
 
         changeWorld() {
             var self = this;
             self.menu().shouldDisplayWorlds(true);
             self.menu().shouldDisplayLevels(false);
+            self.menu().shouldDisplayUsers(false);
         }
 
         populateMenu() {
@@ -112,8 +190,27 @@ module Told.TableMath.UI {
             var menu = self.menu();
             var worlds = menu.worlds();
 
+            // Populate user info
             menu.currentUser(self.providers.userSettings.currentUserName);
+            menu.users(self.providers.userSettings.userList.map((u, index) => {
+                return {
+                    index: index,
+                    user: ko.observable<string>(u),
+                    userEditText: ko.observable<string>(u),
+                    isEditing: ko.observable<boolean>(false),
+                    isAddUser: ko.observable<boolean>(false)
+                };
+            }));
 
+            menu.users().push({
+                index: self.menu().users().length,
+                user: ko.observable<string>("Player"),
+                userEditText: ko.observable<string>("Player"),
+                isEditing: ko.observable<boolean>(false),
+                isAddUser: ko.observable<boolean>(true)
+            });
+
+            // Populate level definitions
             self._levels.forEach((l) => {
 
                 while (worlds.length < l.world) {

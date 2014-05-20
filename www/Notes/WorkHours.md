@@ -150,12 +150,22 @@ Display the starts at level over and level selection
 #### 17:05-17:15
 - Show world stars
 
+### 2014-05-20
+
+#### 6:00-7:10
+
+- Display user selection
+- Edit User Names
+- Add User
+* Choose User
+
 
 ##### FUTURE
 
-- Show level (instead of world first)
-- Display user selection
-- Pause - navigation
+- Delete User
+
+- ?Show level (instead of world first)
+- Pause Navigation
 
 - Find better images for stars and level buttons and update css
 - Score should increase with fast answers

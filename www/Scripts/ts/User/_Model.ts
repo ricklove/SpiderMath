@@ -18,13 +18,18 @@ module Told.TableMath.UI {
     }
 
     export interface IMenu {
-        worlds: KnockoutObservable<IMenuWorld[]>;
-        levelsById: { [id: string]: IMenuLevel };
         shouldDisplayWorlds: KnockoutObservable<boolean>;
         shouldDisplayLevels: KnockoutObservable<boolean>;
-        currentUser: KnockoutObservable<string>;
+        shouldDisplayUsers: KnockoutObservable<boolean>;
+
+        worlds: KnockoutObservable<IMenuWorld[]>;
+        levelsById: { [id: string]: IMenuLevel };
+
         currentWorld: KnockoutObservable<IMenuWorld>;
+        currentUser: KnockoutObservable<string>;
+        users: KnockoutObservable<IMenuUser[]>;
     }
+
 
     export interface IMenuWorld {
         isLocked: KnockoutObservable<boolean>;
@@ -41,5 +46,13 @@ module Told.TableMath.UI {
         levelNumber: KnockoutObservable<number>;
         stars: KnockoutObservable<number>;
         starsClass: KnockoutObservable<string>;
+    }
+
+    export interface IMenuUser {
+        index: number;
+        user: KnockoutObservable<string>;
+        userEditText: KnockoutObservable<string>;
+        isEditing: KnockoutObservable<boolean>;
+        isAddUser: KnockoutObservable<boolean>;
     }
 }

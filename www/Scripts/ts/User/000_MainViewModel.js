@@ -24,12 +24,14 @@ var Told;
                         return !_this.isGameOver() && !_this.shouldDisplayGameMenu();
                     }, this);
                     this.menu = ko.observable({
-                        worlds: ko.observable([]),
-                        levelsById: {},
                         shouldDisplayWorlds: ko.observable(true),
                         shouldDisplayLevels: ko.observable(false),
+                        shouldDisplayUsers: ko.observable(false),
+                        worlds: ko.observable([]),
+                        levelsById: {},
                         currentWorld: ko.observable(null),
-                        currentUser: ko.observable("")
+                        currentUser: ko.observable(""),
+                        users: ko.observable([])
                     });
                     this._levelIndex = 0;
                     this.world = ko.observable(1);
@@ -71,6 +73,7 @@ var Told;
 
                     self.menu().shouldDisplayWorlds(false);
                     self.menu().shouldDisplayLevels(true);
+                    self.menu().shouldDisplayUsers(false);
                 };
 
                 MainViewModel.prototype.menuChooseLevel = function (level) {
@@ -94,24 +97,94 @@ var Told;
                     self.setupGame();
                 };
 
+                MainViewModel.prototype.menuChooseUser = function (user) {
+                    if (user.isEditing()) {
+                        return;
+                    }
+
+                    console.log("menuChooseUser");
+
+                    var self = window['mainViewModel'];
+                    self.providers.userSettings.currentUserName = user.user();
+
+                    //self.menu().currentUser(user.user());
+                    //self.populateMenu();
+                    // Reset menu for new user
+                    self.showMenu();
+                };
+
+                MainViewModel.prototype.menuEditUser_Change = function (user, e) {
+                    var newValue = e.currentTarget['value'];
+
+                    console.log("user.userEditText changed:" + newValue);
+
+                    var self = window['mainViewModel'];
+
+                    var uList = self.providers.userSettings.userList;
+
+                    if (user.isAddUser()) {
+                        user.isAddUser(false);
+                        uList.push(newValue);
+                    } else {
+                        var iUser = user.index;
+                        uList[iUser] = newValue;
+                    }
+
+                    self.providers.userSettings.userList = uList;
+
+                    user.user(newValue);
+                    user.isEditing(false);
+
+                    self.menuChooseUser(user);
+                };
+
+                MainViewModel.prototype.menuEditUser = function (user) {
+                    console.log("menuEditUser");
+
+                    user.isEditing(true);
+                };
+
+                MainViewModel.prototype.menuAddUser = function (user) {
+                    console.log("menuAddUser");
+
+                    var self = window['mainViewModel'];
+
+                    self.menu().users().push({
+                        index: self.menu().users().length,
+                        user: ko.observable("Player"),
+                        userEditText: ko.observable("Player"),
+                        isEditing: ko.observable(false),
+                        isAddUser: ko.observable(true)
+                    });
+
+                    self.menu().users.valueHasMutated();
+
+                    self.menuEditUser(user);
+                };
+
                 MainViewModel.prototype.showMenu = function () {
                     var self = this;
                     self.populateMenu();
                     self.shouldDisplayGameMenu(true);
                     self.menu().shouldDisplayWorlds(true);
                     self.menu().shouldDisplayLevels(false);
+                    self.menu().shouldDisplayUsers(false);
 
                     self.menu.valueHasMutated();
                 };
 
                 MainViewModel.prototype.changeUser = function () {
-                    throw "Not Implemented";
+                    var self = this;
+                    self.menu().shouldDisplayWorlds(false);
+                    self.menu().shouldDisplayLevels(false);
+                    self.menu().shouldDisplayUsers(true);
                 };
 
                 MainViewModel.prototype.changeWorld = function () {
                     var self = this;
                     self.menu().shouldDisplayWorlds(true);
                     self.menu().shouldDisplayLevels(false);
+                    self.menu().shouldDisplayUsers(false);
                 };
 
                 MainViewModel.prototype.populateMenu = function () {
@@ -119,8 +192,27 @@ var Told;
                     var menu = self.menu();
                     var worlds = menu.worlds();
 
+                    // Populate user info
                     menu.currentUser(self.providers.userSettings.currentUserName);
+                    menu.users(self.providers.userSettings.userList.map(function (u, index) {
+                        return {
+                            index: index,
+                            user: ko.observable(u),
+                            userEditText: ko.observable(u),
+                            isEditing: ko.observable(false),
+                            isAddUser: ko.observable(false)
+                        };
+                    }));
 
+                    menu.users().push({
+                        index: self.menu().users().length,
+                        user: ko.observable("Player"),
+                        userEditText: ko.observable("Player"),
+                        isEditing: ko.observable(false),
+                        isAddUser: ko.observable(true)
+                    });
+
+                    // Populate level definitions
                     self._levels.forEach(function (l) {
                         while (worlds.length < l.world) {
                             worlds.push({
