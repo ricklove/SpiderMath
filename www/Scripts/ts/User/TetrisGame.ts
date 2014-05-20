@@ -40,7 +40,8 @@ module Told.TableMath.Game {
             }
 
             // Create blank rows
-            for (var i = 0; i < 4; i++) {
+            //for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 3; i++) {
                 rows.push(TetrisGame.createSpecialRow(minColumnValue, maxColumnValue, "B" + i, true, false));
             }
 

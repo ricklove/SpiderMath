@@ -163,7 +163,12 @@ Display the starts at level over and level selection
 
 - Update menu to chosen user
 
+#### 13:15-13:39
+
+* Design for 320x480 with viewport definition to automatically scale on devices
+
 ##### FUTURE
+
 
 - Delete User
 

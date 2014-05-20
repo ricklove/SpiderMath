@@ -3,6 +3,35 @@
     white-space: pre;
 }
 
+   .header > h1 {
+        font-size: 20px;
+        letter-spacing: 0.4em;
+    }
+
+    .footer > h4 {
+        font-size: 14px;
+    }
+
+.header{
+    /*height:38px;*/
+        height:26px;
+    padding:5px;
+    border-width:1px;
+}
+.footer {
+    /*28px*/
+    height:16px;
+    padding:5px;
+    border-width:1px;
+}
+#content {
+    /*480-header&footer*/
+    min-height:414px;
+}
+
+ 
+
+
 #content {
     /*position: relative;*/
     background: black;
@@ -18,8 +47,8 @@
     }
 
 .numSquareCell, .numSquareCellHeading {
-    height: 42px;
-    width: 42px;
+    height: 32px;
+    width: 32px;
 }
 
 .numSquareCell {
@@ -32,8 +61,8 @@
 }
 
 .numSquare, .numSquareHeading {
-    line-height: 42px;
-    font-size: 36px;
+    line-height: 32px;
+    font-size: 24px;
 }
 
 .numSquareHeading {
@@ -73,14 +102,14 @@
 }
 
 .level {
-    font-size: 2em;
+    font-size: 1.5em;
     color: yellow;
     border: solid 2px yellow;
     background: black;
 }
 
 .score {
-    font-size: 3em;
+    font-size: 2em;
     color: lime;
     border: solid 2px lime;
     background: black;
