@@ -157,8 +157,11 @@ Display the starts at level over and level selection
 - Display user selection
 - Edit User Names
 - Add User
-* Choose User
+- Choose User
 
+#### 7:10-7:25
+
+- Update menu to chosen user
 
 ##### FUTURE
 

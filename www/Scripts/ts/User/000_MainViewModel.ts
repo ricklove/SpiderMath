@@ -138,8 +138,6 @@ module Told.TableMath.UI {
             console.log("menuEditUser");
 
             user.isEditing(true);
-
-           
         }
 
         menuAddUser(user: IMenuUser) {
@@ -236,11 +234,18 @@ module Told.TableMath.UI {
                 }
 
                 var level = w.levels()[l.level - 1];
-
-
                 menu.levelsById[l.id] = level;
             });
 
+            // Reset all levels
+            worlds.forEach(w=> {
+                w.levels().forEach(l=> {
+                    l.stars(0);
+                    l.starsClass("star-0");
+                })
+            });
+
+            // Set to level states
             var levelStates = self.providers.userSettings.currentUserState.levels;
 
             levelStates.forEach((ls) => {
@@ -257,13 +262,12 @@ module Told.TableMath.UI {
                 wStars = 0;
                 wMaxStars = 0;
 
-                if (lastLevelWasFinished) {
-                    w.isLocked(false);
-                }
+                w.isLocked(!lastLevelWasFinished);
 
                 w.levels().forEach(l=> {
+                    l.isLocked(!lastLevelWasFinished);
+
                     if (lastLevelWasFinished) {
-                        l.isLocked(false);
 
                         if (l.stars() === 0) {
                             lastLevelWasFinished = false;

@@ -237,10 +237,18 @@ var Told;
                         }
 
                         var level = w.levels()[l.level - 1];
-
                         menu.levelsById[l.id] = level;
                     });
 
+                    // Reset all levels
+                    worlds.forEach(function (w) {
+                        w.levels().forEach(function (l) {
+                            l.stars(0);
+                            l.starsClass("star-0");
+                        });
+                    });
+
+                    // Set to level states
                     var levelStates = self.providers.userSettings.currentUserState.levels;
 
                     levelStates.forEach(function (ls) {
@@ -257,14 +265,12 @@ var Told;
                         wStars = 0;
                         wMaxStars = 0;
 
-                        if (lastLevelWasFinished) {
-                            w.isLocked(false);
-                        }
+                        w.isLocked(!lastLevelWasFinished);
 
                         w.levels().forEach(function (l) {
-                            if (lastLevelWasFinished) {
-                                l.isLocked(false);
+                            l.isLocked(!lastLevelWasFinished);
 
+                            if (lastLevelWasFinished) {
                                 if (l.stars() === 0) {
                                     lastLevelWasFinished = false;
                                 }
