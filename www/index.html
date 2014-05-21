@@ -21,16 +21,21 @@
     </div>
 
     <div data-role="page" id="home" style="display: none">
-        <div class="header" data-bind="if: !shouldDisplayGame()">
+
+
+        <!-- ko if: !shouldDisplayGame() -->
+        <div class="header">
             <h1>Spider Math</h1>
         </div>
+        <!-- /ko -->
+
         <div id="content" data-role="content">
 
             <!--MainContent-->
 
             <!-- Game Menu -->
-
-            <div class="gameMenu" data-bind="if: shouldDisplayGameMenu">
+            <!-- ko if: shouldDisplayGameMenu -->
+            <div class="gameMenu">
                 <!-- ko if (menu().shouldDisplayUsers) -->
                 <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().users">
@@ -63,12 +68,14 @@
                 </ul>
                 <!-- /ko -->
             </div>
+            <!-- /ko -->
 
             <!-- Game Over -->
-            <div class="gameOverPopup" data-bind="if: shouldDisplayGameOver()">
+            <!-- ko if: shouldDisplayGameOver -->
+            <div class="gameOverPopup">
                 <div class="gameOver">
-                    <span data-bind="if: !gameOverHasWon()">Defeated!</span>
-                    <span data-bind="if: gameOverHasWon()">Success!</span>
+                    <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
+                    <span data-bind="visible: gameOverHasWon()">Success!</span>
                 </div>
 
                 <div class="info">
@@ -86,16 +93,17 @@
                     <div>
                         <div class="levelReplay" data-bind="fastclick: handleLevelReplay"></div>
                         <div class="levelMenu" data-bind="fastclick: handleLevelMenu"></div>
-                        <div class="levelNext" data-bind="fastclick: handleLevelNext, if:gameOverHasWon()"></div>
+                        <div class="levelNext" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></div>
                     </div>
 
 
                 </div>
             </div>
+            <!-- /ko -->
 
             <!-- Game -->
-
-            <div data-bind="if: shouldDisplayGame()">
+            <!-- ko if: shouldDisplayGame -->
+            <div>
                 <div class="info">
                     <div class="level">
                         World <span data-bind="text: world"></span>
@@ -143,11 +151,15 @@
                 </div>
 
             </div>
+            <!-- /ko -->
 
         </div>
-        <div class="footer" data-bind="if: !shouldDisplayGame()">
+
+        <!-- ko if: !shouldDisplayGame() -->
+        <div class="footer">
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>
         </div>
+        <!-- /ko -->
     </div>
 
     <div id="test" style="display: none">

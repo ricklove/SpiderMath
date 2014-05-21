@@ -646,6 +646,11 @@ var Told;
 
                     // Use jQuery animation
                     var atElement = $("#" + viewModel.scoreChangeAtId());
+
+                    if (atElement.length === 0) {
+                        return;
+                    }
+
                     var startPosition = atElement.offset();
                     var endPosition = $("#score").offset();
 

@@ -180,6 +180,9 @@ Display the starts at level over and level selection
 
 - Add fastclick
 
+#### 12:05-12:30
+- Fix bugs caused by if instead of visible
+
 ##### FUTURE
 
 

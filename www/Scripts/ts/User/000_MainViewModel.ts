@@ -672,6 +672,11 @@ module Told.TableMath.UI {
 
             // Use jQuery animation
             var atElement = $("#" + viewModel.scoreChangeAtId());
+
+            if (atElement.length === 0) {
+                return;
+            }
+
             var startPosition = atElement.offset();
             var endPosition = $("#score").offset();
 
@@ -695,6 +700,7 @@ module Told.TableMath.UI {
     };
     
     // Fast click
+    // Based on: http://www.iknuth.com/2012/07/google-fastbuttons-implemented-as-a-knockoutjs-custom-binding/
     declare var FastButton;
     ko.bindingHandlers["fastclick"] = {
 
@@ -705,5 +711,6 @@ module Told.TableMath.UI {
             });
         }
     };
+
 
 }
