@@ -520,6 +520,17 @@ var Told;
                     console.log("handleLevelReplay");
 
                     var self = this;
+                    if (!self.isGameOver()) {
+                        self.game.stop();
+                    }
+
+                    self.setupGame();
+                };
+
+                MainViewModel.prototype.handleLevelResume = function () {
+                    console.log("handleLevelReplay");
+
+                    var self = this;
                     if (self.isGameOver()) {
                         self.setupGame();
                     }

@@ -174,7 +174,7 @@ Display the starts at level over and level selection
 
 #### 11:30-11:35
 
-- Change visible: to if: for performance
+- Change "visible" to "if" for performance
 
 #### 11:35-12:05
 
@@ -183,13 +183,16 @@ Display the starts at level over and level selection
 #### 12:05-12:30
 - Fix bugs caused by if instead of visible
 
+#### 13:25-13:35
+- Pause navigation
+
 ##### FUTURE
 
+- BUG: If user does not change name
 
 - Delete User
 
 - ?Show level (instead of world first)
-- Pause Navigation
 
 - Find better images for stars and level buttons and update css
 - Score should increase with fast answers

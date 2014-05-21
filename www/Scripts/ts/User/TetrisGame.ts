@@ -136,6 +136,15 @@ module Told.TableMath.Game {
             this.tickLoop();
         }
 
+        public stop() {
+            var self = this;
+
+            self.isPaused = false;
+            clearTimeout(self.tickTimeoutId);
+            self._viewModel = null;
+            self.isGameOver = true;
+        }
+
         isGameOver: boolean = false;
         tickTimeoutId: number = null;
 

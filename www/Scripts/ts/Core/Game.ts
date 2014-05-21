@@ -20,6 +20,7 @@
         board: IBoard;
         setup(level: ILevel);
         start();
+        stop();
 
         fallingNumber: number;
         fallingNumberPosition: IPosition;

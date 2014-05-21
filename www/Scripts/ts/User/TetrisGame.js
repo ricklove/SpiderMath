@@ -114,6 +114,15 @@ var Told;
                     this.tickLoop();
                 };
 
+                TetrisGame.prototype.stop = function () {
+                    var self = this;
+
+                    self.isPaused = false;
+                    clearTimeout(self.tickTimeoutId);
+                    self._viewModel = null;
+                    self.isGameOver = true;
+                };
+
                 TetrisGame.prototype.gameOver = function (hasWon) {
                     var self = this;
                     self._viewModel.gameOver(hasWon, self.mistakes);

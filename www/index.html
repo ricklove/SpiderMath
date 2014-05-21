@@ -138,7 +138,12 @@
                 </div>
 
                 <div class="pause" data-bind="visible: isPaused">
-                    Pause
+                    <div>Pause</div>
+                    <div>
+                        <div class="levelResume" data-bind="fastclick: handleLevelResume"></div>
+                        <div class="levelReplay" data-bind="fastclick: handleLevelReplay"></div>
+                        <div class="levelMenu" data-bind="fastclick: handleLevelMenu"></div>
+                    </div>
                 </div>
 
                 <div class="info">

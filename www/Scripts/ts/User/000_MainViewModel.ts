@@ -540,6 +540,18 @@ module Told.TableMath.UI {
             console.log("handleLevelReplay");
 
             var self = this;
+            if (!self.isGameOver()) {
+                self.game.stop();
+            }
+
+            self.setupGame();
+
+        }
+
+        handleLevelResume() {
+            console.log("handleLevelReplay");
+
+            var self = this;
             if (self.isGameOver()) {
                 self.setupGame();
             }
