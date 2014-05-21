@@ -40,7 +40,7 @@
                 <ul data-bind="foreach: menu().users">
                     <li class="menuUser" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
                         <span data-bind="text: user"></span>
-                        <div class="editUser" data-bind="fastclick: $root.menuEditUser"></div>
+                        <span class="icon iconMedium iconNoBorder icon-pencil" data-bind="fastclick: $root.menuEditUser"></span>
                     </li>
                     <li class="menuEditUser" data-bind="visible: isEditing()">
                         <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
@@ -90,9 +90,9 @@
                         <span data-bind="text: score"></span>
                     </div>
                     <div>
-                        <div class="levelReplay" data-bind="fastclick: handleLevelReplay"></div>
-                        <div class="levelMenu" data-bind="fastclick: handleLevelMenu"></div>
-                        <div class="levelNext" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></div>
+                        <span class="icon icon-loop" data-bind="fastclick: handleLevelReplay"></span>
+                        <span class="icon icon-list" data-bind="fastclick: handleLevelMenu"></span>
+                        <span class="icon icon-arrow-right" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></span>
                     </div>
 
 
@@ -139,9 +139,9 @@
                 <div class="pause" data-bind="visible: isPaused">
                     <div>Pause</div>
                     <div>
-                        <div class="levelResume" data-bind="fastclick: handleLevelResume"></div>
-                        <div class="levelReplay" data-bind="fastclick: handleLevelReplay"></div>
-                        <div class="levelMenu" data-bind="fastclick: handleLevelMenu"></div>
+                        <span class="icon icon-play" data-bind="fastclick: handleLevelResume"></span>
+                        <span class="icon icon-loop" data-bind="fastclick: handleLevelReplay"></span>
+                        <span class="icon icon-list" data-bind="fastclick: handleLevelMenu"></span>
                     </div>
                 </div>
 

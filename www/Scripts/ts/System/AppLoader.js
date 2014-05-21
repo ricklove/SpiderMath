@@ -96,6 +96,7 @@
             }
 
             loadCss('Styles/css/App.css');
+            loadCss('Styles/css/Icons/style.css');
 
             var scriptList = [
                 'Scripts/js/External/jquery.min.js',

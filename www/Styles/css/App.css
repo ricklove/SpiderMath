@@ -7,34 +7,62 @@ body {
     background-color: black;
 }
 
-   .header > h1 {
-        font-size: 20px;
-        letter-spacing: 0.4em;
-    }
-
-    .footer > h4 {
-        font-size: 14px;
-    }
-
-.header{
-    /*height:38px;*/
-        height:26px;
-    padding:5px;
-    border-width:1px;
+.icon {
+    color: white;
+    font-size: 36px;
+    border: 2px solid white;
+    padding: 8px;
+    margin: 4px;
+    display: inline-block;
 }
+
+.iconNoBorder {
+    border: none;
+}
+
+.iconMedium {
+    font-size: 24px;
+    padding: 6px;
+    margin: 3px;
+}
+
+.iconSmall {
+    font-size: 12px;
+    padding: 3px;
+    margin: 3px;
+    border: 1px solid white;
+}
+
+.header > h1 {
+    font-size: 20px;
+    letter-spacing: 0.4em;
+}
+
+.footer > h4 {
+    font-size: 14px;
+}
+
+.header {
+    /*height:38px;*/
+    height: 26px;
+    padding: 5px;
+    border-width: 1px;
+}
+
 .footer {
     /*28px*/
-    height:16px;
-    padding:5px;
-    border-width:1px;
+    height: 16px;
+    padding: 5px;
+    border-width: 1px;
 }
+
 #content {
     /*iPHone4 with status bar and toolbar allows 416px*2*/
     /*416-header&footer*/
-    min-height:350px;
+    min-height: 350px;
 }
 
- 
+
 
 
 #content {
@@ -211,13 +239,14 @@ i.starSingle {
     width: 16px;
     background-position-x: 0;
 }
+
 .worldStars {
     font-size: 16px;
 }
 
-.worldStars> i.star{
-    zoom: 2;
-}
+    .worldStars > i.star {
+        zoom: 2;
+    }
 
 .pause {
     position: fixed;
@@ -281,21 +310,20 @@ li.menuUser, li.menuAddUser, li.menuEditUser {
     border: solid 3px lime;
 }
 
+
+
 li.menuAddUser {
     color: yellow;
-
 }
 
 .editUser {
     background-image: url(../../Assets/images/edit.png);
     background-repeat: no-repeat;
-
     width: 14px;
     height: 14px;
     display: inline-block;
     zoom: 1;
     border: solid 1px yellow;
-
     background-position: 3px;
     padding: 3px;
 }

@@ -192,6 +192,10 @@ Display the starts at level over and level selection
 - Fix BUG: If paused, not closing pause when clicking on a button
 
 
+#### 17:45-18:15
+
+- Added Font Icons
+
 ##### FUTURE
 
 - BUG: If user does not change name
