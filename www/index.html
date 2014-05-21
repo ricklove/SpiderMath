@@ -34,30 +34,30 @@
                 <!-- ko if (menu().shouldDisplayUsers) -->
                 <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().users">
-                    <li class="menuUser" data-bind="click: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
+                    <li class="menuUser" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
                         <span data-bind="text: user"></span>
-                        <div class="editUser" data-bind="click: $root.menuEditUser"></div>
+                        <div class="editUser" data-bind="fastclick: $root.menuEditUser"></div>
                     </li>
                     <li class="menuEditUser" data-bind="visible: isEditing()">
                         <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
                     </li>
-                    <li class="menuAddUser" data-bind="click: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
+                    <li class="menuAddUser" data-bind="fastclick: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
                         <span>Add User</span>
                     </li>
                 </ul>
                 <!-- /ko -->
                 <!-- ko if (menu().shouldDisplayWorlds) -->
-                <h3 class="level" data-bind="click: changeUser"><span data-bind="text: menu().currentUser"></span></h3>
+                <h3 class="level" data-bind="fastclick: changeUser"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().worlds">
-                    <li class="menuWorld" data-bind="click: $root.menuChooseWorld, css: {lock: isLocked()}">World <span data-bind="text: worldNumber"></span>
+                    <li class="menuWorld" data-bind="fastclick: $root.menuChooseWorld, css: {lock: isLocked()}">World <span data-bind="text: worldNumber"></span>
                         <div class="worldStars"><i class="starSingle"></i><span data-bind="text: stars"></span>/ <span data-bind="text: maxStars"></span></div>
                     </li>
                 </ul>
                 <!-- /ko -->
                 <!-- ko if (menu().shouldDisplayLevels) -->
-                <h3 class="level" data-bind="click: changeWorld">World <span data-bind="text: menu().currentWorld().worldNumber"></span></h3>
+                <h3 class="level" data-bind="fastclick: changeWorld">World <span data-bind="text: menu().currentWorld().worldNumber"></span></h3>
                 <ul data-bind="foreach: menu().currentWorld().levels">
-                    <li class="menuLevel" data-bind="click: $root.menuChooseLevel, css: {lock: isLocked()}">Level <span data-bind="text: levelNumber"></span>
+                    <li class="menuLevel" data-bind="fastclick: $root.menuChooseLevel, css: {lock: isLocked()}">Level <span data-bind="text: levelNumber"></span>
                         <i class="star" data-bind="css: starsClass"></i>
                     </li>
                 </ul>
@@ -84,9 +84,9 @@
                         <span data-bind="text: score"></span>
                     </div>
                     <div>
-                        <div class="levelReplay" data-bind="click: handleLevelReplay"></div>
-                        <div class="levelMenu" data-bind="click: handleLevelMenu"></div>
-                        <div class="levelNext" data-bind="click: handleLevelNext, if:gameOverHasWon()"></div>
+                        <div class="levelReplay" data-bind="fastclick: handleLevelReplay"></div>
+                        <div class="levelMenu" data-bind="fastclick: handleLevelMenu"></div>
+                        <div class="levelNext" data-bind="fastclick: handleLevelNext, if:gameOverHasWon()"></div>
                     </div>
 
 

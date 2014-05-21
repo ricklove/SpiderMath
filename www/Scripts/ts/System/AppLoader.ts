@@ -101,6 +101,7 @@ module Told.AppLoader {
             //'Scripts/js/External/jquery.mobile-1.4.0.min.js',
             'Scripts/js/External/knockout-3.0.0.min.js',
             'Scripts/js/External/hammer.min.js',
+            'Scripts/js/External/google.fastbutton.js',
 
         //'Scripts/js/External/dust-core-0.3.0.min.js',
             'Scripts/js/External/dust-full-0.3.0.min.js',

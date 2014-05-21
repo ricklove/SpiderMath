@@ -176,6 +176,10 @@ Display the starts at level over and level selection
 
 - Change visible: to if: for performance
 
+#### 11:35-12:05
+
+- Add fastclick
+
 ##### FUTURE
 
 

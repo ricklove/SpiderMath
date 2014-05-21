@@ -693,5 +693,17 @@ module Told.TableMath.UI {
             //viewModel.scoreChange("");
         }
     };
+    
+    // Fast click
+    declare var FastButton;
+    ko.bindingHandlers["fastclick"] = {
+
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            new FastButton(element, function () {
+                var f : ()=>void = valueAccessor();
+                f.call(bindingContext["$root"], bindingContext["$data"], event);
+            });
+        }
+    };
 
 }

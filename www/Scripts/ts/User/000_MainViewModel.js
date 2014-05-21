@@ -664,6 +664,16 @@ var Told;
                     //viewModel.scoreChange("");
                 }
             };
+
+            
+            ko.bindingHandlers["fastclick"] = {
+                init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    new FastButton(element, function () {
+                        var f = valueAccessor();
+                        f.call(bindingContext["$root"], bindingContext["$data"], event);
+                    });
+                }
+            };
         })(TableMath.UI || (TableMath.UI = {}));
         var UI = TableMath.UI;
     })(Told.TableMath || (Told.TableMath = {}));
