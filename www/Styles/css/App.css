@@ -3,6 +3,10 @@
     white-space: pre;
 }
 
+body {
+    background-color: black;
+}
+
    .header > h1 {
         font-size: 20px;
         letter-spacing: 0.4em;
