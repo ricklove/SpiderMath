@@ -164,7 +164,9 @@ var Told;
                         self.tickLoop();
                     }, self._tickTime);
 
-                    self._tickTime = self._tickTime * 0.99;
+                    if (self.isPaused) {
+                        self._tickTime = self._tickTime * 0.99;
+                    }
                 };
 
                 TetrisGame.prototype.answerAtSpot = function () {

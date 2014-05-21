@@ -185,6 +185,7 @@ Display the starts at level over and level selection
 
 #### 13:25-13:35
 - Pause navigation
+- Fix Bug where speed will increase after long pause
 
 ##### FUTURE
 
