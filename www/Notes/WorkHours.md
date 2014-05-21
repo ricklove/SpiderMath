@@ -172,6 +172,10 @@ Display the starts at level over and level selection
 
 - Hide Header and Footer during game
 
+#### 11:30-11:35
+
+- Change visible: to if: for performance
+
 ##### FUTURE
 
 

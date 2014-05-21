@@ -21,7 +21,7 @@
     </div>
 
     <div data-role="page" id="home" style="display: none">
-        <div class="header" data-bind="visible: !shouldDisplayGame()">
+        <div class="header" data-bind="if: !shouldDisplayGame()">
             <h1>Spider Math</h1>
         </div>
         <div id="content" data-role="content">
@@ -30,18 +30,18 @@
 
             <!-- Game Menu -->
 
-            <div class="gameMenu" data-bind="visible: shouldDisplayGameMenu">
+            <div class="gameMenu" data-bind="if: shouldDisplayGameMenu">
                 <!-- ko if (menu().shouldDisplayUsers) -->
                 <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().users">
-                    <li class="menuUser" data-bind="click: $root.menuChooseUser, visible: !isEditing() && !isAddUser()">
+                    <li class="menuUser" data-bind="click: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
                         <span data-bind="text: user"></span>
                         <div class="editUser" data-bind="click: $root.menuEditUser"></div>
                     </li>
                     <li class="menuEditUser" data-bind="visible: isEditing()">
                         <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
                     </li>
-                    <li class="menuAddUser" data-bind="click: $root.menuAddUser, visible: isAddUser() && !isEditing()">
+                    <li class="menuAddUser" data-bind="click: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
                         <span>Add User</span>
                     </li>
                 </ul>
@@ -65,10 +65,10 @@
             </div>
 
             <!-- Game Over -->
-            <div class="gameOverPopup" data-bind="visible: shouldDisplayGameOver()">
+            <div class="gameOverPopup" data-bind="if: shouldDisplayGameOver()">
                 <div class="gameOver">
-                    <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
-                    <span data-bind="visible: gameOverHasWon()">Success!</span>
+                    <span data-bind="if: !gameOverHasWon()">Defeated!</span>
+                    <span data-bind="if: gameOverHasWon()">Success!</span>
                 </div>
 
                 <div class="info">
@@ -86,7 +86,7 @@
                     <div>
                         <div class="levelReplay" data-bind="click: handleLevelReplay"></div>
                         <div class="levelMenu" data-bind="click: handleLevelMenu"></div>
-                        <div class="levelNext" data-bind="click: handleLevelNext, visible:gameOverHasWon()"></div>
+                        <div class="levelNext" data-bind="click: handleLevelNext, if:gameOverHasWon()"></div>
                     </div>
 
 
@@ -95,7 +95,7 @@
 
             <!-- Game -->
 
-            <div data-bind="visible: shouldDisplayGame()">
+            <div data-bind="if: shouldDisplayGame()">
                 <div class="info">
                     <div class="level">
                         World <span data-bind="text: world"></span>
@@ -129,7 +129,7 @@
                     </table>
                 </div>
 
-                <div class="pause" data-bind="visible:isPaused">
+                <div class="pause" data-bind="visible: isPaused">
                     Pause
                 </div>
 
@@ -145,7 +145,7 @@
             </div>
 
         </div>
-        <div class="footer" data-bind="visible: !shouldDisplayGame()">
+        <div class="footer" data-bind="if: !shouldDisplayGame()">
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>
         </div>
     </div>
