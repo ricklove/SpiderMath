@@ -504,7 +504,7 @@ var Told;
                     var self = this;
 
                     if (self.isPaused()) {
-                        self.isPaused(false);
+                        self.pause(false);
                     }
 
                     if (self.isGameOver()) {
@@ -520,7 +520,7 @@ var Told;
                     var self = this;
 
                     if (self.isPaused()) {
-                        self.isPaused(false);
+                        self.pause(false);
                     }
 
                     self.showMenu();
@@ -532,7 +532,7 @@ var Told;
                     var self = this;
 
                     if (self.isPaused()) {
-                        self.isPaused(false);
+                        self.pause(false);
                     }
 
                     if (!self.isGameOver()) {
@@ -548,7 +548,7 @@ var Told;
                     var self = this;
 
                     if (self.isPaused()) {
-                        self.isPaused(false);
+                        self.pause(false);
                     }
 
                     if (self.isGameOver()) {

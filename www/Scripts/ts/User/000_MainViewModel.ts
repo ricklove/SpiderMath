@@ -524,7 +524,7 @@ module Told.TableMath.UI {
             var self = this;
 
             if (self.isPaused()) {
-                self.isPaused(false);
+                self.pause(false);
             }
 
             if (self.isGameOver()) {
@@ -540,7 +540,7 @@ module Told.TableMath.UI {
             var self = this;
 
             if (self.isPaused()) {
-                self.isPaused(false);
+                self.pause(false);
             }
 
             self.showMenu();
@@ -552,7 +552,7 @@ module Told.TableMath.UI {
             var self = this;
 
             if (self.isPaused()) {
-                self.isPaused(false);
+                self.pause(false);
             }
 
             if (!self.isGameOver()) {
@@ -569,7 +569,7 @@ module Told.TableMath.UI {
             var self = this;
 
             if (self.isPaused()) {
-                self.isPaused(false);
+                self.pause(false);
             }
 
             if (self.isGameOver()) {
