@@ -187,8 +187,14 @@ Display the starts at level over and level selection
 - Pause navigation
 - Fix Bug where speed will increase after long pause
 
+#### 13:45-13:50
+
+- Fix BUG: If paused, not closing pause when clicking on a button
+
+
 ##### FUTURE
 
+- BUG: If paused, not closing pause when clicking on a button
 - BUG: If user does not change name
 
 - Delete User

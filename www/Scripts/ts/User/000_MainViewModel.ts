@@ -522,6 +522,11 @@ module Told.TableMath.UI {
             console.log("handleLevelNext");
 
             var self = this;
+
+            if (self.isPaused()) {
+                self.isPaused(false);
+            }
+
             if (self.isGameOver()) {
                 // Level up
                 self._levelIndex++;
@@ -533,6 +538,11 @@ module Told.TableMath.UI {
             console.log("handleLevelMenu");
 
             var self = this;
+
+            if (self.isPaused()) {
+                self.isPaused(false);
+            }
+
             self.showMenu();
         }
 
@@ -540,6 +550,11 @@ module Told.TableMath.UI {
             console.log("handleLevelReplay");
 
             var self = this;
+
+            if (self.isPaused()) {
+                self.isPaused(false);
+            }
+
             if (!self.isGameOver()) {
                 self.game.stop();
             }
@@ -552,6 +567,11 @@ module Told.TableMath.UI {
             console.log("handleLevelReplay");
 
             var self = this;
+
+            if (self.isPaused()) {
+                self.isPaused(false);
+            }
+
             if (self.isGameOver()) {
                 self.setupGame();
             }

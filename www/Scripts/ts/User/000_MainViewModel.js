@@ -502,6 +502,11 @@ var Told;
                     console.log("handleLevelNext");
 
                     var self = this;
+
+                    if (self.isPaused()) {
+                        self.isPaused(false);
+                    }
+
                     if (self.isGameOver()) {
                         // Level up
                         self._levelIndex++;
@@ -513,6 +518,11 @@ var Told;
                     console.log("handleLevelMenu");
 
                     var self = this;
+
+                    if (self.isPaused()) {
+                        self.isPaused(false);
+                    }
+
                     self.showMenu();
                 };
 
@@ -520,6 +530,11 @@ var Told;
                     console.log("handleLevelReplay");
 
                     var self = this;
+
+                    if (self.isPaused()) {
+                        self.isPaused(false);
+                    }
+
                     if (!self.isGameOver()) {
                         self.game.stop();
                     }
@@ -531,6 +546,11 @@ var Told;
                     console.log("handleLevelReplay");
 
                     var self = this;
+
+                    if (self.isPaused()) {
+                        self.isPaused(false);
+                    }
+
                     if (self.isGameOver()) {
                         self.setupGame();
                     }
