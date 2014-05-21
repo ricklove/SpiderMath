@@ -183,7 +183,7 @@ Display the starts at level over and level selection
 #### 12:05-12:30
 - Fix bugs caused by if instead of visible
 
-#### 13:25-13:35
+#### 13:25-13:40
 - Pause navigation
 - Fix Bug where speed will increase after long pause
 

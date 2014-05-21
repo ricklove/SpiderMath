@@ -188,7 +188,7 @@ module Told.TableMath.Game {
 
             self.tickTimeoutId = setTimeout(function () { self.tickLoop(); }, self._tickTime);
 
-            if (self.isPaused) {
+            if (!self.isPaused) {
                 self._tickTime = self._tickTime * 0.99;
             }
         }
