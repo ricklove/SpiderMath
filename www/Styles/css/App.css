@@ -259,7 +259,9 @@ i.starSingle {
     margin-top: -150px;
     padding-top: 100px;
     padding-bottom: 100px;
-    background: #222;
+    background: black;
+    border-top:3px solid lime;
+    border-bottom:3px solid lime;
 }
 
 .levelNext, .levelMenu, .levelReplay, .levelResume {
