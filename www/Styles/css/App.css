@@ -25,8 +25,9 @@
     border-width:1px;
 }
 #content {
-    /*480-header&footer*/
-    min-height:414px;
+    /*iPHone4 with status bar and toolbar allows 416px*2*/
+    /*416-header&footer*/
+    min-height:350px;
 }
 
  

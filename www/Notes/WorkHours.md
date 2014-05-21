@@ -167,6 +167,11 @@ Display the starts at level over and level selection
 
 * Design for 320x480 with viewport definition to automatically scale on devices
 
+### 2014-05-21
+#### 11:10-11:15
+
+- Hide Header and Footer during game
+
 ##### FUTURE
 
 
