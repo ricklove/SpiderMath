@@ -202,6 +202,11 @@ Display the starts at level over and level selection
 
 - Refactor CSS: Create Simple.css
 
+#### 16:10-18:00
+
+- Using em measurements
+- Finishing Simple.css
+
 ##### FUTURE
 
 - BUG: If user does not change name

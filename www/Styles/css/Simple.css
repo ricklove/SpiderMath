@@ -1,23 +1,4 @@
-﻿/*Colors*/
-/*Hue:Color, Saturation:80, Value:80*/
-fake {
-    /*Red*/
-    color: #cc2929;
-    /*Green*/
-    color: #29cc29;
-    /*Blue*/
-    color: #2929cc;
-    /*Magenta*/
-    color: #cc29cc;
-    /*Yellow*/
-    color: #cccc29;
-    /*Cyan*/
-    color: #29cccc;
-}
-/*Sizes*/
-
-/*Font*/
-
+﻿/*Colors at bottom*/
 
 /*Reset All*/
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
@@ -61,16 +42,15 @@ table {
 body {
     background-color: black;
     color: white;
-    font: 14px sans-serif;
-    font-stretch: condensed;
-    text-transform:uppercase;
+    font: 20px "Arial Narrow";
+    text-transform: uppercase;
 }
 
 
 /*Main Structure*/
 .main {
     margin: 0px auto;
-    width: 320px;
+    width: 20em;
 }
 
 .main-header {
@@ -84,17 +64,22 @@ body {
 .main-content {
 }
 
+/*Debug*/
+.debug-outline-inner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20em;
+    height: 27em;
+    border: solid 1px red;
+}
+
 /*Game Screens*/
 .screen {
+    border: 1px solid white;
 }
 
 .screen-game {
-}
-
-.screen-gameOver {
-}
-
-.screen-pause {
 }
 
 .screen-gameMenu {
@@ -109,10 +94,27 @@ body {
 }
 
 /*Game Screen*/
-.info-stage {
-    background-color: #29cccc;
-    color: black;
+.info-game {
+    position: relative;
+    background-color: grey;
 }
+
+    .info-game > .info-stage {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 0.5em;
+        width: 10em;
+    }
+
+
+    .info-game > .info-score {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        top: 0.5em;
+        width: 5em;
+    }
 
 .stage {
 }
@@ -121,20 +123,17 @@ body {
 }
 
     .stage-world:before {
-        content: "W ";
+        content: "World ";
     }
 
 .stage-level {
 }
 
     .stage-level:before {
-        content: "L ";
+        content: "Level ";
     }
 
-.info-score {
-    background-color: #cc29cc;
-    color: black;
-}
+
 
 .score {
 }
@@ -152,15 +151,26 @@ body {
 }
 
 .scoreGood {
-    color: #2929cc;
 }
 
 .scoreBad {
-    color: #cc2929;
 }
 
 .game-numTable {
     margin: 0px auto;
+    padding-top: 2em;
+    height: 25em;
+}
+
+.game-numTable-outer {
+    position: relative;
+    bottom: 0;
+    height: 25em;
+}
+
+.game-numTable-inner {
+    position: absolute;
+    bottom: 0;
 }
 
 .numTable {
@@ -171,8 +181,9 @@ body {
 }
 
 .numTableCell {
-    height: 32px;
-    width: 32px;
+    /*height: 2.5em;
+    width: 2.5em;*/
+    vertical-align: top;
 }
 
 .numTableCell-heading {
@@ -180,29 +191,191 @@ body {
 }
 
 .numTableCell-value {
-    border: solid 1px lightgray;
 }
 
 .numSquare {
-    line-height: 32px;
-    font-size: 24px;
+    line-height: 2.5em;
     text-align: center;
+    height: 2.5em;
+    width: 2.5em;
 }
+
+    .numSquare > span {
+        font-size: 1.8em;
+    }
+
+    .numSquare:before {
+        content: " ";
+    }
 
 .numSquare-heading {
 }
 
 .numSquare-value {
+    border: solid 0.1em lightgray;
 }
 
 
 /*Pause Screen*/
+.screen-pause {
+    position: fixed;
+    top: 5em;
+    left: 0em;
+    right: 0em;
+    height: 10em;
+    text-align: center;
+    background-color: black;
+}
+
 .info-pause {
+    display: block;
+    font-size: 3em;
 }
 
-.commands-pause {
-}
-
-    .commands-pause:before {
+    .info-pause:before {
         content: "Pause";
     }
+
+.commands-pause {
+    font-size: 3em;
+    padding: 0.5em;
+}
+
+    .commands-pause > .icon {
+        padding: 0.25em;
+    }
+
+/*Game Over Screen*/
+.screen-gameOver {
+    margin-top: 5em;
+}
+
+.info-gameOver {
+}
+
+    .info-gameOver > .info-gameOverMessage {
+        font-size: 3em;
+    }
+
+        .info-gameOver > .info-gameOverMessage > span {
+            display: block;
+        }
+
+    .info-gameOver > .info-stage {
+        font-size: 2em;
+    }
+
+        .info-gameOver > .info-stage > span {
+            display: block;
+        }
+
+    .info-gameOver > .info-score {
+        font-size: 2em;
+    }
+
+.commands-gameOver {
+    text-align: center;
+    padding: 0.5em;
+    font-size: 3em;
+}
+
+    .commands-gameOver > .icon {
+        padding: 0.25em;
+    }
+
+/*Stars*/
+.info-stars {
+    font-size: 3em;
+}
+
+.star-0:before {
+    content: "\e607\e607\e607";
+}
+
+.star-1:before {
+    content: "\e609\e607\e607";
+}
+
+.star-2:before {
+    content: "\e609\e609\e607";
+}
+
+.star-3:before {
+    content: "\e609\e609\e609";
+}
+
+
+/*---------------------------------------*/
+/*Colors---------------------------------*/
+/*---------------------------------------*/
+fake {
+    /*Orange*/
+    color: #FF8C41;
+    /*Red*/
+    color: #E8252B;
+    /*Purple*/
+    color: #CF29FF;
+    /*Blue*/
+    color: #332FE8;
+    /*Cyan*/
+    color: #34C4FF;
+}
+
+/*Yellow ffde41*/
+.info-stars, fake {
+    color: #ffde41;
+}
+
+fake {
+    background-color: #ffde41;
+    color: black;
+}
+
+
+/*Orange*/
+fake {
+    color: #FF8C41;
+}
+
+.info-score, fake {
+    background-color: #FF8C41;
+}
+
+
+
+/*Red*/
+.scoreBad, fake {
+    color: #E8252B;
+}
+
+.info-gameOverMessage-bad, fake {
+    background-color: #E8252B;
+}
+
+/*Purple*/
+fake {
+    color: #CF29FF;
+}
+
+.info-pause, .info-stage, fake {
+    background-color: #CF29FF;
+}
+
+/*Blue*/
+.scoreGood, fake {
+    color: #332FE8;
+}
+
+.info-gameOverMessage-good, fake {
+    background-color: #332FE8;
+}
+
+/*Cyan*/
+fake {
+    color: #34C4FF;
+}
+
+.commands-gameOver, .commands-pause, fake {
+    background-color: #34C4FF;
+    color: black;
+}

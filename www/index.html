@@ -27,6 +27,14 @@
         </div>
         <!-- /ko -->
 
+        <!-- <div class="debug debug-outline">
+            <div class="debug debug-outline-outer">
+                <div class="debug debug-outline-inner">
+                    &nbsp;
+                </div>
+            </div>
+        </div>-->
+
         <div id="content" class="main main-content">
 
             <!--MainContent-->
@@ -71,30 +79,34 @@
             <!-- Game Over -->
             <!-- ko if: shouldDisplayGameOver -->
             <div class="screen screen-gameOver">
-                <div class="header gameOver">
-                    <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
-                    <span data-bind="visible: gameOverHasWon()">Success!</span>
+
+                <div class="info info-gameOver">
+                    <div class="info info-gameOverMessage">
+                        <span class="info-gameOverMessage-bad" data-bind="visible: !gameOverHasWon()">Defeated!</span>
+                        <span class="info-gameOverMessage-good" data-bind="visible: gameOverHasWon()">Success!</span>
+                    </div>
+                    <div class="info info-stage">
+                        <span class="stage stage-world"><span data-bind="text: world"></span></span>
+                        <span class="stage stage-level"><span data-bind="text: level"></span></span>
+                    </div>
+
+                    <!--<i class="star bigstar" data-bind="css: gameOverStarsClass"></i>-->
+                    <div class="info info-stars">
+                        <span class="icon icon-star" data-bind="css: gameOverStarsClass"></span>
+                    </div>
+
+                    <div class="info info-score">
+                        <span class="score score-scoreText">
+                            <span id="Span1" data-bind="text: score"></span>
+                        </span>
+                    </div>
+
                 </div>
 
-                <div class="info">
-                    <div class="level">
-                        World <span data-bind="text: world"></span>
-                        <br />
-                        Level <span data-bind="text: level"></span>
-                    </div>
-
-                    <i class="star bigstar" data-bind="css: gameOverStarsClass"></i>
-
-                    <div class="score">
-                        <span data-bind="text: score"></span>
-                    </div>
-                    <div>
-                        <span class="icon icon-loop" data-bind="fastclick: handleLevelReplay"></span>
-                        <span class="icon icon-list" data-bind="fastclick: handleLevelMenu"></span>
-                        <span class="icon icon-arrow-right" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></span>
-                    </div>
-
-
+                <div class="commands commands-gameOver">
+                    <span class="icon icon-loop" data-bind="fastclick: handleLevelReplay"></span>
+                    <span class="icon icon-list" data-bind="fastclick: handleLevelMenu"></span>
+                    <span class="icon icon-arrow-right" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></span>
                 </div>
             </div>
             <!-- /ko -->
@@ -102,15 +114,17 @@
             <!-- Game -->
             <!-- ko if: shouldDisplayGame -->
             <div class="screen screen-game">
-                <div class="info info-stage">
-                    <span class="stage stage-world"><span data-bind="text: world"></span></span>
-                    <span class="stage stage-level"><span data-bind="text: level"></span></span>
-                </div>
+                <div class="info info-game">
+                    <div class="info info-stage">
+                        <span class="stage stage-world"><span data-bind="text: world"></span></span>
+                        <span class="stage stage-level"><span data-bind="text: level"></span></span>
+                    </div>
 
-                <div class="info info-score">
-                    <span class="score score-scoreText">
-                        <span id="score" data-bind="text: score"></span>
-                    </span>
+                    <div class="info info-score">
+                        <span class="score score-scoreText">
+                            <span id="score" data-bind="text: score"></span>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
@@ -118,24 +132,28 @@
                 </div>
 
                 <div class="game game-numTable">
-                    <table class="numTable" data-bind="foreach: board().rows">
-                        <tr class="numTableRow" data-bind="foreach: cells">
-                            <!-- ko if (isHeading) -->
-                            <td class="numTableCell numTableCell-heading" data-bind="css: cellClassName">
-                                <div class="numSquare numSquare-heading">
-                                    <span data-bind="text: text, css: cellClassName"></span>
-                                </div>
-                            </td>
-                            <!-- /ko -->
-                            <!-- ko if (!isHeading) -->
-                            <td class="numTableCell numTableCell-value" data-bind="css: cellClassName">
-                                <div class="numSquare numSquare-value" data-bind="attr: {id: id}">
-                                    <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
-                                </div>
-                            </td>
-                            <!-- /ko -->
-                        </tr>
-                    </table>
+                    <div class="game-numTable-outer">
+                        <div class="game-numTable-inner">
+                            <table class="numTable" data-bind="foreach: board().rows">
+                                <tr class="numTableRow" data-bind="foreach: cells">
+                                    <!-- ko if (isHeading) -->
+                                    <td class="numTableCell numTableCell-heading" data-bind="css: cellClassName">
+                                        <div class="numSquare numSquare-heading">
+                                            <span data-bind="text: text, css: cellClassName"></span>
+                                        </div>
+                                    </td>
+                                    <!-- /ko -->
+                                    <!-- ko if (!isHeading) -->
+                                    <td class="numTableCell numTableCell-value" data-bind="css: cellClassName">
+                                        <div class="numSquare numSquare-value" data-bind="attr: {id: id}">
+                                            <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
+                                        </div>
+                                    </td>
+                                    <!-- /ko -->
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="screen screen-pause" data-bind="visible: isPaused">
