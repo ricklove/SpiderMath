@@ -1,0 +1,208 @@
+﻿/*Colors*/
+/*Hue:Color, Saturation:80, Value:80*/
+fake {
+    /*Red*/
+    color: #cc2929;
+    /*Green*/
+    color: #29cc29;
+    /*Blue*/
+    color: #2929cc;
+    /*Magenta*/
+    color: #cc29cc;
+    /*Yellow*/
+    color: #cccc29;
+    /*Cyan*/
+    color: #29cccc;
+}
+/*Sizes*/
+
+/*Font*/
+
+
+/*Reset All*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/*Styles*/
+body {
+    background-color: black;
+    color: white;
+    font: 14px sans-serif;
+    font-stretch: condensed;
+    text-transform:uppercase;
+}
+
+
+/*Main Structure*/
+.main {
+    margin: 0px auto;
+    width: 320px;
+}
+
+.main-header {
+    display: none;
+}
+
+.main-footer {
+    display: none;
+}
+
+.main-content {
+}
+
+/*Game Screens*/
+.screen {
+}
+
+.screen-game {
+}
+
+.screen-gameOver {
+}
+
+.screen-pause {
+}
+
+.screen-gameMenu {
+}
+
+/*Types*/
+.commands {
+}
+
+.info {
+    text-align: center;
+}
+
+/*Game Screen*/
+.info-stage {
+    background-color: #29cccc;
+    color: black;
+}
+
+.stage {
+}
+
+.stage-world {
+}
+
+    .stage-world:before {
+        content: "W ";
+    }
+
+.stage-level {
+}
+
+    .stage-level:before {
+        content: "L ";
+    }
+
+.info-score {
+    background-color: #cc29cc;
+    color: black;
+}
+
+.score {
+}
+
+.score-scoreText {
+}
+
+
+/*Game Components*/
+.game {
+}
+
+.game-scoreChange {
+    position: absolute;
+}
+
+.scoreGood {
+    color: #2929cc;
+}
+
+.scoreBad {
+    color: #cc2929;
+}
+
+.game-numTable {
+    margin: 0px auto;
+}
+
+.numTable {
+    margin: 0px auto;
+}
+
+.numTableRow {
+}
+
+.numTableCell {
+    height: 32px;
+    width: 32px;
+}
+
+.numTableCell-heading {
+    font-weight: bold;
+}
+
+.numTableCell-value {
+    border: solid 1px lightgray;
+}
+
+.numSquare {
+    line-height: 32px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.numSquare-heading {
+}
+
+.numSquare-value {
+}
+
+
+/*Pause Screen*/
+.info-pause {
+}
+
+.commands-pause {
+}
+
+    .commands-pause:before {
+        content: "Pause";
+    }

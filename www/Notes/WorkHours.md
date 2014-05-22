@@ -196,6 +196,12 @@ Display the starts at level over and level selection
 
 - Added Font Icons
 
+### 2014-05-22
+
+#### 5:45-7:00
+
+- Refactor CSS: Create Simple.css
+
 ##### FUTURE
 
 - BUG: If user does not change name

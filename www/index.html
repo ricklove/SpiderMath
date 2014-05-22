@@ -19,22 +19,21 @@
         <div id="loadingProgress"></div>
     </div>
 
-    <div data-role="page" id="home" style="display: none">
-
+    <div id="home" style="display: none">
 
         <!-- ko if: !shouldDisplayGame() -->
-        <div class="header">
+        <div class="main main-header">
             <h1>Spider Math</h1>
         </div>
         <!-- /ko -->
 
-        <div id="content" data-role="content">
+        <div id="content" class="main main-content">
 
             <!--MainContent-->
 
             <!-- Game Menu -->
             <!-- ko if: shouldDisplayGameMenu -->
-            <div class="gameMenu">
+            <div class="screen screen-gameMenu">
                 <!-- ko if (menu().shouldDisplayUsers) -->
                 <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
                 <ul data-bind="foreach: menu().users">
@@ -71,8 +70,8 @@
 
             <!-- Game Over -->
             <!-- ko if: shouldDisplayGameOver -->
-            <div class="gameOverPopup">
-                <div class="gameOver">
+            <div class="screen screen-gameOver">
+                <div class="header gameOver">
                     <span data-bind="visible: !gameOverHasWon()">Defeated!</span>
                     <span data-bind="visible: gameOverHasWon()">Success!</span>
                 </div>
@@ -102,32 +101,35 @@
 
             <!-- Game -->
             <!-- ko if: shouldDisplayGame -->
-            <div>
-                <div class="info">
-                    <div class="level">
-                        World <span data-bind="text: world"></span>
-                        <br />
-                        <!--Stage <span data-bind="text: stage"></span><br />-->
-                        Level <span data-bind="text: level"></span>
-                    </div>
+            <div class="screen screen-game">
+                <div class="info info-stage">
+                    <span class="stage stage-world"><span data-bind="text: world"></span></span>
+                    <span class="stage stage-level"><span data-bind="text: level"></span></span>
                 </div>
 
-                <div class="scoreChange" data-bind="animScoreChange: scoreChange">
+                <div class="info info-score">
+                    <span class="score score-scoreText">
+                        <span id="score" data-bind="text: score"></span>
+                    </span>
+                </div>
+
+                <div class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
                     <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
                 </div>
 
-                <div class="numTable">
-                    <table data-bind="foreach: board().rows">
-                        <tr data-bind="foreach: cells">
+                <div class="game game-numTable">
+                    <table class="numTable" data-bind="foreach: board().rows">
+                        <tr class="numTableRow" data-bind="foreach: cells">
                             <!-- ko if (isHeading) -->
-                            <td class="numSquareCellHeading" data-bind="css: cellClassName">
-                                <div class="numSquareHeading" data-bind="text: text, css: cellClassName"></div>
+                            <td class="numTableCell numTableCell-heading" data-bind="css: cellClassName">
+                                <div class="numSquare numSquare-heading">
+                                    <span data-bind="text: text, css: cellClassName"></span>
+                                </div>
                             </td>
                             <!-- /ko -->
                             <!-- ko if (!isHeading) -->
-                            <td class="numSquareCell" data-bind="css: cellClassName">
-                                <div class="numSquare" data-bind="attr: {id: id}">
-                                    <!--<span data-bind="fadeText:text"></span>-->
+                            <td class="numTableCell numTableCell-value" data-bind="css: cellClassName">
+                                <div class="numSquare numSquare-value" data-bind="attr: {id: id}">
                                     <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
                                 </div>
                             </td>
@@ -136,21 +138,12 @@
                     </table>
                 </div>
 
-                <div class="pause" data-bind="visible: isPaused">
-                    <div>Pause</div>
-                    <div>
+                <div class="screen screen-pause" data-bind="visible: isPaused">
+                    <span class="info info-pause"></span>
+                    <div class="commands commands-pause">
                         <span class="icon icon-play" data-bind="fastclick: handleLevelResume"></span>
                         <span class="icon icon-loop" data-bind="fastclick: handleLevelReplay"></span>
                         <span class="icon icon-list" data-bind="fastclick: handleLevelMenu"></span>
-                    </div>
-                </div>
-
-                <div class="info">
-                    <!--<div class="level">
-                    Level <span data-bind="text: level"></span>
-                </div>-->
-                    <div class="score">
-                        <span id="score" data-bind="text: score"></span>
                     </div>
                 </div>
 
@@ -160,20 +153,20 @@
         </div>
 
         <!-- ko if: !shouldDisplayGame() -->
-        <div class="footer">
+        <div class="main main-footer">
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>
         </div>
         <!-- /ko -->
     </div>
 
     <div id="test" style="display: none">
-        <div data-role="header">
+        <div>
             <h1>Greek Bible - Testing</h1>
         </div>
-        <div data-role="content">
+        <div>
             <div id="qunit">Please refresh to load the testing system.</div>
         </div>
-        <div data-role="footer">
+        <div>
             <h4>&copy; Told - Rick & Matthew Love - 2014</h4>
         </div>
     </div>

@@ -83,23 +83,23 @@ module Told.AppLoader {
 
     export function loadRequirements_Main(onLoaded?: () => void, onProgress?: (double) => void) {
 
-        var useJQM = false;
+        var useSimple = true;
 
-        if (useJQM) {
-            loadCss('Styles/css/External/themes/default/jquery.mobile-1.4.0.min.css');
-        } else {
+        if (!useSimple) {
             loadCss('Styles/css/External/base.css');
             loadCss('Styles/css/External/skeleton.css');
             loadCss('Styles/css/External/layout.css');
             loadCss('Styles/css/Theme.css');
+            loadCss('Styles/css/App.css');
+            loadCss('Styles/css/Icons/style.css');
+        } else {
+            loadCss('Styles/css/Simple.css');
+            loadCss('Styles/css/Icons/style.css');
         }
-
-        loadCss('Styles/css/App.css');
-        loadCss('Styles/css/Icons/style.css');
 
         var scriptList = [
             'Scripts/js/External/jquery.min.js',
-            //'Scripts/js/External/jquery.mobile-1.4.0.min.js',
+        //'Scripts/js/External/jquery.mobile-1.4.0.min.js',
             'Scripts/js/External/knockout-3.0.0.min.js',
             'Scripts/js/External/hammer.min.js',
             'Scripts/js/External/google.fastbutton.js',
@@ -117,12 +117,6 @@ module Told.AppLoader {
             'Scripts/ts/User/000_MainViewModel.js',
 
         ];
-
-        if (useJQM) {
-            scriptList.shift();
-            scriptList.unshift('Scripts/js/External/jquery.mobile-1.4.0.min.js');
-            scriptList.unshift('Scripts/js/External/jquery.min.js');
-        }
 
         loadScripts(scriptList, onLoaded, onProgress);
 
