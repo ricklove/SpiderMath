@@ -123,18 +123,27 @@ var Told;
                     self.isGameOver = true;
                 };
 
+                TetrisGame.prototype.isGameValid = function () {
+                    var self = this;
+
+                    return !self.isGameOver && self._viewModel.game === self;
+                };
+
                 TetrisGame.prototype.gameOver = function (hasWon) {
                     var self = this;
-                    self._viewModel.gameOver(hasWon, self.mistakes);
-                    clearTimeout(self.tickTimeoutId);
-                    self._viewModel = null;
-                    self.isGameOver = true;
+
+                    if (self.isGameValid()) {
+                        self._viewModel.gameOver(hasWon, self.mistakes);
+                        clearTimeout(self.tickTimeoutId);
+                        self._viewModel = null;
+                        self.isGameOver = true;
+                    }
                 };
 
                 TetrisGame.prototype.updateBoard = function () {
                     var self = this;
 
-                    if (!self.isGameOver) {
+                    if (self.isGameValid()) {
                         self._viewModel.updateBoard();
                     }
                 };
@@ -142,7 +151,7 @@ var Told;
                 TetrisGame.prototype.changeScore = function (change, atId) {
                     var self = this;
 
-                    if (!self.isGameOver) {
+                    if (self.isGameValid()) {
                         self._viewModel.changeScore(change, atId);
                     }
                 };
@@ -154,7 +163,7 @@ var Told;
                         clearTimeout(self.tickTimeoutId);
                     }
 
-                    if (self.isGameOver) {
+                    if (!self.isGameValid()) {
                         return;
                     }
 
@@ -278,7 +287,7 @@ var Told;
                         return;
                     }
 
-                    if (self.isGameOver) {
+                    if (!self.isGameValid()) {
                         return;
                     }
 

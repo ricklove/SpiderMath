@@ -44,6 +44,7 @@ body {
     color: white;
     font: 20px "Arial Narrow";
     text-transform: uppercase;
+    overflow:hidden;
 }
 
 

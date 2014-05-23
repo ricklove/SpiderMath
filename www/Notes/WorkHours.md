@@ -227,11 +227,11 @@ Display the starts at level over and level selection
 
 - Auto resize
 
+#### 11:15-11:30
+
+- Fix BUG: Old game minterfeering when restarting
+
 ##### FUTURE
-
-* Complete User List
-
-- BUG: If user does not change name
 
 - A major refactoring is due!
 - Need to include testing

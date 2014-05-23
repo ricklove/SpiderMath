@@ -148,18 +148,27 @@ module Told.TableMath.Game {
         isGameOver: boolean = false;
         tickTimeoutId: number = null;
 
+        private isGameValid() :boolean{
+            var self = this;
+
+            return !self.isGameOver && self._viewModel.game === self;
+        }
+
         private gameOver(hasWon: boolean) {
             var self = this;
-            self._viewModel.gameOver(hasWon, self.mistakes);
-            clearTimeout(self.tickTimeoutId);
-            self._viewModel = null;
-            self.isGameOver = true;
+
+            if (self.isGameValid()) {
+                self._viewModel.gameOver(hasWon, self.mistakes);
+                clearTimeout(self.tickTimeoutId);
+                self._viewModel = null;
+                self.isGameOver = true;
+            }
         }
 
         private updateBoard() {
             var self = this;
 
-            if (!self.isGameOver) {
+            if (self.isGameValid()) {
                 self._viewModel.updateBoard();
             }
         }
@@ -167,7 +176,7 @@ module Told.TableMath.Game {
         private changeScore(change: number, atId: string) {
             var self = this;
 
-            if (!self.isGameOver) {
+            if (self.isGameValid()) {
                 self._viewModel.changeScore(change, atId);
             }
         }
@@ -180,7 +189,7 @@ module Told.TableMath.Game {
             }
 
 
-            if (self.isGameOver) {
+            if (!self.isGameValid()) {
                 return;
             }
 
@@ -308,7 +317,7 @@ module Told.TableMath.Game {
                 return;
             }
 
-            if (self.isGameOver) {
+            if (!self.isGameValid()) {
                 return;
             }
 

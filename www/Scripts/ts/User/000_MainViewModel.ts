@@ -327,7 +327,6 @@ module Told.TableMath.UI {
             var levelData = self._levels[iLevel];
 
             self.world(levelData.world);
-            //self.stage(levelData.stage);
             self.level(levelData.level);
 
             self.game.setup(levelData);
