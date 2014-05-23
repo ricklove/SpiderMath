@@ -729,7 +729,13 @@ module Told.TableMath.UI {
             }
 
             var startPosition = atElement.offset();
-            var endPosition = $("#score").offset();
+
+            // Go to score
+            //var endPosition = $("#score").offset();
+
+            // Go up
+            var endPosition = startPosition;
+            endPosition = { left: endPosition.left, top: endPosition.top - 100 };
 
             var scElement = $(element);
 
@@ -739,7 +745,7 @@ module Told.TableMath.UI {
 
             scElement.show();
             scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left },
-                1000,
+                500,
                 "swing", () => {
                     //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
                     scElement.hide();

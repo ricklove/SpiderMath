@@ -242,12 +242,14 @@ Display the starts at level over and level selection
 #### 12:20-12:25
 
 - Give more room for pixel edges
+
+#### 12:25-12:30
+
 - Adjust scoreChange animation
 
 
 ##### FUTURE
 
-- Adjust scoreChange animation
 - Show Title at user selection
 
 - A major refactoring is due!
