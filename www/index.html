@@ -42,37 +42,78 @@
             <!-- Game Menu -->
             <!-- ko if: shouldDisplayGameMenu -->
             <div class="screen screen-gameMenu">
+
                 <!-- ko if (menu().shouldDisplayUsers) -->
-                <h3 class="level"><span data-bind="text: menu().currentUser"></span></h3>
-                <ul data-bind="foreach: menu().users">
-                    <li class="menuUser" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
-                        <span data-bind="text: user"></span>
-                        <span class="icon iconMedium iconNoBorder icon-pencil" data-bind="fastclick: $root.menuEditUser"></span>
-                    </li>
-                    <li class="menuEditUser" data-bind="visible: isEditing()">
-                        <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
-                    </li>
-                    <li class="menuAddUser" data-bind="fastclick: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
-                        <span>Add User</span>
-                    </li>
-                </ul>
+                <div class="menu menu-users">
+                    <div class="info info-gameMenu">
+                        <span class="info info-user"><span data-bind="text: menu().currentUser"></span></span>
+                    </div>
+                    <ul data-bind="foreach: menu().users">
+                        <li class="menuUser" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
+                            <span data-bind="text: user"></span>
+                            <span class="icon iconMedium iconNoBorder icon-pencil" data-bind="fastclick: $root.menuEditUser"></span>
+                        </li>
+                        <li class="menuEditUser" data-bind="visible: isEditing()">
+                            <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
+                        </li>
+                        <li class="menuAddUser" data-bind="fastclick: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
+                            <span>Add User</span>
+                        </li>
+                    </ul>
+                </div>
                 <!-- /ko -->
+
                 <!-- ko if (menu().shouldDisplayWorlds) -->
-                <h3 class="level" data-bind="fastclick: changeUser"><span data-bind="text: menu().currentUser"></span></h3>
-                <ul data-bind="foreach: menu().worlds">
-                    <li class="menuWorld" data-bind="fastclick: $root.menuChooseWorld, css: {lock: isLocked()}">World <span data-bind="text: worldNumber"></span>
-                        <div class="worldStars"><i class="starSingle"></i><span data-bind="text: stars"></span>/ <span data-bind="text: maxStars"></span></div>
-                    </li>
-                </ul>
+                <div class="menu menu-worlds">
+                    <div class="info info-gameMenu" data-bind="fastclick: changeUser">
+                        <div class="commands commands-gameMenu">
+                            <span class="icon icon-arrow-left"></span>
+                        </div>
+                        <span class="info info-user" data-bind="text: menu().currentUser"></span>
+                    </div>
+                    <div class="list list-worlds">
+                        <ul data-bind="foreach: menu().worlds">
+                            <li class="listItem listItem-world" data-bind="fastclick: $root.menuChooseWorld, css: {listItemLock: isLocked()}">
+                                <div class="listItemContent listItemContent-world">
+                                    <div class="info info-worldNumber">
+                                        <span data-bind="text: worldNumber"></span>
+                                    </div>
+                                    <div class="info info-stars">
+                                        <span class="icon icon-star-whole"></span>
+                                        <span data-bind="text: stars"></span><span>/</span><span data-bind="text: maxStars"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!-- /ko -->
+
                 <!-- ko if (menu().shouldDisplayLevels) -->
-                <h3 class="level" data-bind="fastclick: changeWorld">World <span data-bind="text: menu().currentWorld().worldNumber"></span></h3>
-                <ul data-bind="foreach: menu().currentWorld().levels">
-                    <li class="menuLevel" data-bind="fastclick: $root.menuChooseLevel, css: {lock: isLocked()}">Level <span data-bind="text: levelNumber"></span>
-                        <i class="star" data-bind="css: starsClass"></i>
-                    </li>
-                </ul>
+                <div class="menu menu-levels">
+                    <div class="info info-gameMenu" data-bind="fastclick: changeWorld">
+                        <div class="commands commands-gameMenu">
+                            <span class="icon icon-arrow-left"></span>
+                        </div>
+                        <span class="info info-world" data-bind="text: menu().currentWorld().worldNumber"></span>
+                    </div>
+                    <div class="list list-levels">
+                        <ul data-bind="foreach: menu().currentWorld().levels">
+                            <li class="listItem listItem-level" data-bind="fastclick: $root.menuChooselevel, css: {listItemLock: isLocked()}">
+                                <div class="listItemContent listItemContent-level">
+                                    <div class="info info-levelNumber">
+                                        <span data-bind="text: levelNumber"></span>
+                                    </div>
+                                    <div class="info info-stars">
+                                        <span class="icon icon-star" data-bind="css: starsClass"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!-- /ko -->
+
             </div>
             <!-- /ko -->
 
@@ -90,7 +131,6 @@
                         <span class="stage stage-level"><span data-bind="text: level"></span></span>
                     </div>
 
-                    <!--<i class="star bigstar" data-bind="css: gameOverStarsClass"></i>-->
                     <div class="info info-stars">
                         <span class="icon icon-star" data-bind="css: gameOverStarsClass"></span>
                     </div>
@@ -118,7 +158,7 @@
                 <div class="screen screen-game">
                     <div class="info info-game">
                         <div class="commands commands-pauseButton">
-                            <span class="icon icon-pause" ></span>
+                            <span class="icon icon-pause"></span>
                         </div>
 
                         <div class="info info-stage">

@@ -74,19 +74,10 @@ body {
     border: solid 1px red;
 }
 
-/*Game Screens*/
-.screen {
-    border: 1px solid white;
-}
-
-.screen-game {
-    border: none;
-}
-
-.screen-gameMenu {
-}
-
 /*Types*/
+.screen {
+}
+
 .commands {
 }
 
@@ -95,6 +86,9 @@ body {
 }
 
 /*Game Screen*/
+.screen-game {
+}
+
 .info-game {
     position: relative;
     /*background-color: grey;*/
@@ -296,6 +290,123 @@ body {
         padding: 0.25em;
     }
 
+/*Game Menu Screen*/
+.screen-gameMenu {
+}
+
+.menu {
+}
+
+.menu-Users {
+}
+
+.menu-Worlds {
+}
+
+.menu-Levels {
+}
+
+.info-gameMenu {
+    text-align: center;
+}
+
+    .info-gameMenu > .commands-gameMenu {
+        display: inline-block;
+        float: left;
+        padding: 0.5em;
+        /*width: 0;*/
+    }
+
+        .info-gameMenu > .commands-gameMenu > span {
+            font-size: 1em;
+        }
+
+    .info-gameMenu > .info-user {
+        font-size: 2em;
+    }
+
+    .info-gameMenu > .info-world {
+        font-size: 2em;
+    }
+
+        .info-gameMenu > .info-world:before {
+            content: "World ";
+        }
+
+
+.list {
+}
+
+.listItem {
+}
+
+.listItemLock {
+}
+
+.listItemContent {
+}
+
+.list-users {
+}
+
+.list-worlds {
+    text-align: center;
+}
+
+.listItem-world {
+    display: inline-block;
+}
+
+.listItemContent-world {
+    width: 5em;
+    height: 5em;
+    margin: 0.25em;
+    text-align: center;
+}
+
+    .listItemContent-world > .info-worldNumber {
+        font-size: 1.4em;
+    }
+
+        .listItemContent-world > .info-worldNumber:before {
+            content: "World\a";
+            white-space: pre;
+        }
+
+    .listItemContent-world > .info-stars {
+        font-size: 1.2em;
+    }
+
+.list-levels {
+    text-align: center;
+}
+
+.listItem-level {
+    display: inline-block;
+}
+
+.listItemContent-level {
+    width: 5em;
+    height: 5em;
+    margin: 0.25em;
+    text-align: center;
+}
+
+    .listItemContent-level > .info-levelNumber {
+        font-size: 1.4em;
+    }
+
+        .listItemContent-level > .info-levelNumber:before {
+            content: "Level\a";
+            white-space: pre;
+        }
+
+    .listItemContent-level > .info-stars {
+        font-size: 1.2em;
+    }
+
+
+
 /*Stars*/
 .info-stars {
     font-size: 3em;
@@ -388,7 +499,29 @@ fake {
     color: #34C4FF;
 }
 
-.commands-gameOver, .commands-pause, fake {
+.info-gameMenu, .commands-gameOver, .commands-pause, fake {
     background-color: #34C4FF;
     color: black;
+}
+
+
+
+
+/*---------------------------------------*/
+/* Border Colors */
+.screen {
+    border: 1px solid white;
+}
+
+.screen-game {
+    border: none;
+}
+
+
+.listItemContent {
+    border: 0.25em solid #ffde41;
+}
+
+.listItemLock > .listItemContent {
+    border: 0.25em solid #E8252B;
 }

@@ -209,15 +209,18 @@ Display the starts at level over and level selection
 
 #### 2014-05-23
 
-##### 5:25-
+##### 5:25-7:05
 
 - Complete UI for main Game Screen
 	- Add pause button
 	- Expand info at top
-* Complet UI for menu
-
+* Complete UI for menu
+	- Complete World List
+	- Complete Level List
 
 ##### FUTURE
+
+* Complete User List
 
 - BUG: If user does not change name
 
