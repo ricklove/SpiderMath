@@ -285,9 +285,13 @@
             Told.AppLoader.loadRequirements_Main(function () {
 
                 // Auto Resize
-                Told.AutoResize.Resizer.adjustScale(402, 602, 20);
+                var w = 404;
+                var h = 604;
+                var fSize = 20;
+
+                Told.AutoResize.Resizer.adjustScale(w, h, fSize);
                 $(window).resize(function () {
-                    Told.AutoResize.Resizer.adjustScale(402, 602, 20);
+                    Told.AutoResize.Resizer.adjustScale(w, h, fSize);
                 });
 
                 // Load View Model

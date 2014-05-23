@@ -708,7 +708,7 @@ var Told;
 
                     //scElement.offset(startPosition);
                     scElement.show();
-                    scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left }, 500, "swing", function () {
+                    scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left }, 1000, "swing", function () {
                         //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
                         scElement.hide();
                     });

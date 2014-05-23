@@ -239,8 +239,15 @@ Display the starts at level over and level selection
 
 - Auto progress
 
+#### 12:20-12:25
+
+- Give more room for pixel edges
+- Adjust scoreChange animation
+
+
 ##### FUTURE
 
+- Adjust scoreChange animation
 - Show Title at user selection
 
 - A major refactoring is due!
