@@ -25,7 +25,7 @@ var Told;
             };
 
             AdManager.prototype.showFullScreenAdIfReady = function (onFinished) {
-                if (Date.now() > this.timeLastDisplayed + this.minBetweenAds) {
+                if (Date.now() > this.timeLastDisplayed + (this.minBetweenAds * 60 * 1000)) {
                     if (this._cocoonAdIsReady) {
                         this._onFinishedCallback = onFinished;
                         CocoonJS.Ad.showFullScreen();
@@ -35,7 +35,13 @@ var Told;
                             apid: mmAPI_ID,
                             placementType: "interstitial",
                             allowLocation: false
-                        }, onFinished);
+                        }, function (wasOK) {
+                            if (wasOK) {
+                                this.timeLastDisplayed = Date.now();
+                            }
+
+                            onFinished();
+                        });
                     } else {
                         // TODO: Show a self in-app-purchase ad
                         // Or promote other apps
@@ -49,6 +55,8 @@ var Told;
             AdManager.prototype.setupCocoon = function () {
                 CocoonJS.Ad.onFullScreenShown.addEventListener(function () {
                     this._cocoonAdIsReady = false;
+                    this.timeLastDisplayed = Date.now();
+
                     console.log("onFullScreenShown");
                 });
                 CocoonJS.Ad.onFullScreenHidden.addEventListener(function () {
