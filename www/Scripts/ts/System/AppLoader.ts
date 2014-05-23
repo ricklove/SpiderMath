@@ -109,6 +109,10 @@ module Told.AppLoader {
 
         //'Scripts/js/External/linq.min.js',
         //'Scripts/js/External/jquery.linq.min.js',
+            
+
+            'Scripts/ts/System/AutoResize.js',
+            
             'Scripts/ts/Support/AccessUserSettings.js',
             'Scripts/ts/Support/AccessProviders.js',
 

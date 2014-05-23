@@ -223,6 +223,10 @@ Display the starts at level over and level selection
 - Complete UI for menu
 	- Complete User List
 
+#### 10:30-11:00
+
+- Auto resize
+
 ##### FUTURE
 
 * Complete User List
