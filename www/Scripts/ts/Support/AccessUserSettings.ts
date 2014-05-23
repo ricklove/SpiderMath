@@ -40,7 +40,7 @@ module Told.TableMath.Data {
 
         get userList() {
             var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
-            var names = valueStr.split(";");
+            var names = (valueStr || "").split(";");
 
             names = names.map((n, i) => n.trim().length === 0 ? "Player " + (i + 1) : n.trim());
 

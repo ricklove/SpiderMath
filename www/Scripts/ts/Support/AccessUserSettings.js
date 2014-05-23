@@ -26,7 +26,7 @@ var Told;
                 Object.defineProperty(UserSettings_LocalStorage.prototype, "userList", {
                     get: function () {
                         var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
-                        var names = valueStr.split(";");
+                        var names = (valueStr || "").split(";");
 
                         names = names.map(function (n, i) {
                             return n.trim().length === 0 ? "Player " + (i + 1) : n.trim();
