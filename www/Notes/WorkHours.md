@@ -235,15 +235,18 @@ Display the starts at level over and level selection
 
 - Show user selection at start (if any users exist)
 
+#### 12:00-12:10
+
+- Auto progress
+
 ##### FUTURE
+
+- Show Title at user selection
 
 - A major refactoring is due!
 - Need to include testing
 
 - Delete User
 
-- ?Show level (instead of world first)
-
-- Find better images for stars and level buttons and update css
 - Score should increase with fast answers
 
