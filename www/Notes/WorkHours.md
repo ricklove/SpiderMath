@@ -207,6 +207,16 @@ Display the starts at level over and level selection
 - Using em measurements
 - Finishing Simple.css
 
+#### 2014-05-23
+
+##### 5:25-
+
+- Complete UI for main Game Screen
+	- Add pause button
+	- Expand info at top
+* Complet UI for menu
+
+
 ##### FUTURE
 
 - BUG: If user does not change name

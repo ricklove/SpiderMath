@@ -113,47 +113,55 @@
 
             <!-- Game -->
             <!-- ko if: shouldDisplayGame -->
-            <div class="screen screen-game">
-                <div class="info info-game">
-                    <div class="info info-stage">
-                        <span class="stage stage-world"><span data-bind="text: world"></span></span>
-                        <span class="stage stage-level"><span data-bind="text: level"></span></span>
-                    </div>
+            <div>
 
-                    <div class="info info-score">
-                        <span class="score score-scoreText">
-                            <span id="score" data-bind="text: score"></span>
-                        </span>
-                    </div>
-                </div>
+                <div class="screen screen-game">
+                    <div class="info info-game">
+                        <div class="commands commands-pauseButton">
+                            <span class="icon icon-pause" ></span>
+                        </div>
 
-                <div class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
-                    <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
-                </div>
+                        <div class="info info-stage">
+                            <span class="stage stage-world"><span data-bind="text: world"></span></span>
+                            <span class="stage stage-level"><span data-bind="text: level"></span></span>
+                        </div>
 
-                <div class="game game-numTable">
-                    <div class="game-numTable-outer">
-                        <div class="game-numTable-inner">
-                            <table class="numTable" data-bind="foreach: board().rows">
-                                <tr class="numTableRow" data-bind="foreach: cells">
-                                    <!-- ko if (isHeading) -->
-                                    <td class="numTableCell numTableCell-heading" data-bind="css: cellClassName">
-                                        <div class="numSquare numSquare-heading">
-                                            <span data-bind="text: text, css: cellClassName"></span>
-                                        </div>
-                                    </td>
-                                    <!-- /ko -->
-                                    <!-- ko if (!isHeading) -->
-                                    <td class="numTableCell numTableCell-value" data-bind="css: cellClassName">
-                                        <div class="numSquare numSquare-value" data-bind="attr: {id: id}">
-                                            <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
-                                        </div>
-                                    </td>
-                                    <!-- /ko -->
-                                </tr>
-                            </table>
+                        <div class="info info-score">
+                            <span class="score score-scoreText">
+                                <span id="score" data-bind="text: score"></span>
+                            </span>
                         </div>
                     </div>
+
+                    <div class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
+                        <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
+                    </div>
+
+                    <div class="game game-numTable">
+                        <div class="game-numTable-outer">
+                            <div class="game-numTable-inner">
+                                <table class="numTable" data-bind="foreach: board().rows">
+                                    <tr class="numTableRow" data-bind="foreach: cells">
+                                        <!-- ko if (isHeading) -->
+                                        <td class="numTableCell numTableCell-heading" data-bind="css: cellClassName">
+                                            <div class="numSquare numSquare-heading">
+                                                <span data-bind="text: text, css: cellClassName"></span>
+                                            </div>
+                                        </td>
+                                        <!-- /ko -->
+                                        <!-- ko if (!isHeading) -->
+                                        <td class="numTableCell numTableCell-value" data-bind="css: cellClassName">
+                                            <div class="numSquare numSquare-value" data-bind="attr: {id: id}">
+                                                <span data-bind="text:text, css: cellClassName, visible: !($root.isPaused())"></span>
+                                            </div>
+                                        </td>
+                                        <!-- /ko -->
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="screen screen-pause" data-bind="visible: isPaused">
