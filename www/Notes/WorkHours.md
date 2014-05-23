@@ -248,6 +248,12 @@ Display the starts at level over and level selection
 - Adjust scoreChange animation
 
 
+#### 12:30-12:45
+
+- Score should increase with fast answers
+- Prevent duplicate ticks
+
+
 ##### FUTURE
 
 - Show Title at user selection
@@ -257,5 +263,4 @@ Display the starts at level over and level selection
 
 - Delete User
 
-- Score should increase with fast answers
 

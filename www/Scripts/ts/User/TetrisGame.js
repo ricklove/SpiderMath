@@ -11,6 +11,8 @@ var Told;
                     this.mistakes = 0;
                     this.isGameOver = false;
                     this.tickTimeoutId = null;
+                    this.tickIndex = 0;
+                    this.ticksSinceAnswer = 0;
                     this._solidCount = 0;
                     this._viewModel = viewModel;
                 }
@@ -159,23 +161,36 @@ var Told;
                 TetrisGame.prototype.tickLoop = function () {
                     var self = this;
 
-                    if (self.tickTimeoutId) {
-                        clearTimeout(self.tickTimeoutId);
-                    }
+                    var tickInner = function (targetTickIndex) {
+                        if (self.tickIndex !== targetTickIndex) {
+                            return;
+                        }
 
-                    if (!self.isGameValid()) {
-                        return;
-                    }
+                        if (self.tickTimeoutId !== null) {
+                            clearTimeout(self.tickTimeoutId);
+                            self.tickTimeoutId = null;
+                        }
 
-                    self.tick();
+                        if (!self.isGameValid()) {
+                            return;
+                        }
 
-                    self.tickTimeoutId = setTimeout(function () {
-                        self.tickLoop();
-                    }, self._tickTime);
+                        self.tick();
 
-                    if (!self.isPaused) {
-                        self._tickTime = self._tickTime * 0.99;
-                    }
+                        var tNextIndex = self.tickIndex + 1;
+                        self.tickTimeoutId = setTimeout(function () {
+                            tickInner(tNextIndex);
+                        }, self._tickTime);
+
+                        if (!self.isPaused) {
+                            self._tickTime = self._tickTime * 0.99;
+                            self.ticksSinceAnswer++;
+                        }
+
+                        self.tickIndex++;
+                    };
+
+                    tickInner(self.tickIndex);
                 };
 
                 TetrisGame.prototype.answerAtSpot = function () {
@@ -187,7 +202,7 @@ var Told;
                     // If right
                     if (thisCell.value == self.fallingNumber) {
                         thisCell.isAnswered = true;
-                        self.changeScore(10, thisCell.id);
+                        self.changeScore(100 - ((Math.max(self.ticksSinceAnswer, 2) - 2) * 10), thisCell.id);
                     } else {
                         self.changeScore(-5, thisCell.id);
                         self.mistakes++;
@@ -196,6 +211,8 @@ var Told;
                         self.removeBlankRowAndEndGameIfOver();
                     }
 
+                    self.ticksSinceAnswer = 0;
+
                     self.fallingNumber = null;
                     self.fallingNumberPosition = null;
 
@@ -203,7 +220,8 @@ var Told;
                     self.clearLines();
 
                     // Immediately start a new number
-                    self.tick();
+                    //self.tick();
+                    self.tickLoop();
                 };
 
                 TetrisGame.prototype.removeBlankRowAndEndGameIfOver = function () {

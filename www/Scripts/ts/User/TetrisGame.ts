@@ -148,7 +148,7 @@ module Told.TableMath.Game {
         isGameOver: boolean = false;
         tickTimeoutId: number = null;
 
-        private isGameValid() :boolean{
+        private isGameValid(): boolean {
             var self = this;
 
             return !self.isGameOver && self._viewModel.game === self;
@@ -181,26 +181,43 @@ module Told.TableMath.Game {
             }
         }
 
+        tickIndex = 0;
+
         private tickLoop() {
             var self = this;
 
-            if (self.tickTimeoutId) {
-                clearTimeout(self.tickTimeoutId);
+            var tickInner = function (targetTickIndex: number) {
+
+                if (self.tickIndex !== targetTickIndex) {
+                    return;
+                }
+
+                if (self.tickTimeoutId !== null) {
+                    clearTimeout(self.tickTimeoutId);
+                    self.tickTimeoutId = null;
+                }
+
+                if (!self.isGameValid()) {
+                    return;
+                }
+
+                self.tick();
+
+                var tNextIndex = self.tickIndex + 1;
+                self.tickTimeoutId = setTimeout(function () { tickInner(tNextIndex); }, self._tickTime);
+
+                if (!self.isPaused) {
+                    self._tickTime = self._tickTime * 0.99;
+                    self.ticksSinceAnswer++;
+                }
+
+                self.tickIndex++;
             }
 
-
-            if (!self.isGameValid()) {
-                return;
-            }
-
-            self.tick();
-
-            self.tickTimeoutId = setTimeout(function () { self.tickLoop(); }, self._tickTime);
-
-            if (!self.isPaused) {
-                self._tickTime = self._tickTime * 0.99;
-            }
+            tickInner(self.tickIndex);
         }
+
+        ticksSinceAnswer = 0;
 
         private answerAtSpot() {
             var self = this;
@@ -211,7 +228,7 @@ module Told.TableMath.Game {
             // If right
             if (thisCell.value == self.fallingNumber) {
                 thisCell.isAnswered = true;
-                self.changeScore(10, thisCell.id);
+                self.changeScore(100 - ((Math.max(self.ticksSinceAnswer, 2) - 2) * 10), thisCell.id);
             } else {
                 self.changeScore(-5, thisCell.id);
                 self.mistakes++;
@@ -220,6 +237,8 @@ module Told.TableMath.Game {
                 self.removeBlankRowAndEndGameIfOver();
             }
 
+            self.ticksSinceAnswer = 0;
+
             self.fallingNumber = null;
             self.fallingNumberPosition = null;
 
@@ -227,7 +246,8 @@ module Told.TableMath.Game {
             self.clearLines();
 
             // Immediately start a new number
-            self.tick();
+            //self.tick();
+            self.tickLoop();
         }
 
         private _solidCount: number = 0;
