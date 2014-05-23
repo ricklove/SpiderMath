@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../typings/knockout/knockout.d.ts" />
+/// <reference path="../System/AdManager.ts" />
 /// <reference path="../Support/AccessProviders.ts" />
 /// <reference path="_Model.ts" />
 /// <reference path="TetrisGame.ts" />
@@ -365,12 +366,15 @@ var Told;
                     // Save state
                     self.providers.userSettings.currentUserState = uState;
 
-                    // Reset Game
-                    self.gameOverHasWon(hasWon);
+                    // Show Ad (Over the top of the screen)
+                    Told.Ads.show(function () {
+                        // Reset Game
+                        self.gameOverHasWon(hasWon);
 
-                    //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
-                    self.gameOverStarsClass("star-" + stars);
-                    self.isGameOver(true);
+                        //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
+                        self.gameOverStarsClass("star-" + stars);
+                        self.isGameOver(true);
+                    });
                 };
 
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {

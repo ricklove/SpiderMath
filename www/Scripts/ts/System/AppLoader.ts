@@ -111,6 +111,9 @@ module Told.AppLoader {
         //'Scripts/js/External/jquery.linq.min.js',
             
 
+            'Scripts/js/External/cocoon.js',
+            'Scripts/ts/System/AdManager.js',
+
             'Scripts/ts/System/AutoResize.js',
             
             'Scripts/ts/Support/AccessUserSettings.js',

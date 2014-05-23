@@ -37,6 +37,7 @@
         <div id="content" class="main main-content">
 
             <!--MainContent-->
+            <div id="adContainer"></div>
 
             <!-- Game Menu -->
             <!-- ko if: shouldDisplayGameMenu -->
@@ -283,6 +284,9 @@
 
             // Loader
             Told.AppLoader.loadRequirements_Main(function () {
+                // Ad Manager
+                var minAds = 30;
+                Told.Ads.init(minAds);
 
                 // Auto Resize
                 var w = 404;
@@ -314,6 +318,7 @@
         }());
     </script>
 
+    <!-- Testing -->
 
     <script type='text/javascript'>
 
@@ -342,6 +347,18 @@
             });
         }
     </script>
+
+    <!-- MoPub Ads -->
+<!--    <script type="text/javascript">
+    mopub_ad_unit = "8ceb124bcbc64ca49f6852b451352445";
+    mopub_ad_width = 320; // optional
+    mopub_ad_height = 480; // optional
+    mopub_keywords = "math education gradeschool children"; // optional
+
+    </script>
+    <script src="http://ads.mopub.com/js/client/mopub.js"></script>-->
+
+    <script src="http://cdn.millennialmedia.com/mmadlib/v1/mmadlib.js"></script>
 
 </body>
 </html>

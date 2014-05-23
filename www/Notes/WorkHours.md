@@ -254,6 +254,11 @@ Display the starts at level over and level selection
 - Prevent duplicate ticks
 
 
+#### 14:35-
+
+* Integrate ads
+
+
 ##### FUTURE
 
 - Show Title at user selection
@@ -262,5 +267,6 @@ Display the starts at level over and level selection
 - Need to include testing
 
 - Delete User
+
 
 
