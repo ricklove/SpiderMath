@@ -3,6 +3,7 @@
 module Told.TableMath.Data {
 
     export interface IUserSettings {
+        hasModifiedUsers: boolean;
         userList: string[];
         currentUserId: number;
         currentUserName: string;
@@ -84,5 +85,11 @@ module Told.TableMath.Data {
             UserSettings_LocalStorage.setUserSetting("User" + userId + "_State", valueStr);
         }
 
+        get hasModifiedUsers() {
+            var users = this.userList;
+
+            return users.length !== 1
+                || users[0] !== "Player 1";
+        }
     }
 }

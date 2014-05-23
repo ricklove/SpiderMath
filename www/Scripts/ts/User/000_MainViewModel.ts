@@ -20,8 +20,22 @@ module Told.TableMath.UI {
 
             var self = this;
 
+            // Always set up a game to prevent errors
             self._levelIndex = 0;
             self.setupGame();
+
+            if (!self.providers.userSettings.hasModifiedUsers) {
+                if (self.providers.userSettings.currentUserState.levels.length === 0) {
+                    // Do nothing else
+                } else {
+                    self.showMenu();
+                    self.changeWorld();
+                }
+            } else {
+                self.showMenu();
+                self.changeUser();
+            }
+
         }
 
         game: Game.IGame;
@@ -89,8 +103,8 @@ module Told.TableMath.UI {
 
             self._levelIndex = lIndex;
 
-            self.shouldDisplayGameMenu(false);
             self.setupGame();
+            self.shouldDisplayGameMenu(false);
         }
 
         menuChooseUser(user: IMenuUser) {
@@ -371,21 +385,6 @@ module Told.TableMath.UI {
             self.gameOverStarsClass("star-" + stars);
             self.isGameOver(true);
 
-
-            //if (hasWon) {
-            //    // Level up
-            //    self._levelIndex++;
-            //    self.setupGame();
-            //} else {
-            //    self.isGameOver(true);
-            //}
-        }
-
-        public newGame() {
-            var self = this;
-
-            self._levelIndex = 0;
-            self.setupGame();
         }
 
         private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {

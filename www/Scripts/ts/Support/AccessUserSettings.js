@@ -87,6 +87,16 @@ var Told;
                     enumerable: true,
                     configurable: true
                 });
+
+                Object.defineProperty(UserSettings_LocalStorage.prototype, "hasModifiedUsers", {
+                    get: function () {
+                        var users = this.userList;
+
+                        return users.length !== 1 || users[0] !== "Player 1";
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return UserSettings_LocalStorage;
             })();
             Data.UserSettings_LocalStorage = UserSettings_LocalStorage;

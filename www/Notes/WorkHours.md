@@ -231,6 +231,10 @@ Display the starts at level over and level selection
 
 - Fix BUG: Old game minterfeering when restarting
 
+#### 11:30-11:45
+
+- Show user selection at start (if any users exist)
+
 ##### FUTURE
 
 - A major refactoring is due!

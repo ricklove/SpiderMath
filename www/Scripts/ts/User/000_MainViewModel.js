@@ -51,8 +51,21 @@ var Told;
 
                     var self = this;
 
+                    // Always set up a game to prevent errors
                     self._levelIndex = 0;
                     self.setupGame();
+
+                    if (!self.providers.userSettings.hasModifiedUsers) {
+                        if (self.providers.userSettings.currentUserState.levels.length === 0) {
+                            // Do nothing else
+                        } else {
+                            self.showMenu();
+                            self.changeWorld();
+                        }
+                    } else {
+                        self.showMenu();
+                        self.changeUser();
+                    }
                 }
                 MainViewModel.prototype.pause = function (shouldPause) {
                     var self = this;
@@ -93,8 +106,8 @@ var Told;
 
                     self._levelIndex = lIndex;
 
-                    self.shouldDisplayGameMenu(false);
                     self.setupGame();
+                    self.shouldDisplayGameMenu(false);
                 };
 
                 MainViewModel.prototype.menuChooseUser = function (user) {
@@ -358,20 +371,6 @@ var Told;
                     //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
                     self.gameOverStarsClass("star-" + stars);
                     self.isGameOver(true);
-                    //if (hasWon) {
-                    //    // Level up
-                    //    self._levelIndex++;
-                    //    self.setupGame();
-                    //} else {
-                    //    self.isGameOver(true);
-                    //}
-                };
-
-                MainViewModel.prototype.newGame = function () {
-                    var self = this;
-
-                    self._levelIndex = 0;
-                    self.setupGame();
                 };
 
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {
