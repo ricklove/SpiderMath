@@ -297,14 +297,21 @@ body {
 .menu {
 }
 
-.menu-Users {
+.menu-users {
 }
 
-.menu-Worlds {
+.menu-worlds {
 }
 
-.menu-Levels {
+.menu-wevels {
 }
+
+.menu-users > .info-gameMenu > .commands-gameMenu {
+        display: inline-block;
+        float: right;
+        padding: 0.5em;
+        /*width: 0;*/
+    }
 
 .info-gameMenu {
     text-align: center;
@@ -347,6 +354,42 @@ body {
 }
 
 .list-users {
+}
+
+.listItemContent-user {
+    margin: 0.25em;
+}
+
+.user {
+    padding: 0.25em;
+}
+
+    .user > span {
+        font-size: 2em;
+    }
+
+    .user > .command {
+        float: right;
+    }
+
+    .user > .command > span{
+        font-size: 2em;
+    }
+
+.user-name {
+}
+
+
+.user-edit {
+}
+
+    .user-edit > input {
+        font-size: 1.2em;
+    }
+
+
+
+.user-addUser {
 }
 
 .list-worlds {
@@ -461,7 +504,7 @@ fake {
     color: #FF8C41;
 }
 
-.info-score, fake {
+.user-addUser, .info-score, fake {
     background-color: #FF8C41;
 }
 
@@ -520,6 +563,10 @@ fake {
 
 .listItemContent {
     border: 0.25em solid #ffde41;
+}
+
+.listItemContent-user {
+    border: 0.25em solid #FF8C41;
 }
 
 .listItemLock > .listItemContent {

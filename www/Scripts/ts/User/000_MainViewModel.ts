@@ -110,7 +110,21 @@ module Told.TableMath.UI {
         }
 
         menuEditUser_Change(user: IMenuUser, e: Event) {
-            var newValue: string = e.currentTarget['value'];
+            var newValue: string = (e || { currentTarget: {} }).currentTarget['value'];
+
+            if (user == null) {
+                return;
+            }
+
+
+            if (newValue === undefined) {
+                if (!user.isAddUser()) {
+                    user.isEditing(false);
+                    return;
+                } else {
+                    newValue = "Player " + user.index;
+                }
+            }
 
             console.log("user.userEditText changed:" + newValue);
 
@@ -131,11 +145,18 @@ module Told.TableMath.UI {
             user.user(newValue);
             user.isEditing(false);
 
-            self.menuChooseUser(user);
+            //self.menuChooseUser(user);
         }
 
         menuEditUser(user: IMenuUser) {
             console.log("menuEditUser");
+
+            var self = <MainViewModel>window['mainViewModel'];
+            self.menu().users().forEach((u, i) => {
+                if (i != self.menu().users().length - 1) {
+                    self.menuEditUser_Change(u, null);
+                }
+            });
 
             user.isEditing(true);
         }
@@ -730,7 +751,7 @@ module Told.TableMath.UI {
             //viewModel.scoreChange("");
         }
     };
-    
+
     // Fast click
     // Based on: http://www.iknuth.com/2012/07/google-fastbuttons-implemented-as-a-knockoutjs-custom-binding/
     declare var FastButton;
@@ -738,7 +759,7 @@ module Told.TableMath.UI {
 
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             new FastButton(element, function () {
-                var f : ()=>void = valueAccessor();
+                var f: () => void = valueAccessor();
                 f.call(bindingContext["$root"], bindingContext["$data"], event);
             });
         }

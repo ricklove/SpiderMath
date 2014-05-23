@@ -114,7 +114,20 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuEditUser_Change = function (user, e) {
-                    var newValue = e.currentTarget['value'];
+                    var newValue = (e || { currentTarget: {} }).currentTarget['value'];
+
+                    if (user == null) {
+                        return;
+                    }
+
+                    if (newValue === undefined) {
+                        if (!user.isAddUser()) {
+                            user.isEditing(false);
+                            return;
+                        } else {
+                            newValue = "Player " + user.index;
+                        }
+                    }
 
                     console.log("user.userEditText changed:" + newValue);
 
@@ -134,12 +147,18 @@ var Told;
 
                     user.user(newValue);
                     user.isEditing(false);
-
-                    self.menuChooseUser(user);
+                    //self.menuChooseUser(user);
                 };
 
                 MainViewModel.prototype.menuEditUser = function (user) {
                     console.log("menuEditUser");
+
+                    var self = window['mainViewModel'];
+                    self.menu().users().forEach(function (u, i) {
+                        if (i != self.menu().users().length - 1) {
+                            self.menuEditUser_Change(u, null);
+                        }
+                    });
 
                     user.isEditing(true);
                 };

@@ -39,8 +39,11 @@ module Told.TableMath.Data {
 
         get userList() {
             var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
-            valueStr = valueStr || "Player 1";
-            return valueStr.split(";");
+            var names = valueStr.split(";");
+
+            names = names.map((n, i) => n.trim().length === 0 ? "Player " + (i + 1) : n.trim());
+
+            return names
         }
         set userList(value: string[]) {
             var valueStr = value.join(";");
@@ -49,7 +52,12 @@ module Told.TableMath.Data {
 
         get currentUserId() {
             var valueStr = UserSettings_LocalStorage.getUserSetting("currentUserId");
-            return parseInt(valueStr || "0");
+            var id = parseInt(valueStr || "0");
+
+            id = id < 0 ? 0 : id;
+            id = id > this.userList.length - 1 ? 0 : id;
+
+            return id;
         }
         set currentUserId(value: number) {
             var valueStr = "" + value;

@@ -218,6 +218,11 @@ Display the starts at level over and level selection
 	- Complete World List
 	- Complete Level List
 
+##### 9:30-10:15
+
+- Complete UI for menu
+	- Complete User List
+
 ##### FUTURE
 
 * Complete User List

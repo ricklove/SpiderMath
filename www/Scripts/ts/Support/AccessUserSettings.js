@@ -26,8 +26,13 @@ var Told;
                 Object.defineProperty(UserSettings_LocalStorage.prototype, "userList", {
                     get: function () {
                         var valueStr = UserSettings_LocalStorage.getUserSetting("userList");
-                        valueStr = valueStr || "Player 1";
-                        return valueStr.split(";");
+                        var names = valueStr.split(";");
+
+                        names = names.map(function (n, i) {
+                            return n.trim().length === 0 ? "Player " + (i + 1) : n.trim();
+                        });
+
+                        return names;
                     },
                     set: function (value) {
                         var valueStr = value.join(";");
@@ -40,7 +45,12 @@ var Told;
                 Object.defineProperty(UserSettings_LocalStorage.prototype, "currentUserId", {
                     get: function () {
                         var valueStr = UserSettings_LocalStorage.getUserSetting("currentUserId");
-                        return parseInt(valueStr || "0");
+                        var id = parseInt(valueStr || "0");
+
+                        id = id < 0 ? 0 : id;
+                        id = id > this.userList.length - 1 ? 0 : id;
+
+                        return id;
                     },
                     set: function (value) {
                         var valueStr = "" + value;

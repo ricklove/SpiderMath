@@ -45,21 +45,36 @@
 
                 <!-- ko if (menu().shouldDisplayUsers) -->
                 <div class="menu menu-users">
-                    <div class="info info-gameMenu">
+                    <div class="info info-gameMenu" data-bind="fastclick: changeWorld">
+                        <div class="commands commands-gameMenu">
+                            <span class="icon icon-arrow-right"></span>
+                        </div>
                         <span class="info info-user"><span data-bind="text: menu().currentUser"></span></span>
                     </div>
-                    <ul data-bind="foreach: menu().users">
-                        <li class="menuUser" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
-                            <span data-bind="text: user"></span>
-                            <span class="icon iconMedium iconNoBorder icon-pencil" data-bind="fastclick: $root.menuEditUser"></span>
-                        </li>
-                        <li class="menuEditUser" data-bind="visible: isEditing()">
-                            <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
-                        </li>
-                        <li class="menuAddUser" data-bind="fastclick: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
-                            <span>Add User</span>
-                        </li>
-                    </ul>
+                    <div class="list list-users">
+                        <ul data-bind="foreach: menu().users">
+                            <li>
+                                <div class="listItemContent listItemContent-user">
+                                    <div class="user user-name" data-bind="fastclick: $root.menuChooseUser, visible: (!isEditing() && !isAddUser())">
+                                        <span data-bind="text: user"></span>
+                                        <div class="command command-edit">
+                                            <span class="icon iconMedium iconNoBorder icon-pencil" data-bind="fastclick: $root.menuEditUser"></span>
+                                        </div>
+                                    </div>
+                                    <div class="user user-edit" data-bind="visible: isEditing()">
+                                        <input data-bind="value: user, event: {change:$root.menuEditUser_Change}" />
+                                        <div class="command command-enter">
+                                            <span class="icon icon-check" data-bind="fastclick: $root.menuEditUser_Change"></span>
+                                        </div>
+                                    </div>
+                                    <div class="user user-addUser" data-bind="fastclick: $root.menuAddUser, visible: (isAddUser() && !isEditing())">
+                                        <span>Add User</span>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
                 <!-- /ko -->
 
