@@ -38,6 +38,14 @@ module Told.Ads {
             console.log("ShowAd: Called");
 
             var onFinishedWrapper = (wasOK) => {
+
+                if (timeoutID_onFinishedForce === null) {
+                    return;
+                }
+
+                clearTimeout(timeoutID_onFinishedForce);
+                timeoutID_onFinishedForce = null;
+
                 console.log("ShowAd: onFinished wasOK=" + wasOK);
 
                 if (wasOK !== false) {
@@ -46,6 +54,8 @@ module Told.Ads {
 
                 onFinished();
             };
+
+            var timeoutID_onFinishedForce = setTimeout(onFinishedWrapper, 5000);
 
             if (Date.now() > self.timeLastDisplayed + (self.minBetweenAds * 60 * 1000)) {
 
