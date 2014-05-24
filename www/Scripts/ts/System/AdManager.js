@@ -11,57 +11,72 @@ var Told;
                 if (typeof minBetweenAds === "undefined") { minBetweenAds = 30; }
                 this.timeLastDisplayed = null;
                 // CocoonJS interface
-                this._cocoonAdIsReady = false;
+                this._cocoonExistsAndAdIsReady = false;
                 this.minBetweenAds = minBetweenAds;
             }
             AdManager.prototype.preloadAds = function () {
-                CocoonJS.Ad.preloadFullScreen();
+                if (window["CocoonJS"]) {
+                    CocoonJS.Ad.preloadFullScreen();
+                }
             };
 
             AdManager.prototype.cacheNextAd = function () {
-                if (!this._cocoonAdIsReady) {
+                if (!this._cocoonExistsAndAdIsReady) {
                     CocoonJS.Ad.refreshFullScreen();
                 }
             };
 
             AdManager.prototype.showFullScreenAdIfReady = function (onFinished) {
-                if (Date.now() > this.timeLastDisplayed + (this.minBetweenAds * 60 * 1000)) {
-                    if (this._cocoonAdIsReady) {
-                        this._onFinishedCallback = onFinished;
+                var self = this;
+
+                console.log("ShowAd: Called");
+
+                var onFinishedWrapper = function (wasOK) {
+                    console.log("ShowAd: onFinished wasOK=" + wasOK);
+
+                    if (wasOK !== false) {
+                        self.timeLastDisplayed = Date.now();
+                    }
+
+                    onFinished();
+                };
+
+                if (Date.now() > self.timeLastDisplayed + (self.minBetweenAds * 60 * 1000)) {
+                    console.log("ShowAd: Ready");
+
+                    if (self._cocoonExistsAndAdIsReady) {
+                        self._onFinishedCallback = onFinishedWrapper;
                         CocoonJS.Ad.showFullScreen();
-                    } else if (mmAPI != null) {
+                    } else if (window["mmAPI"]) {
                         mmAPI.placeAd({
                             containerElementId: "adContainer",
                             apid: mmAPI_ID,
                             placementType: "interstitial",
                             allowLocation: false
-                        }, function (wasOK) {
-                            if (wasOK) {
-                                this.timeLastDisplayed = Date.now();
-                            }
-
-                            onFinished();
-                        });
+                        }, onFinishedWrapper);
                     } else {
                         // TODO: Show a self in-app-purchase ad
                         // Or promote other apps
-                        onFinished();
+                        onFinishedWrapper(false);
                     }
                 } else {
-                    onFinished();
+                    console.log("ShowAd: Not Ready");
+                    onFinishedWrapper(false);
                 }
             };
 
             AdManager.prototype.setupCocoon = function () {
+                if (!window["CocoonJS"]) {
+                    return;
+                }
+
                 CocoonJS.Ad.onFullScreenShown.addEventListener(function () {
                     this._cocoonAdIsReady = false;
-                    this.timeLastDisplayed = Date.now();
-
                     console.log("onFullScreenShown");
                 });
                 CocoonJS.Ad.onFullScreenHidden.addEventListener(function () {
                     console.log("onFullScreenHidden");
-                    this._onFinishedCallback();
+                    this._onFinishedCallback(true);
                     this._onFinishedCallback = null;
                     this.cacheNextAd();
                 });
@@ -88,7 +103,7 @@ var Told;
 
         function show(onFinished) {
             if (instance === null) {
-                Init();
+                init();
             }
 
             instance.showFullScreenAdIfReady(onFinished);

@@ -134,6 +134,17 @@
 
             <!-- Game Over -->
             <!-- ko if: shouldDisplayGameOver -->
+
+            <!-- ko if: shouldDisplayGameOver_ad -->
+            <div class="screen screen-ad">
+                <div class="appIcon">
+                    <img src="Assets/images/SpiderMath_240.png" />
+                </div>
+                <!--<img src="Assets/images/mainLoader.gif" />-->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: shouldDisplayGameOver_normal -->
             <div class="screen screen-gameOver">
 
                 <div class="info info-gameOver">
@@ -164,6 +175,7 @@
                     <span class="icon icon-arrow-right" data-bind="fastclick: handleLevelNext, visible:gameOverHasWon()"></span>
                 </div>
             </div>
+            <!-- /ko -->
             <!-- /ko -->
 
             <!-- Game -->
@@ -349,7 +361,7 @@
     </script>
 
     <!-- MoPub Ads -->
-<!--    <script type="text/javascript">
+    <!--    <script type="text/javascript">
     mopub_ad_unit = "8ceb124bcbc64ca49f6852b451352445";
     mopub_ad_width = 320; // optional
     mopub_ad_height = 480; // optional
@@ -358,7 +370,7 @@
     </script>
     <script src="http://ads.mopub.com/js/client/mopub.js"></script>-->
 
-    <script src="http://cdn.millennialmedia.com/mmadlib/v1/mmadlib.js"></script>
+    <script src="http://cdn.millennialmedia.com/mmadlib/v1/mmadlib.js" async="async"></script>
 
 </body>
 </html>

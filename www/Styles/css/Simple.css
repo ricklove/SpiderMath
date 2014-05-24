@@ -44,7 +44,7 @@ body {
     color: white;
     font: 20px "Arial Narrow";
     text-transform: uppercase;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 
@@ -254,6 +254,11 @@ body {
     }
 
 /*Game Over Screen*/
+.screen-ad {
+    margin-top: 1em;
+    text-align: center;
+}
+
 .screen-gameOver {
     margin-top: 5em;
 }
@@ -308,11 +313,11 @@ body {
 }
 
 .menu-users > .info-gameMenu > .commands-gameMenu {
-        display: inline-block;
-        float: right;
-        padding: 0.5em;
-        /*width: 0;*/
-    }
+    display: inline-block;
+    float: right;
+    padding: 0.5em;
+    /*width: 0;*/
+}
 
 .info-gameMenu {
     text-align: center;
@@ -373,9 +378,9 @@ body {
         float: right;
     }
 
-    .user > .command > span{
-        font-size: 2em;
-    }
+        .user > .command > span {
+            font-size: 2em;
+        }
 
 .user-name {
 }
@@ -557,7 +562,7 @@ fake {
     border: 1px solid white;
 }
 
-.screen-game {
+.screen-game, .screen-ad {
     border: none;
 }
 

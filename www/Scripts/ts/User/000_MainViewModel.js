@@ -17,6 +17,10 @@ var Told;
                     this.gameOverHasWon = ko.observable(false);
                     this.isGameOver = ko.observable(false);
                     this.isPaused = ko.observable(false);
+                    this.shouldDisplayGameOver_ad = ko.observable(false);
+                    this.shouldDisplayGameOver_normal = ko.computed(function () {
+                        return !_this.shouldDisplayGameOver_ad();
+                    }, this);
                     this.shouldDisplayGameMenu = ko.observable(false);
                     this.shouldDisplayGameOver = ko.computed(function () {
                         return _this.isGameOver() && !_this.shouldDisplayGameMenu();
@@ -74,6 +78,14 @@ var Told;
                     self.isPaused(self.game.isPaused);
 
                     console.log("Pause=" + self.isPaused());
+                };
+
+                MainViewModel.prototype.showAd = function () {
+                    var self = this;
+                    self.shouldDisplayGameOver_ad(true);
+                    Told.Ads.show(function () {
+                        self.shouldDisplayGameOver_ad(false);
+                    });
                 };
 
                 MainViewModel.prototype.menuChooseWorld = function (world) {
@@ -366,15 +378,14 @@ var Told;
                     // Save state
                     self.providers.userSettings.currentUserState = uState;
 
-                    // Show Ad (Over the top of the screen)
-                    Told.Ads.show(function () {
-                        // Reset Game
-                        self.gameOverHasWon(hasWon);
+                    // Reset Game
+                    self.gameOverHasWon(hasWon);
 
-                        //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
-                        self.gameOverStarsClass("star-" + stars);
-                        self.isGameOver(true);
-                    });
+                    //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
+                    self.gameOverStarsClass("star-" + stars);
+                    self.isGameOver(true);
+
+                    self.showAd();
                 };
 
                 MainViewModel.prototype.toBoardPosition = function (gamePositon) {

@@ -254,9 +254,16 @@ Display the starts at level over and level selection
 - Prevent duplicate ticks
 
 
-#### 14:35-
+#### 14:35-16:00
 
 * Integrate ads
+
+### 2014-05-24
+
+#### 5:50-
+
+- Debug ads
+
 
 
 ##### FUTURE

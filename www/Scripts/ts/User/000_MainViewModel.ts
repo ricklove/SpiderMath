@@ -56,9 +56,18 @@ module Told.TableMath.UI {
             console.log("Pause=" + self.isPaused());
         }
 
+        showAd() {
+            var self = this;
+            self.shouldDisplayGameOver_ad(true);
+            Told.Ads.show(() => { self.shouldDisplayGameOver_ad(false);});
+        }
+
+        shouldDisplayGameOver_ad = ko.observable<boolean>(false);
+        shouldDisplayGameOver_normal = ko.computed<boolean>(() => { return !this.shouldDisplayGameOver_ad() }, this);
+
         shouldDisplayGameMenu = ko.observable<boolean>(false);
-        shouldDisplayGameOver = ko.computed<boolean>(() => { return this.isGameOver() && !this.shouldDisplayGameMenu(); }, this);
-        shouldDisplayGame = ko.computed<boolean>(() => { return !this.isGameOver() && !this.shouldDisplayGameMenu(); }, this);
+        shouldDisplayGameOver = ko.computed<boolean>(() => { return this.isGameOver() && !this.shouldDisplayGameMenu() }, this);
+        shouldDisplayGame = ko.computed<boolean>(() => { return !this.isGameOver() && !this.shouldDisplayGameMenu() }, this);
 
         menu = ko.observable<IMenu>({
             shouldDisplayWorlds: ko.observable<boolean>(true),
@@ -379,16 +388,14 @@ module Told.TableMath.UI {
             // Save state
             self.providers.userSettings.currentUserState = uState;
 
-            // Show Ad (Over the top of the screen)
-            Told.Ads.show(() => {
 
-                // Reset Game
-                self.gameOverHasWon(hasWon);
-                //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
-                self.gameOverStarsClass("star-" + stars);
-                self.isGameOver(true);
+            // Reset Game
+            self.gameOverHasWon(hasWon);
+            //self.gameOverStars(stars >= 3 ? [true, true, true] : stars >= 2 ? [true, true, false] : stars >= 1 ? [true, false, false] : [false, false, false]);
+            self.gameOverStarsClass("star-" + stars);
+            self.isGameOver(true);
 
-            });
+            self.showAd();
         }
 
         private toBoardPosition(gamePositon: Game.IPosition): Game.IPosition {

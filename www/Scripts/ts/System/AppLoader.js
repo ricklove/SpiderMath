@@ -104,7 +104,6 @@
                 'Scripts/js/External/hammer.min.js',
                 'Scripts/js/External/google.fastbutton.js',
                 'Scripts/js/External/dust-full-0.3.0.min.js',
-                'Scripts/js/External/cocoon.js',
                 'Scripts/ts/System/AdManager.js',
                 'Scripts/ts/System/AutoResize.js',
                 'Scripts/ts/Support/AccessUserSettings.js',
