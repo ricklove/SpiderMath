@@ -56,6 +56,8 @@ var Told;
                     if (self._cocoonExistsAndAdIsReady) {
                         self._onFinishedCallback = onFinishedWrapper;
                         CocoonJS.Ad.showFullScreen();
+
+                        console.log("ShowAd: Waiting for " + "'CocoonJS'" + " Ad");
                     } else if (window["mmAPI"]) {
                         mmAPI.placeAd({
                             containerElementId: "adContainer",
@@ -63,6 +65,8 @@ var Told;
                             placementType: "interstitial",
                             allowLocation: false
                         }, onFinishedWrapper);
+
+                        console.log("ShowAd: Waiting for " + "'Millennial Media'" + " Ad");
                     } else {
                         // TODO: Show a self in-app-purchase ad
                         // Or promote other apps
