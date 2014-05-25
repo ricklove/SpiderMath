@@ -1,13 +1,10 @@
-﻿/// <reference path="../../typings/jquery/jquery.d.ts" />
-var Told;
+﻿var Told;
 (function (Told) {
     (function (AutoResize) {
         var Resizer = (function () {
             function Resizer() {
             }
             Resizer.adjustScale = function (targetWidth, targetHeight, originalFontSize) {
-                var body = $("body");
-
                 var w = window.innerWidth;
                 var h = window.innerHeight;
 
@@ -22,6 +19,7 @@ var Told;
 
                 var newFSize = fSize * ratio;
 
+                var body = document.getElementsByTagName("body");
                 body[0].style.fontSize = newFSize.toFixed(0) + "px";
             };
             return Resizer;

@@ -99,7 +99,6 @@
             }
 
             var scriptList = [
-                'Scripts/js/External/jquery.min.js',
                 'Scripts/js/External/knockout-3.0.0.min.js',
                 'Scripts/js/External/hammer.min.js',
                 'Scripts/js/External/google.fastbutton.js',

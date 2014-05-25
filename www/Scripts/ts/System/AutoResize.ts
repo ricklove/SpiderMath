@@ -1,10 +1,7 @@
-﻿/// <reference path="../../typings/jquery/jquery.d.ts" />
-
-module Told.AutoResize {
+﻿module Told.AutoResize {
 
     export class Resizer {
         public static adjustScale(targetWidth: number, targetHeight: number, originalFontSize: number) {
-            var body = $("body");
 
             var w = window.innerWidth;
             var h = window.innerHeight;
@@ -21,6 +18,7 @@ module Told.AutoResize {
 
             var newFSize = fSize * ratio;
 
+            var body = document.getElementsByTagName("body");
             body[0].style.fontSize = newFSize.toFixed(0) + "px";
         }
     }

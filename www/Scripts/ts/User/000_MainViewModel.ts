@@ -59,7 +59,7 @@ module Told.TableMath.UI {
         showAd() {
             var self = this;
             self.shouldDisplayGameOver_ad(true);
-            Told.Ads.show(() => { self.shouldDisplayGameOver_ad(false);});
+            Told.Ads.show(() => { self.shouldDisplayGameOver_ad(false); });
         }
 
         shouldDisplayGameOver_ad = ko.observable<boolean>(false);
@@ -651,11 +651,18 @@ module Told.TableMath.UI {
                 //}
             };
 
-            $(document).keydown(function (e) {
+            document.onkeydown = function (e) {
                 if (doIsGameActive()) {
                     viewModel.keydown(e.keyCode);
                 }
-            });
+            };
+
+            //            //$(document).keydown(
+            //    function (e) {
+            //if (doIsGameActive()) {
+            //    viewModel.keydown(e.keyCode);
+            //}
+
 
             Hammer(document)
                 .on("tap", function (ev) {
@@ -705,22 +712,9 @@ module Told.TableMath.UI {
         }
     };
 
-    ko.bindingHandlers["fadeText"] = <KnockoutBindingHandler>{
-        init: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
-            $(element).text(ko.unwrap(valueAccessor()));
-        },
-        update: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
-
-            if ($(element).text() != ko.unwrap(valueAccessor())) {
-                $(element).fadeOut(500, () => { $(element).text(ko.unwrap(valueAccessor())); });
-                $(element).fadeIn({ queue: true });
-            }
-        }
-    };
-
     ko.bindingHandlers["animScoreChange"] = <KnockoutBindingHandler>{
         init: function (element) {
-            $(element).hide();
+            element.style.display = "none";
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
 
@@ -732,38 +726,95 @@ module Told.TableMath.UI {
                 return;
             }
 
-            // Use jQuery animation
-            var atElement = $("#" + viewModel.scoreChangeAtId());
+            var atElement = document.getElementById(viewModel.scoreChangeAtId());
 
-            if (atElement.length === 0) {
+            if (atElement == null) {
                 return;
             }
 
-            var startPosition = atElement.offset();
+            var sPos = atElement.getBoundingClientRect();
 
-            // Go to score
-            //var endPosition = $("#score").offset();
+            var startPositionLeft = sPos.left;
+            var startPositionTop = sPos.top;
 
-            // Go up
-            var endPosition = startPosition;
-            endPosition = { left: endPosition.left, top: endPosition.top - 100 };
+            //var startPositionLeft = atElement.offsetLeft;
+            //var startPositionTop = atElement.offsetTop;
 
-            var scElement = $(element);
+            var endPositionLeft = startPositionLeft;
+            var endPositionTop = startPositionTop - 100;
 
-            scElement.stop(true, true);
-            scElement.css({ fontSize: "2em", opacity: "100", top: startPosition.top, left: startPosition.left });
-            //scElement.offset(startPosition);
+            var stepTime = 25;
+            var duration = 500;
+            var steps = duration / stepTime;
 
-            scElement.show();
-            scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left },
-                500,
-                "swing", () => {
-                    //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
-                    scElement.hide();
-                });
+            var changeLeft = endPositionLeft - startPositionLeft;
+            var changeTop = endPositionTop - startPositionTop;
+            var stepChangeLeft = changeLeft / steps;
+            var stepChangeTop = changeTop / steps;
 
-            // At end make it nothing
-            //viewModel.scoreChange("");
+
+            var startFontSize = 2;
+            var endFontSize = 4;
+            var changeFontSize = endFontSize - startFontSize;
+            var stepChangeFontSize = changeFontSize / steps;
+
+
+            var scoreElement = <HTMLElement> element;
+
+            var iStep = 0;
+            var updatePosition = () => {
+
+                scoreElement.style.display = "block";
+
+                scoreElement.style.left = startPositionLeft + (iStep * stepChangeLeft) + "px";
+                scoreElement.style.top = startPositionTop + (iStep * stepChangeTop) + "px";
+
+                scoreElement.style.fontSize = (startFontSize + (iStep * stepChangeFontSize)) + "em";
+
+                iStep++;
+
+                if (iStep < steps) {
+                    setTimeout(updatePosition, stepTime);
+                }
+                else {
+                    scoreElement.style.display = "none";
+                }
+            };
+
+            updatePosition();
+
+            //// Use jQuery animation
+            //var atElement = $("#" + viewModel.scoreChangeAtId());
+
+            //if (atElement.length === 0) {
+            //    return;
+            //}
+
+            //var startPosition = atElement.offset();
+
+            //// Go to score
+            ////var endPosition = $("#score").offset();
+
+            //// Go up
+            //var endPosition = startPosition;
+            //endPosition = { left: endPosition.left, top: endPosition.top - 100 };
+
+            //var scElement = $(element);
+
+            //scElement.stop(true, true);
+            //scElement.css({ fontSize: "2em", opacity: "100", top: startPosition.top, left: startPosition.left });
+            ////scElement.offset(startPosition);
+
+            //scElement.show();
+            //scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left },
+            //    500,
+            //    "swing", () => {
+            //        //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
+            //        scElement.hide();
+            //    });
+
+            //// At end make it nothing
+            ////viewModel.scoreChange("");
         }
     };
 

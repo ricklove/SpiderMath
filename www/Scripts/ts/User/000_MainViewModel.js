@@ -628,12 +628,17 @@ var Told;
                         //}
                     };
 
-                    $(document).keydown(function (e) {
+                    document.onkeydown = function (e) {
                         if (doIsGameActive()) {
                             viewModel.keydown(e.keyCode);
                         }
-                    });
+                    };
 
+                    //            //$(document).keydown(
+                    //    function (e) {
+                    //if (doIsGameActive()) {
+                    //    viewModel.keydown(e.keyCode);
+                    //}
                     Hammer(document).on("tap", function (ev) {
                         ev.gesture.preventDefault();
 
@@ -679,23 +684,9 @@ var Told;
                 }
             };
 
-            ko.bindingHandlers["fadeText"] = {
-                init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-                    $(element).text(ko.unwrap(valueAccessor()));
-                },
-                update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-                    if ($(element).text() != ko.unwrap(valueAccessor())) {
-                        $(element).fadeOut(500, function () {
-                            $(element).text(ko.unwrap(valueAccessor()));
-                        });
-                        $(element).fadeIn({ queue: true });
-                    }
-                }
-            };
-
             ko.bindingHandlers["animScoreChange"] = {
                 init: function (element) {
-                    $(element).hide();
+                    element.style.display = "none";
                 },
                 update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
                     console.log("slideUpAndFadeOut Update:" + element.id);
@@ -706,34 +697,81 @@ var Told;
                         return;
                     }
 
-                    // Use jQuery animation
-                    var atElement = $("#" + viewModel.scoreChangeAtId());
+                    var atElement = document.getElementById(viewModel.scoreChangeAtId());
 
-                    if (atElement.length === 0) {
+                    if (atElement == null) {
                         return;
                     }
 
-                    var startPosition = atElement.offset();
+                    var sPos = atElement.getBoundingClientRect();
 
-                    // Go to score
-                    //var endPosition = $("#score").offset();
-                    // Go up
-                    var endPosition = startPosition;
-                    endPosition = { left: endPosition.left, top: endPosition.top - 100 };
+                    var startPositionLeft = sPos.left;
+                    var startPositionTop = sPos.top;
 
-                    var scElement = $(element);
+                    //var startPositionLeft = atElement.offsetLeft;
+                    //var startPositionTop = atElement.offsetTop;
+                    var endPositionLeft = startPositionLeft;
+                    var endPositionTop = startPositionTop - 100;
 
-                    scElement.stop(true, true);
-                    scElement.css({ fontSize: "2em", opacity: "100", top: startPosition.top, left: startPosition.left });
+                    var stepTime = 25;
+                    var duration = 500;
+                    var steps = duration / stepTime;
 
-                    //scElement.offset(startPosition);
-                    scElement.show();
-                    scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left }, 500, "swing", function () {
-                        //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
-                        scElement.hide();
-                    });
-                    // At end make it nothing
-                    //viewModel.scoreChange("");
+                    var changeLeft = endPositionLeft - startPositionLeft;
+                    var changeTop = endPositionTop - startPositionTop;
+                    var stepChangeLeft = changeLeft / steps;
+                    var stepChangeTop = changeTop / steps;
+
+                    var startFontSize = 2;
+                    var endFontSize = 4;
+                    var changeFontSize = endFontSize - startFontSize;
+                    var stepChangeFontSize = changeFontSize / steps;
+
+                    var scoreElement = element;
+
+                    var iStep = 0;
+                    var updatePosition = function () {
+                        scoreElement.style.display = "block";
+
+                        scoreElement.style.left = startPositionLeft + (iStep * stepChangeLeft) + "px";
+                        scoreElement.style.top = startPositionTop + (iStep * stepChangeTop) + "px";
+
+                        scoreElement.style.fontSize = (startFontSize + (iStep * stepChangeFontSize)) + "em";
+
+                        iStep++;
+
+                        if (iStep < steps) {
+                            setTimeout(updatePosition, stepTime);
+                        } else {
+                            scoreElement.style.display = "none";
+                        }
+                    };
+
+                    updatePosition();
+                    //// Use jQuery animation
+                    //var atElement = $("#" + viewModel.scoreChangeAtId());
+                    //if (atElement.length === 0) {
+                    //    return;
+                    //}
+                    //var startPosition = atElement.offset();
+                    //// Go to score
+                    ////var endPosition = $("#score").offset();
+                    //// Go up
+                    //var endPosition = startPosition;
+                    //endPosition = { left: endPosition.left, top: endPosition.top - 100 };
+                    //var scElement = $(element);
+                    //scElement.stop(true, true);
+                    //scElement.css({ fontSize: "2em", opacity: "100", top: startPosition.top, left: startPosition.left });
+                    ////scElement.offset(startPosition);
+                    //scElement.show();
+                    //scElement.animate({ fontSize: "+=2em", top: endPosition.top, left: endPosition.left },
+                    //    500,
+                    //    "swing", () => {
+                    //        //scElement.animate({ opacity: "0" }, 500, () => { scElement.hide(); });
+                    //        scElement.hide();
+                    //    });
+                    //// At end make it nothing
+                    ////viewModel.scoreChange("");
                 }
             };
 

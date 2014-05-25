@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="Styles/css/Loading.css">
 </head>
-<body class="loadingScreen" data-bind="globalInput: $root">
+<body data-bind="globalInput: $root">
 
     <div id="loadingScreen" class="loadingScreen">
         <div class="appIcon">
@@ -200,9 +200,6 @@
                         </div>
                     </div>
 
-                    <div class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
-                        <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
-                    </div>
 
                     <div class="game game-numTable">
                         <div class="game-numTable-outer">
@@ -227,6 +224,10 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="scoreChange" class="game game-scoreChange" data-bind="animScoreChange: scoreChange">
+                        <span data-bind="text: scoreChange, css: scoreChangeClassName"></span>
                     </div>
 
                 </div>
@@ -306,9 +307,12 @@
                 var fSize = 20;
 
                 Told.AutoResize.Resizer.adjustScale(w, h, fSize);
-                $(window).resize(function () {
+                //$(window).resize(function () {
+                //    Told.AutoResize.Resizer.adjustScale(w, h, fSize);
+                //});
+                window.onresize = function () {
                     Told.AutoResize.Resizer.adjustScale(w, h, fSize);
-                });
+                };
 
                 // Load View Model
                 var viewModel = new Told.TableMath.UI.MainViewModel();
@@ -316,16 +320,10 @@
 
                 window.mainViewModel = viewModel;
 
-                var hash = location.hash;
-                if ($(hash).length === 0) { hash = "#home"; }
-                $(hash).show();
+                // Remove loading screen
+                document.getElementById("home").style.display = null;
+                document.getElementById("loadingScreen").style.display = "none";
 
-                $("#loadingScreen").hide();
-                $(".loadingScreen").removeClass("loadingScreen");
-
-                if (location.href.indexOf("showAnswers") > 0) {
-                    $("#answers").show();
-                }
             }, onProgress);
         }());
     </script>
