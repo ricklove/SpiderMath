@@ -264,11 +264,15 @@ Display the starts at level over and level selection
 
 - Debug ads
 
+### 2014-05-25
+#### 5:50-5:55
 
-
+- Remove unused files
 
 
 ##### FUTURE
+
+- Refactor AppLoader to use external list
 
 - Show Title at user selection
 
