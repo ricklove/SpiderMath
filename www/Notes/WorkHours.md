@@ -273,9 +273,11 @@ Display the starts at level over and level selection
 
 - Remove jQuery
 
-##### FUTURE
+#### 7:00-7:10
 
-- Change score change animation to use time based instead of step based and reduce the stepTimeout up to min
+- Change score animation to time based
+
+##### FUTURE
 
 - Refactor AppLoader to use external list
 

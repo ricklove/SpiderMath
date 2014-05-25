@@ -713,35 +713,35 @@ var Told;
                     var endPositionLeft = startPositionLeft;
                     var endPositionTop = startPositionTop - 100;
 
-                    var stepTime = 25;
                     var duration = 500;
-                    var steps = duration / stepTime;
 
                     var changeLeft = endPositionLeft - startPositionLeft;
                     var changeTop = endPositionTop - startPositionTop;
-                    var stepChangeLeft = changeLeft / steps;
-                    var stepChangeTop = changeTop / steps;
 
                     var startFontSize = 2;
                     var endFontSize = 4;
                     var changeFontSize = endFontSize - startFontSize;
-                    var stepChangeFontSize = changeFontSize / steps;
 
                     var scoreElement = element;
 
-                    var iStep = 0;
+                    var startTime = Date.now();
                     var updatePosition = function () {
+                        var timeChange = Date.now() - startTime;
+                        var ratioChange = timeChange / duration;
+
+                        if (ratioChange > 1) {
+                            ratioChange = 1;
+                        }
+
                         scoreElement.style.display = "block";
 
-                        scoreElement.style.left = startPositionLeft + (iStep * stepChangeLeft) + "px";
-                        scoreElement.style.top = startPositionTop + (iStep * stepChangeTop) + "px";
+                        scoreElement.style.left = startPositionLeft + (ratioChange * changeLeft) + "px";
+                        scoreElement.style.top = startPositionTop + (ratioChange * changeTop) + "px";
 
-                        scoreElement.style.fontSize = (startFontSize + (iStep * stepChangeFontSize)) + "em";
+                        scoreElement.style.fontSize = (startFontSize + (ratioChange * changeFontSize)) + "em";
 
-                        iStep++;
-
-                        if (iStep < steps) {
-                            setTimeout(updatePosition, stepTime);
+                        if (ratioChange < 1) {
+                            setTimeout(updatePosition, 10);
                         } else {
                             scoreElement.style.display = "none";
                         }
