@@ -1,4 +1,5 @@
 ﻿declare var _gaq;
+declare var ga;
 
 module Told.Debug {
 
@@ -17,9 +18,13 @@ module Told.Debug {
             console.log(message);
 
             // Google analytics
-            if (window["_gaq"]) {
-                var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
-                var breakdance = true;
+            //if (window["_gaq"]) {
+            //    var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
+            //    var breakdance = true;
+            //}
+
+            if (window["ga"]) {
+                ga('send', 'event', 'log', message);
             }
 
             if (this._elementId !== "") {
