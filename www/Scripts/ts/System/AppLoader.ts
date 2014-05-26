@@ -105,6 +105,8 @@ module Told.AppLoader {
             'Scripts/js/External/google.fastbutton.js',
 
             //'Scripts/js/External/cocoon.js',
+
+            'Scripts/ts/System/Debug.js',
             'Scripts/ts/System/AdManager.js',
 
             'Scripts/ts/System/AutoResize.js',

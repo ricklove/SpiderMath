@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../typings/knockout/knockout.d.ts" />
+/// <reference path="../System/Debug.ts" />
 /// <reference path="../System/AdManager.ts" />
 /// <reference path="../Support/AccessProviders.ts" />
 /// <reference path="_Model.ts" />
@@ -77,7 +78,7 @@ var Told;
                     self.game.pause(shouldPause);
                     self.isPaused(self.game.isPaused);
 
-                    console.log("Pause=" + self.isPaused());
+                    Told.log("Pause=" + self.isPaused());
                 };
 
                 MainViewModel.prototype.showAd = function () {
@@ -128,7 +129,7 @@ var Told;
                         return;
                     }
 
-                    console.log("menuChooseUser");
+                    Told.log("menuChooseUser");
 
                     var self = window['mainViewModel'];
                     self.providers.userSettings.currentUserName = user.user();
@@ -155,7 +156,7 @@ var Told;
                         }
                     }
 
-                    console.log("user.userEditText changed:" + newValue);
+                    Told.log("user.userEditText changed:" + newValue);
 
                     var self = window['mainViewModel'];
 
@@ -177,7 +178,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuEditUser = function (user) {
-                    console.log("menuEditUser");
+                    Told.log("menuEditUser");
 
                     var self = window['mainViewModel'];
                     self.menu().users().forEach(function (u, i) {
@@ -190,7 +191,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuAddUser = function (user) {
-                    console.log("menuAddUser");
+                    Told.log("menuAddUser");
 
                     var self = window['mainViewModel'];
 
@@ -530,7 +531,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelNext = function () {
-                    console.log("handleLevelNext");
+                    Told.log("handleLevelNext");
 
                     var self = this;
 
@@ -546,7 +547,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelMenu = function () {
-                    console.log("handleLevelMenu");
+                    Told.log("handleLevelMenu");
 
                     var self = this;
 
@@ -558,7 +559,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelReplay = function () {
-                    console.log("handleLevelReplay");
+                    Told.log("handleLevelReplay");
 
                     var self = this;
 
@@ -574,7 +575,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelResume = function () {
-                    console.log("handleLevelReplay");
+                    Told.log("handleLevelReplay");
 
                     var self = this;
 
@@ -639,8 +640,26 @@ var Told;
                     //if (doIsGameActive()) {
                     //    viewModel.keydown(e.keyCode);
                     //}
+                    var upCount = 0;
+
                     Hammer(document).on("tap", function (ev) {
                         ev.gesture.preventDefault();
+
+                        if (ev.gesture.center.pageY < window.innerHeight * 0.2) {
+                            upCount++;
+
+                            Told.log("Logging upCount: " + upCount);
+                        } else if (upCount > 5) {
+                            if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
+                                Told.log("Logging Enabled");
+
+                                // Turn on logging
+                                Told.enableLogging("log");
+                            }
+                        } else {
+                            upCount = 0;
+                            Told.log("Logging upCount reset");
+                        }
 
                         if (viewModel.isPaused()) {
                             viewModel.pause(false);
@@ -689,7 +708,7 @@ var Told;
                     element.style.display = "none";
                 },
                 update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-                    console.log("slideUpAndFadeOut Update:" + element.id);
+                    Told.log("slideUpAndFadeOut Update:" + element.id);
 
                     ko.utils.unwrapObservable(valueAccessor()); // to subscribe
 

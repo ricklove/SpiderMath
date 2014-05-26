@@ -277,6 +277,16 @@ Display the starts at level over and level selection
 
 - Change score animation to time based
 
+### 2014-05-26
+
+#### 5:40-5:45
+
+- Remove Millenial Media ads
+
+#### 5:45-6:25
+
+- Add Told.log
+
 ##### FUTURE
 
 - Refactor AppLoader to use external list

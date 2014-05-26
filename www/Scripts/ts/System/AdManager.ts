@@ -1,14 +1,8 @@
-﻿/// <reference path="../../typings/jquery/jquery.d.ts" />
+﻿/// <reference path="Debug.ts" />
 
 declare var CocoonJS;
 
-// Mellenial Web Ads 
-// http://docs.millennialmedia.com/mmadlib/JavascriptInterstitialAds.html
-declare var mmAPI;
-
 module Told.Ads {
-
-    var mmAPI_ID = "163527";
 
     class AdManager {
 
@@ -35,7 +29,7 @@ module Told.Ads {
 
             var self = this;
 
-            console.log("ShowAd: Called");
+            Told.log("ShowAd: Called");
 
             var onFinishedWrapper = (wasOK) => {
 
@@ -46,7 +40,7 @@ module Told.Ads {
                 clearTimeout(timeoutID_onFinishedForce);
                 timeoutID_onFinishedForce = null;
 
-                console.log("ShowAd: onFinished wasOK=" + wasOK);
+                Told.log("ShowAd: onFinished wasOK=" + wasOK);
 
                 if (wasOK !== false) {
                     self.timeLastDisplayed = Date.now();
@@ -59,23 +53,13 @@ module Told.Ads {
 
             if (Date.now() > self.timeLastDisplayed + (self.minBetweenAds * 60 * 1000)) {
 
-                console.log("ShowAd: Ready");
+                Told.log("ShowAd: Ready");
 
                 if (self._cocoonExistsAndAdIsReady) {
                     self._onFinishedCallback = onFinishedWrapper;
                     CocoonJS.Ad.showFullScreen();
 
-                    console.log("ShowAd: Waiting for " + "'CocoonJS'" + " Ad");
-
-                } else if (window["mmAPI"]) {
-                    mmAPI.placeAd({
-                        containerElementId: "adContainer",
-                        apid: mmAPI_ID,
-                        placementType: "interstitial",
-                        allowLocation: false
-                    }, onFinishedWrapper);
-
-                    console.log("ShowAd: Waiting for " + "'Millennial Media'" + " Ad");
+                    Told.log("ShowAd: Waiting for " + "'CocoonJS'" + " Ad");
 
                 } else {
                     // TODO: Show a self in-app-purchase ad
@@ -85,7 +69,7 @@ module Told.Ads {
 
             } else {
 
-                console.log("ShowAd: Not Ready");
+                Told.log("ShowAd: Not Ready");
                 onFinishedWrapper(false);
             }
         }
@@ -101,16 +85,16 @@ module Told.Ads {
 
             CocoonJS.Ad.onFullScreenShown.addEventListener(function () {
                 this._cocoonAdIsReady = false;
-                console.log("onFullScreenShown");
+                Told.log("onFullScreenShown");
             });
             CocoonJS.Ad.onFullScreenHidden.addEventListener(function () {
-                console.log("onFullScreenHidden");
+                Told.log("onFullScreenHidden");
                 this._onFinishedCallback(true);
                 this._onFinishedCallback = null;
                 this.cacheNextAd();
             });
             CocoonJS.Ad.onFullScreenReady.addEventListener(function () {
-                console.log("onFullScreenReady");
+                Told.log("onFullScreenReady");
                 this._cocoonAdIsReady = true;
             });
         }
