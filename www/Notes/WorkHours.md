@@ -287,11 +287,16 @@ Display the starts at level over and level selection
 
 - Add Told.log
 
+#### 6:25-6:40
+
+- Applied for Ludei premium account in order to use the Ads extension
+
 ##### FUTURE
 
-- Refactor AppLoader to use external list
+- Enable cocoon ads
+- Show demo play at beginning of game and beginning of level
 
-- Show Title at user selection
+- Refactor AppLoader to use external list
 
 - A major refactoring is due!
 - Need to include testing
