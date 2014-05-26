@@ -293,6 +293,10 @@ Display the starts at level over and level selection
 
 ##### FUTURE
 
+- Add Google Analytics
+
+- Create a new Icon for "Falling Times"
+
 - Enable cocoon ads
 - Show demo play at beginning of game and beginning of level
 

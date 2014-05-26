@@ -10,6 +10,12 @@
                 this.entries.push({ message: message, time: new Date() });
                 console.log(message);
 
+                // Google analytics
+                if (window["_gaq"]) {
+                    var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
+                    var breakdance = true;
+                }
+
                 if (this._elementId !== "") {
                     this.writeMessages(this._elementId);
                 }

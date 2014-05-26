@@ -1,4 +1,6 @@
-﻿module Told.Debug {
+﻿declare var _gaq;
+
+module Told.Debug {
 
     export interface LogEntry {
         message: string;
@@ -13,6 +15,12 @@
         public log(message: string) {
             this.entries.push({ message: message, time: new Date() });
             console.log(message);
+
+            // Google analytics
+            if (window["_gaq"]) {
+                var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
+                var breakdance = true;
+            }
 
             if (this._elementId !== "") {
                 this.writeMessages(this._elementId);
