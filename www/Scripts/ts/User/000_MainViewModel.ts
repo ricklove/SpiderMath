@@ -54,7 +54,7 @@ module Told.TableMath.UI {
             self.game.pause(shouldPause);
             self.isPaused(self.game.isPaused);
 
-            Told.log("Pause=" + self.isPaused());
+            Told.log("Pause", "" + self.isPaused(), true);
         }
 
         showAd() {
@@ -122,7 +122,7 @@ module Told.TableMath.UI {
 
             if (user.isEditing()) { return; }
 
-            Told.log("menuChooseUser");
+            Told.log("Menu", "menuChooseUser", true);
 
             var self = <MainViewModel>window['mainViewModel'];
             self.providers.userSettings.currentUserName = user.user();
@@ -151,7 +151,9 @@ module Told.TableMath.UI {
                 }
             }
 
-            Told.log("user.userEditText changed:" + newValue);
+            Told.log("User", "userEditText changed", true);
+            Told.log("User", "userEditText changed: '" + newValue + "'", false);
+
 
             var self = <MainViewModel>window['mainViewModel'];
 
@@ -174,7 +176,7 @@ module Told.TableMath.UI {
         }
 
         menuEditUser(user: IMenuUser) {
-            Told.log("menuEditUser");
+            Told.log("Menu", "menuEditUser", true);
 
             var self = <MainViewModel>window['mainViewModel'];
             self.menu().users().forEach((u, i) => {
@@ -187,7 +189,7 @@ module Told.TableMath.UI {
         }
 
         menuAddUser(user: IMenuUser) {
-            Told.log("menuAddUser");
+            Told.log("Menu", "menuAddUser", true);
 
             var self = <MainViewModel>window['mainViewModel'];
 
@@ -550,7 +552,7 @@ module Told.TableMath.UI {
         }
 
         handleLevelNext() {
-            Told.log("handleLevelNext");
+            Told.log("Command", "LevelNext", true);
 
             var self = this;
 
@@ -566,7 +568,7 @@ module Told.TableMath.UI {
         }
 
         handleLevelMenu() {
-            Told.log("handleLevelMenu");
+            Told.log("Command", "LevelMenu", true);
 
             var self = this;
 
@@ -578,7 +580,7 @@ module Told.TableMath.UI {
         }
 
         handleLevelReplay() {
-            Told.log("handleLevelReplay");
+            Told.log("Command", "LevelReplay", true);
 
             var self = this;
 
@@ -595,7 +597,7 @@ module Told.TableMath.UI {
         }
 
         handleLevelResume() {
-            Told.log("handleLevelReplay");
+            Told.log("Command", "LevelResume", true);
 
             var self = this;
 
@@ -674,17 +676,17 @@ module Told.TableMath.UI {
 
                         upCount++;
 
-                        Told.log("Logging upCount: " + upCount);
+                        Told.log("Logging", "upCount: " + upCount, false);
                     } else if (upCount > 5) {
                         if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
-                            Told.log("Logging Enabled");
+                            Told.log("Logging", "Enabled", false);
 
                             // Turn on logging
                             Told.enableLogging("log");
                         }
                     } else {
                         upCount = 0;
-                        Told.log("Logging upCount reset");
+                        Told.log("Logging", "upCount reset", false);
                     }
 
                     if (viewModel.isPaused()) {
@@ -737,7 +739,7 @@ module Told.TableMath.UI {
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel: MainViewModel) {
 
-            Told.log("slideUpAndFadeOut Update:" + element.id);
+            Told.log("Animation","slideUpAndFadeOut Update:" + element.id, false);
 
             ko.utils.unwrapObservable(valueAccessor()); // to subscribe
 

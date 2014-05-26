@@ -6,19 +6,16 @@
                 this._elementId = "";
                 this.entries = [];
             }
-            Logger.prototype.log = function (message) {
+            Logger.prototype.log = function (category, message, sendToAnalytics) {
                 this.entries.push({ message: message, time: new Date() });
-                console.log(message);
+                console.log(category + ": " + message);
 
-                // Google analytics
-                //if (window["_gaq"]) {
-                //    var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
-                //    var breakdance = true;
-                //}
-                if (window["ga"]) {
+                // Send to google analytics
+                if (sendToAnalytics && window["ga"]) {
                     ga('send', 'event', 'log', message);
                 }
 
+                // Show on local logger if displayed
                 if (this._elementId !== "") {
                     this.writeMessages(this._elementId);
                 }
@@ -84,8 +81,8 @@
 
 var Told;
 (function (Told) {
-    function log(message) {
-        Told.Debug.loggerInstance.log(message);
+    function log(category, message, sendToAnalytics) {
+        Told.Debug.loggerInstance.log(category, message, sendToAnalytics);
     }
     Told.log = log;
 

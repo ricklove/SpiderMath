@@ -291,9 +291,14 @@ Display the starts at level over and level selection
 
 - Applied for Ludei premium account in order to use the Ads extension
 
+
+#### 17:00-18:00
+
+- Fix Google Analytics
+
+
 ##### FUTURE
 
-- Add Google Analytics
 
 - Create a new Icon for "Falling Times"
 

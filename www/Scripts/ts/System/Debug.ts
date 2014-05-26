@@ -13,20 +13,16 @@ module Told.Debug {
         private _elementId: string = "";
         public entries: LogEntry[] = [];
 
-        public log(message: string) {
+        public log(category: string, message: string, sendToAnalytics: boolean) {
             this.entries.push({ message: message, time: new Date() });
-            console.log(message);
+            console.log(category + ": " + message);
 
-            // Google analytics
-            //if (window["_gaq"]) {
-            //    var wasOk = _gaq.push(['_trackEvent', 'Debug', 'Log', message]);
-            //    var breakdance = true;
-            //}
-
-            if (window["ga"]) {
+            // Send to google analytics
+            if (sendToAnalytics && window["ga"]) {
                 ga('send', 'event', 'log', message);
             }
 
+            // Show on local logger if displayed
             if (this._elementId !== "") {
                 this.writeMessages(this._elementId);
             }
@@ -88,8 +84,8 @@ module Told.Debug {
 
 module Told {
 
-    export function log(message: string) {
-        Debug.loggerInstance.log(message);
+    export function log(category: string, message: string, sendToAnalytics: boolean) {
+        Debug.loggerInstance.log(category, message, sendToAnalytics);
     }
 
     export function enableLogging(elemendId: string) {

@@ -26,7 +26,7 @@ var Told;
             AdManager.prototype.showFullScreenAdIfReady = function (onFinished) {
                 var self = this;
 
-                Told.log("ShowAd: Called");
+                Told.log("ShowAd", "Called", true);
 
                 var onFinishedWrapper = function (wasOK) {
                     if (timeoutID_onFinishedForce === null) {
@@ -36,7 +36,7 @@ var Told;
                     clearTimeout(timeoutID_onFinishedForce);
                     timeoutID_onFinishedForce = null;
 
-                    Told.log("ShowAd: onFinished wasOK=" + wasOK);
+                    Told.log("ShowAd", "onFinished wasOK=" + wasOK, true);
 
                     if (wasOK !== false) {
                         self.timeLastDisplayed = Date.now();
@@ -48,20 +48,20 @@ var Told;
                 var timeoutID_onFinishedForce = setTimeout(onFinishedWrapper, 5000);
 
                 if (Date.now() > self.timeLastDisplayed + (self.minBetweenAds * 60 * 1000)) {
-                    Told.log("ShowAd: Ready");
+                    Told.log("ShowAd", "Ready", true);
 
                     if (self._cocoonExistsAndAdIsReady) {
                         self._onFinishedCallback = onFinishedWrapper;
                         CocoonJS.Ad.showFullScreen();
 
-                        Told.log("ShowAd: Waiting for " + "'CocoonJS'" + " Ad");
+                        Told.log("ShowAd", "Waiting for " + "'CocoonJS'" + " Ad", true);
                     } else {
                         // TODO: Show a self in-app-purchase ad
                         // Or promote other apps
                         onFinishedWrapper(false);
                     }
                 } else {
-                    Told.log("ShowAd: Not Ready");
+                    Told.log("ShowAd", "Not Ready", true);
                     onFinishedWrapper(false);
                 }
             };
@@ -73,16 +73,16 @@ var Told;
 
                 CocoonJS.Ad.onFullScreenShown.addEventListener(function () {
                     this._cocoonAdIsReady = false;
-                    Told.log("onFullScreenShown");
+                    Told.log("CocoonJS", "onFullScreenShown", true);
                 });
                 CocoonJS.Ad.onFullScreenHidden.addEventListener(function () {
-                    Told.log("onFullScreenHidden");
+                    Told.log("CocoonJS", "onFullScreenHidden", true);
                     this._onFinishedCallback(true);
                     this._onFinishedCallback = null;
                     this.cacheNextAd();
                 });
                 CocoonJS.Ad.onFullScreenReady.addEventListener(function () {
-                    Told.log("onFullScreenReady");
+                    Told.log("CocoonJS", "onFullScreenReady", true);
                     this._cocoonAdIsReady = true;
                 });
             };

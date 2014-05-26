@@ -78,7 +78,7 @@ var Told;
                     self.game.pause(shouldPause);
                     self.isPaused(self.game.isPaused);
 
-                    Told.log("Pause=" + self.isPaused());
+                    Told.log("Pause", "" + self.isPaused(), true);
                 };
 
                 MainViewModel.prototype.showAd = function () {
@@ -129,7 +129,7 @@ var Told;
                         return;
                     }
 
-                    Told.log("menuChooseUser");
+                    Told.log("Menu", "menuChooseUser", true);
 
                     var self = window['mainViewModel'];
                     self.providers.userSettings.currentUserName = user.user();
@@ -156,7 +156,8 @@ var Told;
                         }
                     }
 
-                    Told.log("user.userEditText changed:" + newValue);
+                    Told.log("User", "userEditText changed", true);
+                    Told.log("User", "userEditText changed: '" + newValue + "'", false);
 
                     var self = window['mainViewModel'];
 
@@ -178,7 +179,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuEditUser = function (user) {
-                    Told.log("menuEditUser");
+                    Told.log("Menu", "menuEditUser", true);
 
                     var self = window['mainViewModel'];
                     self.menu().users().forEach(function (u, i) {
@@ -191,7 +192,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.menuAddUser = function (user) {
-                    Told.log("menuAddUser");
+                    Told.log("Menu", "menuAddUser", true);
 
                     var self = window['mainViewModel'];
 
@@ -531,7 +532,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelNext = function () {
-                    Told.log("handleLevelNext");
+                    Told.log("Command", "LevelNext", true);
 
                     var self = this;
 
@@ -547,7 +548,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelMenu = function () {
-                    Told.log("handleLevelMenu");
+                    Told.log("Command", "LevelMenu", true);
 
                     var self = this;
 
@@ -559,7 +560,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelReplay = function () {
-                    Told.log("handleLevelReplay");
+                    Told.log("Command", "LevelReplay", true);
 
                     var self = this;
 
@@ -575,7 +576,7 @@ var Told;
                 };
 
                 MainViewModel.prototype.handleLevelResume = function () {
-                    Told.log("handleLevelReplay");
+                    Told.log("Command", "LevelResume", true);
 
                     var self = this;
 
@@ -648,17 +649,17 @@ var Told;
                         if (ev.gesture.center.pageY < window.innerHeight * 0.2) {
                             upCount++;
 
-                            Told.log("Logging upCount: " + upCount);
+                            Told.log("Logging", "upCount: " + upCount, false);
                         } else if (upCount > 5) {
                             if (ev.gesture.center.pageX > window.innerWidth * 0.8) {
-                                Told.log("Logging Enabled");
+                                Told.log("Logging", "Enabled", false);
 
                                 // Turn on logging
                                 Told.enableLogging("log");
                             }
                         } else {
                             upCount = 0;
-                            Told.log("Logging upCount reset");
+                            Told.log("Logging", "upCount reset", false);
                         }
 
                         if (viewModel.isPaused()) {
@@ -708,7 +709,7 @@ var Told;
                     element.style.display = "none";
                 },
                 update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-                    Told.log("slideUpAndFadeOut Update:" + element.id);
+                    Told.log("Animation", "slideUpAndFadeOut Update:" + element.id, false);
 
                     ko.utils.unwrapObservable(valueAccessor()); // to subscribe
 
