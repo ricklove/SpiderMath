@@ -71,10 +71,9 @@ var Told;
 
                 // Universal Analytics method (which does not work in installed apps)
                 // DEBUG
-                if (window["ga"]) {
-                    window["ga"]('send', 'event', category, action);
-                }
-
+                //if (window["ga"]) {
+                //    window["ga"]('send', 'event', category, action);
+                //}
                 // Measurement Protocol direct call
                 // Manual ajax request
                 // http://www.aaron-powell.com/posts/2013-08-02-ajax-without-jquery.html
@@ -163,6 +162,9 @@ var Told;
             };
             return Data;
         })();
+
+        // Track page view as soon as this is loaded
+        GoogleAnalyticsMeasurementProtocol.trackPageView();
     })(Told.Analytics || (Told.Analytics = {}));
     var Analytics = Told.Analytics;
 })(Told || (Told = {}));

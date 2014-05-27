@@ -85,9 +85,9 @@ module Told.Analytics {
 
             // Universal Analytics method (which does not work in installed apps)
             // DEBUG
-            if (window["ga"]) {
-                window["ga"]('send', 'event', category, action);
-            }
+            //if (window["ga"]) {
+            //    window["ga"]('send', 'event', category, action);
+            //}
 
             // Measurement Protocol direct call
 
@@ -177,6 +177,9 @@ module Told.Analytics {
         }
     }
 
+
+    // Track page view as soon as this is loaded
+    GoogleAnalyticsMeasurementProtocol.trackPageView();
 
 
 }
