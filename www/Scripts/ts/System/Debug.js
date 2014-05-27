@@ -12,7 +12,9 @@ var Told;
                 console.log(category + ": " + message);
 
                 // Make analytics call
-                Told.Analytics.GoogleAnalyticsMeasurementProtocol.trackEvent(category, message);
+                if (sendToAnalytics) {
+                    Told.Analytics.GoogleAnalyticsMeasurementProtocol.trackEvent(category, message);
+                }
 
                 // Show on local logger if displayed
                 if (this._elementId !== "") {
