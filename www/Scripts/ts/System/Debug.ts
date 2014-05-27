@@ -19,7 +19,7 @@ module Told.Debug {
 
             // Send to google analytics
             if (sendToAnalytics && window["ga"]) {
-                ga('send', 'event', 'log', message);
+                ga('send', 'event', category, message);
             }
 
             // Show on local logger if displayed
