@@ -296,6 +296,11 @@ Display the starts at level over and level selection
 
 - Fix Google Analytics
 
+### 2014-05-27
+
+#### 6:10-7:50
+
+- Implement Google Measurement Protocol instead of Google Analytics to manually send data from anywhere
 
 ##### FUTURE
 

@@ -102,6 +102,8 @@
                 'Scripts/js/External/knockout-3.0.0.min.js',
                 'Scripts/js/External/hammer.min.js',
                 'Scripts/js/External/google.fastbutton.js',
+                'Scripts/ts/System/AppSettings.js',
+                'Scripts/ts/System/Analytics.js',
                 'Scripts/ts/System/Debug.js',
                 'Scripts/ts/System/AdManager.js',
                 'Scripts/ts/System/AutoResize.js',

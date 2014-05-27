@@ -1,27 +1,27 @@
-﻿declare var _gaq;
-declare var ga;
+﻿/// <reference path="Analytics.ts" />
 
 module Told.Debug {
 
     export interface LogEntry {
+        // TODO: Change to Category, Action, Label, Value
+        category: string;
         message: string;
         time: Date;
     }
-
+    
     export class Logger {
 
         private _elementId: string = "";
         public entries: LogEntry[] = [];
 
         public log(category: string, message: string, sendToAnalytics: boolean) {
-            this.entries.push({ message: message, time: new Date() });
+
+            this.entries.push({ category: category, message: message, time: new Date() });
             console.log(category + ": " + message);
 
-            // Send to google analytics
-            if (sendToAnalytics && window["ga"]) {
-                ga('send', 'event', category, message);
-            }
-
+            // Make analytics call
+            Told.Analytics.GoogleAnalyticsMeasurementProtocol.trackEvent(category, message);
+          
             // Show on local logger if displayed
             if (this._elementId !== "") {
                 this.writeMessages(this._elementId);

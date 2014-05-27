@@ -106,6 +106,8 @@ module Told.AppLoader {
 
             //'Scripts/js/External/cocoon.js',
 
+            'Scripts/ts/System/AppSettings.js',
+            'Scripts/ts/System/Analytics.js',
             'Scripts/ts/System/Debug.js',
             'Scripts/ts/System/AdManager.js',
 

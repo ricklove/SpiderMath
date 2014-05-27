@@ -1,4 +1,5 @@
-﻿var Told;
+﻿/// <reference path="Analytics.ts" />
+var Told;
 (function (Told) {
     (function (Debug) {
         var Logger = (function () {
@@ -7,13 +8,11 @@
                 this.entries = [];
             }
             Logger.prototype.log = function (category, message, sendToAnalytics) {
-                this.entries.push({ message: message, time: new Date() });
+                this.entries.push({ category: category, message: message, time: new Date() });
                 console.log(category + ": " + message);
 
-                // Send to google analytics
-                if (sendToAnalytics && window["ga"]) {
-                    ga('send', 'event', category, message);
-                }
+                // Make analytics call
+                Told.Analytics.GoogleAnalyticsMeasurementProtocol.trackEvent(category, message);
 
                 // Show on local logger if displayed
                 if (this._elementId !== "") {
