@@ -54,27 +54,33 @@ module Told.Analytics {
             var guaTrackingID = Told.AppSettings.GoogleAnalyticsTrackingID;
             var clientUUID = GoogleAnalyticsMeasurementProtocol.getClientUUID();
 
-            var d = new Data();
+            var data = new Data();
 
-            d.append('v', '1');
-            d.append('tid', guaTrackingID);
-            d.append('cid', clientUUID);
+            data.append('v', '1');
+            data.append('tid', guaTrackingID);
+            data.append('cid', clientUUID);
 
             //&t=pageview     // Pageview hit type.
             //&dh=mydemo.com  // Document hostname.
             //&dp=/home       // Page.
             //&dt=homepage    // Title.
 
-            d.append('t', "pageview");
-            d.append('dh', "toldpro.com");
-            d.append('dp', "/home");
-            d.append('dt', "Main");
+            data.append('t', "pageview");
+            data.append('dh', "toldpro.com");
+            data.append('dp', "/home");
+            data.append('dt', "Main");
 
-            console.log("GA: " + d.toString());
+            data.append('z', "" + Math.random());
+
+            console.log("GA: " + data.toString());
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://www.google-analytics.com/collect', true);
-            xhr.send(d.toString());
+            xhr.open('GET', 'http://www.google-analytics.com/collect?' + data.toString(), true);
+            xhr.send();
+
+            //var xhr = new XMLHttpRequest();
+            //xhr.open('POST', 'http://www.google-analytics.com/collect', true);
+            //xhr.send(d.toString());
         }
 
         public static trackEvent(category: string, action: string, label: string = "", value: string = ""): void {
@@ -115,7 +121,7 @@ module Told.Analytics {
             data.append('dp', "/home");
             data.append('dt', "Main");
 
-            
+
             //&t=event        // Event hit type
             //&ec=video       // Event Category. Required.
             //&ea=play        // Event Action. Required.
@@ -125,16 +131,26 @@ module Told.Analytics {
             data.append('t', "event");
             data.append('ec', category);
             data.append('ea', action);
-            data.append('el', label);
-            data.append('ev', value);
+
+            if (label !== "") {
+                data.append('el', label);
+            }
+            if (value !== "") {
+                data.append('ev', value);
+            }
+
+            data.append('z', "" + Math.random());
 
             console.log("GA: " + data.toString());
 
             var xhr = new XMLHttpRequest();
-            //xhr.open('POST', 'http://www.google-analytics.com');
-            xhr.open('POST', 'http://www.google-analytics.com/collect', true);
-            //xhr.setRequestHeader('User-Agent', window.navigator.userAgent);
-            xhr.send(data.toString());
+            xhr.open('GET', 'http://www.google-analytics.com/collect?' + data.toString(), true);
+            xhr.send();
+
+            //var xhr = new XMLHttpRequest();
+            ////xhr.open('POST', 'http://www.google-analytics.com');
+            //xhr.open('POST', 'http://www.google-analytics.com/collect', true);
+            //xhr.send(data.toString());
         }
 
 
